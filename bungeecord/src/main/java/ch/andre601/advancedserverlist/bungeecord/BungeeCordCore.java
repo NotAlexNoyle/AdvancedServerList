@@ -36,10 +36,12 @@ import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
+import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import com.alessiodp.libby.BungeeLibraryManager;
 import com.alessiodp.libby.Library;
 import de.myzelyam.api.vanish.BungeeVanishAPI;
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ServerPing;
@@ -116,7 +118,7 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     @Override
     public void loadMetrics(){
         new Metrics(this, 15585).addCustomChart(new SimplePie("profiles",
-            () -> String.valueOf(core.fileHandler().getProfiles().size())
+            () -> String.valueOf(core.fileHandler().profiles().size())
         ));
         
     }
@@ -200,8 +202,18 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     }
     
     @Override
+    public boolean isDialogsSupported(){
+        return false;
+    }
+    
+    @Override
     public Favicon createFavicon(BufferedImage image) throws IllegalArgumentException{
         return Favicon.create(image);
+    }
+    
+    @Override
+    public DialogLike createDialog(ServerListProfile profile){
+        return null; // Not used.
     }
     
     public BungeeAudiences getAudiences(){

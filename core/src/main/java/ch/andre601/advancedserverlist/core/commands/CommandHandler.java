@@ -33,6 +33,7 @@ import ch.andre601.advancedserverlist.core.migration.minimotd.MiniMOTDConfigMigr
 import ch.andre601.advancedserverlist.core.migration.serverlistplus.SLPConfigMigrator;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.profile.ProfileSerializer;
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotation.specifier.Greedy;
@@ -315,51 +316,7 @@ public class CommandHandler{
             }
         }
         
-        Path path = core.plugin().folderPath().resolve("profiles").resolve(profileName(profile));
-        if(!Files.exists(path)){
-            sender.sendErrorMsg("<red>No file with name</red> %s <red>found!", profile);
-            return;
-        }
-        
-        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-            .path(path)
-            .indent(2)
-            .nodeStyle(NodeStyle.BLOCK)
-            .defaultOptions(opt -> opt.serializers(optBuilder -> optBuilder.register(ProfileEntry.class, ProfileSerializer.INSTANCE)))
-            .build();
-        
-        ConfigurationNode node;
-        try{
-            node = loader.load();
-        }catch(IOException ex){
-            sender.sendErrorMsg("<red>Encountered an IOException while trying to load file</red> %s<red>.", profile);
-            sender.sendErrorMsg("<red>Check console for details.");
-            
-            core.plugin().pluginLogger().warn("Encountered IOException while loading file <white>%s.yml</white>", profile);
-            return;
-        }
-        
-        if(node == null){
-            sender.sendErrorMsg("<red>Unable to load file</red> %s<red>.", profile);
-            return;
-        }
-        
-        try{
-            node.node("priority").set(priority);
-            node.node("condition").set(condition);
-            node.node("profiles").setList(ProfileEntry.class, slp.profiles());
-            node.set(ProfileEntry.class, builder.build());
-        }catch(SerializationException ex){
-            sender.sendErrorMsg("<red>Encountered a SerializationException while updating</red> %s<red>!", profile);
-            sender.sendErrorMsg("<red>Check console for details.");
-            
-            core.plugin().pluginLogger().warn("Encountered SerializationException while updating <white>%s</white>", profile);
-            return;
-        }
-        
-        try{
-            loader.save(node);
-            
+        if(core.fileHandler().saveProfile(profileName(profile), priority, condition, slp.profiles(), builder.build())){
             if(sender.isPlayer()){
                 sender.sendPrefixedMsg(
                     "<green>Successfully updated <white>[<grey><hover:show_text:\"%s\">%s</hover></grey>]</white>!",
@@ -389,7 +346,7 @@ public class CommandHandler{
             sender.sendPrefixedMsg(
                 "<green>Use <white><click:suggest_command:/asl reload>/asl reload</click></white> to apply changes."
             );
-        }catch(IOException ex){
+        }else{
             sender.sendErrorMsg("<red>Encountered an IOException while trying to save file</red> %s<red>.", profile);
             sender.sendErrorMsg("<red>Check console for details.");
             
@@ -398,7 +355,7 @@ public class CommandHandler{
     }
     
     private static ServerListProfile profile(AdvancedServerList<?> core, String name){
-        return core.fileHandler().getProfiles().stream()
+        return core.fileHandler().profiles().stream()
             .filter(p -> p.file().equalsIgnoreCase(profileName(name)))
             .findFirst()
             .orElse(null);
@@ -474,7 +431,7 @@ public class CommandHandler{
         }
         
         if(core.fileHandler().reloadProfiles()){
-            sender.sendPrefixedMsg("<green>(Re)loaded </green>%d<green> Profile(s)!", core.fileHandler().getProfiles().size());
+            sender.sendPrefixedMsg("<green>(Re)loaded </green>%d<green> Profile(s)!", core.fileHandler().profiles().size());
         }else{
             sender.sendErrorMsg("<red>Error while (re)loading profiles.");
             sender.sendErrorMsg("<red>Check console for details.");
@@ -552,7 +509,7 @@ public class CommandHandler{
         sender.sendPrefixedMsg("Available Profiles");
         sender.sendMsg("<dark_grey>│");
         
-        List<ServerListProfile> profiles = core.fileHandler().getProfiles().stream()
+        List<ServerListProfile> profiles = core.fileHandler().profiles().stream()
                 .sorted(Comparator.comparingInt(ServerListProfile::priority).reversed())
                 .toList();
         
@@ -846,6 +803,31 @@ public class CommandHandler{
         }
     }
     
+    @Command("profiles edit <profile>")
+    @CommandDescription("Opens a Dialog to edit a profile.")
+    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.edit"})
+    @CommandType(CommandType.Type.PLAYER_ONLY)
+    public void edit(
+        CmdSender sender,
+        AdvancedServerList<?> core,
+        @NonNull @Argument(description = "Name of the profile to edit.", suggestions = "profiles") String profile
+    ){
+        if(!core.plugin().isDialogsSupported()){
+            sender.sendErrorMsg("This command requires the new Dialog feature to be available!");
+            return;
+        }
+        
+        ServerListProfile slp = profile(core, profile);
+        if(slp == null){
+            sender.sendErrorMsg("No profile with name <white>%s</white> found.", profile);
+            return;
+        }
+        
+        DialogLike dialog = core.plugin().createDialog(slp);
+        
+        sender.audience().showDialog(dialog);
+    }
+    
     @Suggestions("help")
     public List<String> helpQueries(CommandContext<CmdSender> context){
         return this.commandManager.createHelpHandler()
@@ -865,7 +847,7 @@ public class CommandHandler{
     @Suggestions("profiles")
     public List<String> profilesSuggestions(CommandInput input, AdvancedServerList<?> core){
         String name = input.readString();
-        List<String> profiles = core.fileHandler().getProfiles().stream()
+        List<String> profiles = core.fileHandler().profiles().stream()
             .map(profile -> profile.file().substring(0, profile.file().lastIndexOf('.')))
             .toList();
         if(name.isEmpty())

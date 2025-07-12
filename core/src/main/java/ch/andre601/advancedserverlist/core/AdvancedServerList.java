@@ -170,7 +170,7 @@ public class AdvancedServerList<F>{
         plugin().pluginLogger().info("");
         
         if(fileHandler().loadProfiles()){
-            plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().getProfiles().size());
+            plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().profiles().size());
         }else{
             plugin().pluginLogger().failure("Unable to load profiles! Check previous lines for errors.");
             return;
@@ -241,7 +241,7 @@ public class AdvancedServerList<F>{
                         StringParser.stringParser(),
                         Description.of("The profile to edit."),
                         SuggestionProvider.suggesting(
-                            fileHandler().getProfiles().stream()
+                            fileHandler().profiles().stream()
                                 .map(ServerListProfile::file)
                                 .map(Suggestion::suggestion)
                                 .toList()
