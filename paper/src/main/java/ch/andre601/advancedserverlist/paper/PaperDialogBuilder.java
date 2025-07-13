@@ -17,6 +17,7 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.event.ClickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +26,17 @@ import java.util.List;
 public class PaperDialogBuilder{
     
     private final String title;
-    private final String file;
+    private final ServerListProfile profile;
     private final int profilesPosition;
     private final List<DialogBody> bodies = new ArrayList<>();
     private final List<DialogInput> inputs = new ArrayList<>();
     
-    public static PaperDialogBuilder create(String title, String file, int profilesPosition){
-        return new PaperDialogBuilder(title, file, profilesPosition);
+    public static PaperDialogBuilder create(String title, ServerListProfile profile, int profilesPosition){
+        return new PaperDialogBuilder(title, profile, profilesPosition);
     }
-    public PaperDialogBuilder(String title, String file, int profilesPosition1){
+    public PaperDialogBuilder(String title, ServerListProfile profile, int profilesPosition1){
         this.title = title;
-        this.file = file;
+        this.profile = profile;
         this.profilesPosition = profilesPosition1;
     }
     
@@ -89,6 +90,8 @@ public class PaperDialogBuilder{
                     DialogBase.builder(ComponentParser.text(title).toComponent())
                         .body(bodies)
                         .inputs(inputs)
+                        .afterAction(DialogBase.DialogAfterAction.NONE)
+                        .pause(false)
                         .build()
                 )
                 .type(DialogType.confirmation(
@@ -96,14 +99,19 @@ public class PaperDialogBuilder{
                         .tooltip(ComponentParser.text("""
                             <white>Closes this Dialog while saving your changes.
                             
-                            <white>Requires <aqua>/asl reload</aqua> to apply changes.""").toComponent())
+                            Requires <aqua>/asl reload</aqua> to apply changes.
+                            Click the Back button to go back to the main Dialog.""").toComponent())
                         .action(DialogAction.customClick(
-                            (view, audience) -> saveProfile(core, file, view, audience, profilesPosition),
+                            (view, audience) -> saveProfile(core, profile.file(), view, audience, profilesPosition),
                             ClickCallback.Options.builder().build()
                         ))
                         .build(),
-                    ActionButton.builder(ComponentParser.text("<red>Cancel").toComponent())
-                        .tooltip(ComponentParser.text("<white>Closes this Dialog without saving your changes.").toComponent())
+                    ActionButton.builder(ComponentParser.text("Back...").toComponent())
+                        .tooltip(ComponentParser.text("""
+                            Returns you to the main Dialog screen.
+                            
+                            Press the <green>Save changes</green> button to save your changes.""").toComponent())
+                        .action(DialogAction.staticAction(ClickEvent.runCommand("/asl profiles edit " + profile.file())))
                         .build()
                 ))
         );
@@ -189,9 +197,9 @@ public class PaperDialogBuilder{
         float newPriority = priority == null ? slp.priority() : priority;
         
         if(core.fileHandler().saveProfile(filename, (int)newPriority, condition, entries, entry)){
-            audience.sendMessage(ComponentParser.text("<green>Changes saved successfully!").toComponent());
+            audience.sendMessage(ComponentParser.text("<grey>[<aqua>ASL</aqua>] <green>Changes saved successfully!").toComponent());
         }else{
-            audience.sendMessage(ComponentParser.text("<red>Error while saving changes. Check console for details").toComponent());
+            audience.sendMessage(ComponentParser.text("<grey>[<red>ASL</red>] <red>Error while saving changes. Check console for details").toComponent());
         }
     }
 }

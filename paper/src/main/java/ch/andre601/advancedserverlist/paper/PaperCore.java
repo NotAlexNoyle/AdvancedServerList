@@ -239,11 +239,8 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
         List<Dialog> dialogs = new ArrayList<>();
         dialogs.add(
             createProfileDialog(
-                profile.file(),
+                profile,
                 "Main Settings",
-                profile.defaultProfile(),
-                profile.priority(),
-                profile.condition(),
                 -1
             )
         );
@@ -251,11 +248,8 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
         for(int i = 0; i < profile.profiles().size(); i++){
             dialogs.add(
                 createProfileDialog(
-                    profile.file(),
+                    profile,
                     String.format("Profiles <aqua>#%d</aqua>", i + 1),
-                    profile.profiles().get(i),
-                    profile.priority(),
-                    null,
                     i
                 )
             );
@@ -322,8 +316,8 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     	pluginLogger().warn("================================================================");
     }
     
-    private Dialog createProfileDialog(String file, String title, ProfileEntry entry, int priority, String condition, int profilesPosition){
-        PaperDialogBuilder builder = PaperDialogBuilder.create(title, file, profilesPosition)
+    private Dialog createProfileDialog(ServerListProfile profile, String title, int profilesPosition){
+        PaperDialogBuilder builder = PaperDialogBuilder.create(title, profile, profilesPosition)
             .appendBody("""
                 <gold><bold>WARNING!</bold></gold>
                 
@@ -333,8 +327,15 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
             );
         
         if(profilesPosition < 0){
-            builder.appendRange("priority", "Priority", priority)
-                .appendInput("condition", "Condition", condition, 100);
+            builder.appendRange("priority", "Priority", profile.priority())
+                .appendInput("condition", "Condition", profile.condition(), 100);
+        }
+        
+        ProfileEntry entry;
+        if(profilesPosition >= 0){
+            entry = profile.profiles().get(profilesPosition);
+        }else{
+            entry = profile.defaultProfile();
         }
         
         builder.appendTextbox("motd", "MOTD", String.join("\n", entry.motd()), 100, 2)
