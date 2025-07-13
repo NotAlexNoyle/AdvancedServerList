@@ -25,7 +25,6 @@
 
 package ch.andre601.advancedserverlist.paper;
 
-import ch.andre601.advancedserverlist.api.objects.NullBool;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
@@ -45,20 +44,13 @@ import com.alessiodp.libby.Library;
 import com.alessiodp.libby.PaperLibraryManager;
 import io.papermc.paper.ServerBuildInfo;
 import io.papermc.paper.dialog.Dialog;
-import io.papermc.paper.dialog.DialogResponseView;
 import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.data.dialog.ActionButton;
 import io.papermc.paper.registry.data.dialog.DialogBase;
-import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
-import io.papermc.paper.registry.data.dialog.input.DialogInput;
-import io.papermc.paper.registry.data.dialog.input.TextDialogInput;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import io.papermc.paper.registry.set.RegistrySet;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickCallback;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -72,7 +64,6 @@ import org.incendo.cloud.CommandManager;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalInt;
 
@@ -238,17 +229,10 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
                 DialogBody.plainMessage(
                     ComponentParser.text("""
                         <gold><bold>WARNING!</bold></gold>
-                        Dialog-based Profiles Editing is considered <u>experimental!</u>
                         
-                        You may encounter bugs and glitches.
-                        <u>Always create backups before using this feature!</u>
-                        """).toComponent()
-                ),
-                DialogBody.plainMessage(
-                    ComponentParser.text("""
-                        <b>Profiles</b>
-                        Below can you find the Main Settings alongside any <aqua>profiles</aqua> entry of this file.
-                        """).toComponent()
+                        Dialog-based Profile editing is considered <u>experimental!</u>
+                        You may encounter bugs and/or glitches.
+                        <u>Always create backups before using this feature!</u>""").toComponent()
                 )
             ));
         
@@ -270,7 +254,7 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
                     profile.file(),
                     String.format("Profiles <aqua>#%d</aqua>", i + 1),
                     profile.profiles().get(i),
-                    null,
+                    profile.priority(),
                     null,
                     i
                 )
@@ -338,222 +322,34 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     	pluginLogger().warn("================================================================");
     }
     
-    @SuppressWarnings("UnstableApiUsage")
-    private Dialog createProfileDialog(String file, String title, ProfileEntry entry, Integer priority, String condition, int profilesPosition){
-        DialogBase.Builder builder = DialogBase.builder(ComponentParser.text(title).toComponent())
-            .body(Collections.singletonList(
-                DialogBody.plainMessage(ComponentParser.text("""
-                    <gold><bold>WARNING!</bold></gold>
-                    Dialog-based Profiles Editing is considered <u>experimental!</u>
-                    
-                    You may encounter bugs and glitches.
-                    <u>Always create backups before using this feature!</u>
-                    """).toComponent())
-            ))
-            .afterAction(DialogBase.DialogAfterAction.CLOSE);
-        
-        List<DialogInput> inputs = new ArrayList<>();
-        
-        if(priority != null){
-            inputs.add(
-                DialogInput.numberRange("priority", Component.text("Priority"), -100.0f, 100.0f)
-                    .initial((float)priority)
-                    .step(1.0f)
-                    .build()
+    private Dialog createProfileDialog(String file, String title, ProfileEntry entry, int priority, String condition, int profilesPosition){
+        PaperDialogBuilder builder = PaperDialogBuilder.create(title, file, profilesPosition)
+            .appendBody("""
+                <gold><bold>WARNING!</bold></gold>
+                
+                Dialog-based Profile editing is considered <u>experimental!</u>
+                You may encounter bugs and/or glitches.
+                <u>Always create backups before using this feature!</u>"""
             );
-        }
         
         if(profilesPosition < 0){
-            inputs.add(
-                DialogInput.text("condition", Component.text("Condition"))
-                    .initial(condition == null ? "" : condition)
-                    .maxLength(200)
-                    .build()
-            );
+            builder.appendRange("priority", "Priority", priority)
+                .appendInput("condition", "Condition", condition, 100);
         }
         
-        inputs.add(
-            DialogInput.text("motd", Component.text("MOTD"))
-                .initial(String.join("\n", entry.motd()))
-                .multiline(TextDialogInput.MultilineOptions.create(2, 25))
-                .maxLength(100)
-                .build()
-        );
+        builder.appendTextbox("motd", "MOTD", String.join("\n", entry.motd()), 100, 2)
+            .appendInput("favicon", "Favicon", entry.favicon(), 100)
+            .appendBoolean("hidePlayers", "Hide Player Count", entry.hidePlayersEnabled())
+            .appendBoolean("hidePlayersHover", "Hide Player Count Hover", entry.hidePlayersHoverEnabled())
+            .appendTextbox("hover", "Player Count Hover", String.join("\n", entry.players()), 200, 10)
+            .appendInput("text", "Player Count Text", entry.playerCountText(), 100)
+            .appendBoolean("extraPlayersEnabled", "Enable Extra Players", entry.extraPlayersEnabled())
+            .appendInput("extraPlayersCount", "Extra Players Count", entry.extraPlayersCount(), 100)
+            .appendBoolean("maxPlayersEnabled", "Enable Max Players", entry.maxPlayersEnabled())
+            .appendInput("maxPlayersCount", "Max Players Count", entry.maxPlayersCount(), 100)
+            .appendBoolean("onlinePlayersEnabled", "Enable Online Players", entry.onlinePlayersEnabled())
+            .appendInput("onlinePlayersCount", "Online Players Count", entry.onlinePlayersCount(), 100);
         
-        inputs.add(
-            DialogInput.text("favicon", Component.text("Favicon"))
-                .initial(entry.favicon() == null ? "" : entry.favicon())
-                .maxLength(50)
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.bool("hidePlayers", Component.text("Hide Players?"))
-                .initial(entry.hidePlayersEnabled().getOrDefault(false))
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.bool("hidePlayersHover", Component.text("Hide Players Hover?"))
-                .initial(entry.hidePlayersHoverEnabled().getOrDefault(false))
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.text("hover", Component.text("Player Count Hover"))
-                .initial(String.join("\n", entry.players()))
-                .multiline(TextDialogInput.MultilineOptions.create(10, 125))
-                .maxLength(200)
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.text("text", Component.text("Player Count Text"))
-                .initial(entry.playerCountText() == null ? "" : entry.playerCountText())
-                .maxLength(200)
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.bool("extraPlayersEnabled", Component.text("Extra Players enabled?"))
-                .initial(entry.extraPlayersEnabled().getOrDefault(false))
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.text("extraPlayersCount", Component.text("Extra Players Count"))
-                .initial(entry.extraPlayersCount() == null ? "" : entry.extraPlayersCount())
-                .maxLength(200)
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.bool("maxPlayersEnabled", Component.text("Max Players enabled?"))
-                .initial(entry.maxPlayersEnabled().getOrDefault(false))
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.text("maxPlayersCount", Component.text("Max Players Count"))
-                .initial(entry.maxPlayersCount() == null ? "" : entry.maxPlayersCount())
-                .maxLength(200)
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.bool("onlinePlayersEnabled", Component.text("Online Players enabled?"))
-                .initial(entry.onlinePlayersEnabled().getOrDefault(false))
-                .build()
-        );
-        
-        inputs.add(
-            DialogInput.text("onlinePlayersCount", Component.text("Online Players Count"))
-                .initial(entry.onlinePlayersCount() == null ? "" : entry.onlinePlayersCount())
-                .maxLength(200)
-                .build()
-        );
-        
-        builder.inputs(inputs);
-        
-        return Dialog.create(
-            factory -> factory.empty()
-                .base(builder.build())
-                .type(DialogType.confirmation(
-                    ActionButton.builder(ComponentParser.text("<green>Save changes").toComponent())
-                        .action(DialogAction.customClick(
-                            (view, audience) -> saveProfile(file, view, audience, profilesPosition),
-                            ClickCallback.Options.builder().build()))
-                        .tooltip(ComponentParser.text("""
-                            <grey>Save your changes.
-                            
-                            <grey>Requires you to use <aqua>/asl reload</aqua> to apply changes.""").toComponent())
-                        .build(),
-                    ActionButton.builder(ComponentParser.text("<red>Cancel").toComponent())
-                        .tooltip(ComponentParser.text("""
-                            <grey>Close this window without saving changes.""").toComponent())
-                        .build()
-                ))
-        );
-    }
-    
-    @SuppressWarnings("UnstableApiUsage")
-    private void saveProfile(String filename, DialogResponseView view, Audience audience, int profilesPosition){
-        ServerListProfile slp = core().fileHandler().profile(filename);
-        if(slp == null){
-            audience.sendMessage(
-                ComponentParser.textFormatted("<red>Unable to save changes. Couldn't find file <white>%s</white>", filename)
-                    .toComponent()
-            );
-            return;
-        }
-        
-        Float priority = view.getFloat("priority");
-        String condition = view.getText("condition");
-        
-        String motd = view.getText("motd");
-        String favicon = view.getText("favicon");
-        
-        NullBool hidePlayers = NullBool.resolve(view.getBoolean("hidePlayers"));
-        NullBool hidePlayersHover = NullBool.resolve(view.getBoolean("hidePlayersHover"));
-        
-        String hover = view.getText("hover");
-        String playerCountText = view.getText("text");
-        
-        NullBool extraPlayersEnabled = NullBool.resolve(view.getBoolean("extraPlayersEnabled"));
-        String extraPlayersCount = view.getText("extraPlayersCount");
-        
-        NullBool maxPlayersEnabled = NullBool.resolve(view.getBoolean("maxPlayersEnabled"));
-        String maxPlayersCount = view.getText("maxPlayersCount");
-        
-        NullBool onlinePlayersEnabled = NullBool.resolve(view.getBoolean("onlinePlayersEnabled"));
-        String onlinePlayersCount = view.getText("onlinePlayersCount");
-        
-        ProfileEntry.Builder builder = ProfileEntry.empty().builder();
-        if(motd != null && !motd.isEmpty())
-            builder.motd(List.of(motd.split("\n")));
-        
-        if(favicon != null && !favicon.isEmpty())
-            builder.favicon(favicon);
-        
-        builder.hidePlayersEnabled(hidePlayers);
-        builder.hidePlayersHoverEnabled(hidePlayersHover);
-        
-        if(hover != null && !hover.isEmpty())
-            builder.players(List.of(hover.split("\n")));
-        
-        if(playerCountText != null && !playerCountText.isEmpty())
-            builder.playerCountText(playerCountText);
-        
-        builder.extraPlayersEnabled(extraPlayersEnabled);
-        if(extraPlayersCount != null && !extraPlayersCount.isEmpty())
-            builder.extraPlayersCount(extraPlayersCount);
-        
-        builder.maxPlayersEnabled(maxPlayersEnabled);
-        if(maxPlayersCount != null && !maxPlayersCount.isEmpty())
-            builder.maxPlayersCount(maxPlayersCount);
-        
-        builder.onlinePlayersEnabled(onlinePlayersEnabled);
-        if(onlinePlayersCount != null && !onlinePlayersCount.isEmpty())
-            builder.onlinePlayersCount(onlinePlayersCount);
-        
-        ProfileEntry entry = slp.defaultProfile();
-        List<ProfileEntry> entries = slp.profiles();
-        if(profilesPosition >= 0){
-            if(profilesPosition >= entries.size()){
-                entries.add(builder.build());
-            }else{
-                entries.set(profilesPosition, builder.build());
-            }
-        }else{
-            entry = builder.build();
-        }
-        
-        float newPriority = priority == null ? slp.priority() : priority;
-        
-        if(core().fileHandler().saveProfile(filename, (int)newPriority, condition, entries, entry)){
-            audience.sendMessage(ComponentParser.text("<green>Changes saved successfully!").toComponent());
-        }else{
-            audience.sendMessage(ComponentParser.text("<red>Error while saving changes. Check console for details").toComponent());
-        }
+        return builder.build(core());
     }
 }

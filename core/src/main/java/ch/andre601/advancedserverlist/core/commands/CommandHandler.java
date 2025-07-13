@@ -771,11 +771,6 @@ public class CommandHandler{
             return;
         }
         
-        if(node == null){
-            sender.sendErrorMsg("<red>Cannot create ConfigurationNode for file </red>%s<red>", copyName);
-            return;
-        }
-        
         try{
             node.node("priority").set(targetProfile.priority());
             node.node("condition").set(targetProfile.condition());
