@@ -548,11 +548,6 @@ public class CommandHandler{
         AdvancedServerList<?> core,
         @NonNull @Argument(description = "Name of the profile to view.", suggestions = "profiles") String profile
     ){
-        if(!sender.isPlayer()){
-            sender.sendErrorMsg("<red>This command can only be executed by Players!");
-            return;
-        }
-        
         if(profile.isEmpty()){
             sender.sendErrorMsg("<red>Insufficient arguments.");
             sender.sendErrorMsg("<red>Please provide a proper profile name.");

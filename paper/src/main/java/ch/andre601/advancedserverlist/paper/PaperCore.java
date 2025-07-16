@@ -232,6 +232,8 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
                         
                         Dialog-based Profile editing is considered <u>experimental!</u>
                         You may encounter bugs and/or glitches.
+                        Features may also change or no longer work at any given time.
+                        
                         <u>Always create backups before using this feature!</u>""").toComponent()
                 )
             ));

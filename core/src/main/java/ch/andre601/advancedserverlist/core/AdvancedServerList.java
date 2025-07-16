@@ -29,6 +29,7 @@ import ch.andre601.advancedserverlist.api.AdvancedServerListAPI;
 import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.core.check.UpdateChecker;
 import ch.andre601.advancedserverlist.core.commands.CommandHandler;
+import ch.andre601.advancedserverlist.core.commands.CommandTypePostprocessor;
 import ch.andre601.advancedserverlist.core.compat.maintenance.MaintenancePlaceholder;
 import ch.andre601.advancedserverlist.core.file.FileHandler;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
@@ -223,6 +224,7 @@ public class AdvancedServerList<F>{
         CommandManager<CmdSender> commandManager = plugin().commandManager();
         
         commandManager.parameterInjectorRegistry().registerInjector(AdvancedServerList.class, ParameterInjector.constantInjector(this));
+        commandManager.registerCommandPostProcessor(new CommandTypePostprocessor());
         
         AnnotationParser<CmdSender> annotationParser = new AnnotationParser<>(commandManager, CmdSender.class);
         annotationParser.registerBuilderModifier(

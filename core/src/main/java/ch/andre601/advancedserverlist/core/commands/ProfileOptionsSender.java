@@ -159,7 +159,7 @@ public class ProfileOptionsSender{
         }
     }
     
-    enum ColorName{
+    public enum ColorName{
         RED,
         GREEN,
         AQUA;
