@@ -132,7 +132,7 @@ public class HangarVersionUploader{
             Map.of(
                 Platform.PAPER, List.of("1.20.6", "1.21.x"),
                 Platform.WATERFALL, List.of("1.19.x", "1.20.x", "1.21"),
-                Platform.VELOCITY, Collections.singletonList("3.2")
+                Platform.VELOCITY, List.of("3.2", "3.3", "3.4")
             ),
             changelog.replaceAll("\r\n", "\n"),
             fileInfo,

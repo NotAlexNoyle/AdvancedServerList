@@ -55,11 +55,11 @@ public class ModrinthVersionUploader{
     );
     private final List<String> paperVersions = List.of(
         "1.20.6",
-        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4"
+        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7"
     );
     private final List<String> versions = List.of(
         "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
-        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4"
+        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7"
     );
     
     private final ModrinthAPI api;
@@ -146,9 +146,10 @@ public class ModrinthVersionUploader{
                 
                 String url = versionUrl + projectVersion.getId();
                 
-                logger.info("Created new release!");
-                logger.info("Link:     {}", url);
-                logger.info("Platform: {}", platformInfo.getPlatform());
+                logger.info("""
+                    New release created:
+                      - Link: {}
+                      - Platform: {}""", url, platformInfo.getPlatform());
                 
                 releaseHolder.addRelease(
                     "modrinth",
