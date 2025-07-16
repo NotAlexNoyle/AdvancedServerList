@@ -49,7 +49,9 @@ import java.util.List;
 public class MiniMOTDConfigMigrator{
     
     public static boolean migrate(AdvancedServerList<?> core, CmdSender sender){
+        sender.sendMsg("Loading Configurate-Hocon library. This may take a while...");
         core.plugin().downloadLibrary("org.spongepowered", "configurate-hocon", "4.1.2");
+        sender.sendMsg("<green>Library loaded!");
         
         PluginLogger logger = core.plugin().pluginLogger();
         String folder = core.plugin().loader().equals("velocity") ? "minimotd-velocity" : "MiniMOTD";
@@ -98,7 +100,7 @@ public class MiniMOTDConfigMigrator{
         
         if(config.motdEnabled()){
             if(config.motds().size() == 1){
-                applyMotd(profileBuilder, config.motds().get(0));
+                applyMotd(profileBuilder, config.motds().getFirst());
             }else
             if(config.motds().size() > 1){
                 for(int i = 0; i < config.motds().size(); i++){
@@ -109,7 +111,7 @@ public class MiniMOTDConfigMigrator{
         
         if(config.iconEnabled()){
             if(config.motds().size() == 1){
-                MiniMOTDConfig.Motd motd = config.motds().get(0);
+                MiniMOTDConfig.Motd motd = config.motds().getFirst();
                 if(!motd.icon().isEmpty()){
                     profileBuilder.favicon(motd.icon());
                 }

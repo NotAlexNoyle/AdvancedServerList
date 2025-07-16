@@ -32,6 +32,7 @@ import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.profile.ProfileSerializer;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -46,6 +47,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class FileHandler{
     
@@ -67,8 +69,17 @@ public class FileHandler{
         this.profilesFolder = core.plugin().folderPath().resolve("profiles");
     }
     
-    public List<ServerListProfile> getProfiles(){
+    public List<ServerListProfile> profiles(){
         return profiles;
+    }
+    
+    public ServerListProfile profile(String file){
+        for(ServerListProfile profile : profiles){
+            if(profile.file().equalsIgnoreCase(file))
+                return profile;
+        }
+        
+        return null;
     }
     
     public boolean loadConfig(){
@@ -102,6 +113,48 @@ public class FileHandler{
         if(createFile("default.yml")){
             return reloadProfiles();
         }else{
+            return false;
+        }
+    }
+    
+    public boolean saveProfile(String file, int priority, String condition, List<ProfileEntry> profiles, ProfileEntry defaultProfile){
+        String filename = file.toLowerCase(Locale.ROOT);
+        Path filePath = profilesFolder.resolve(filename.endsWith(".yml") ? filename : filename + ".yml");
+        if(!Files.exists(filePath)){
+            logger.warn("Cannot find profile with file name '<white>%s</white>'", filename);
+            return false;
+        }
+        
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+            .defaultOptions(opts -> opts.serializers(build -> build.register(ProfileEntry.class, ProfileSerializer.INSTANCE)))
+            .path(filePath)
+            .nodeStyle(NodeStyle.BLOCK)
+            .build();
+        
+        ConfigurationNode node;
+        try{
+            node = loader.load();
+        }catch(IOException ex){
+            logger.warn("Encountered an IOException while loading file '<white>%s</white>'", ex, filename);
+            return false;
+        }
+        
+        if(node == null)
+            return false;
+        
+        try{
+            node.node("priority").set(priority);
+            node.node("condition").set(condition);
+            node.node("profiles").setList(ProfileEntry.class, profiles);
+            node.set(ProfileEntry.class, defaultProfile);
+            
+            loader.save(node);
+            return true;
+        }catch(SerializationException ex){
+            logger.warn("Encountered a SerializationException while saving file '<white>%s</white>'", ex, filename);
+            return false;
+        }catch(IOException ex){
+            logger.warn("Encountered an IOException while saving file '<white>%s</white>'", ex, filename);
             return false;
         }
     }

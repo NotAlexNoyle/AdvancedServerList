@@ -29,6 +29,7 @@ import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
+import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import ch.andre601.advancedserverlist.velocity.commands.VelocityCommandManagerInterface;
 import ch.andre601.advancedserverlist.velocity.listeners.PlayerJoinEventListener;
@@ -52,6 +53,7 @@ import com.velocitypowered.api.proxy.server.ServerPing;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.util.Favicon;
 import de.myzelyam.api.vanish.VelocityVanishAPI;
+import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.charts.SimplePie;
 import org.bstats.velocity.Metrics;
@@ -120,7 +122,7 @@ public class VelocityCore implements PluginCore<Favicon>{
     @Override
     public void loadMetrics(){
         metrics.make(this, 15587).addCustomChart(new SimplePie("profiles",
-            () -> String.valueOf(core.fileHandler().getProfiles().size())
+            () -> String.valueOf(core.fileHandler().profiles().size())
         ));
     }
     
@@ -208,8 +210,18 @@ public class VelocityCore implements PluginCore<Favicon>{
     }
     
     @Override
+    public boolean isDialogsSupported(){
+        return false; // Velocity lacks a Dialog System
+    }
+    
+    @Override
     public Favicon createFavicon(BufferedImage image){
         return Favicon.create(image);
+    }
+    
+    @Override
+    public DialogLike createDialog(ServerListProfile profile){
+        return null;
     }
     
     public ProxyServer getProxy(){

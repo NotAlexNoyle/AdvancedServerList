@@ -28,7 +28,9 @@ package ch.andre601.advancedserverlist.core.interfaces.core;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
+import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
+import net.kyori.adventure.dialog.DialogLike;
 import org.incendo.cloud.CommandManager;
 
 import java.awt.image.BufferedImage;
@@ -64,7 +66,11 @@ public interface PluginCore<F>{
     
     boolean isPluginEnabled(String plugin);
     
+    boolean isDialogsSupported();
+    
     F createFavicon(BufferedImage image) throws Exception;
+    
+    DialogLike createDialog(ServerListProfile profile);
     
     default boolean isDebugEnabled(){
         if(core() == null)

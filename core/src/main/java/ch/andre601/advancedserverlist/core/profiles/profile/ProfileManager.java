@@ -78,7 +78,7 @@ public class ProfileManager{
     }
     
     public static ServerListProfile resolveProfile(AdvancedServerList<?> core, GenericPlayer player, GenericServer server){
-        for(ServerListProfile profile : core.fileHandler().getProfiles()){
+        for(ServerListProfile profile : core.fileHandler().profiles()){
             if(profile.isInvalidProfile())
                 continue;
             

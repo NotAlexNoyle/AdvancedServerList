@@ -29,6 +29,7 @@ import ch.andre601.advancedserverlist.api.AdvancedServerListAPI;
 import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.core.check.UpdateChecker;
 import ch.andre601.advancedserverlist.core.commands.CommandHandler;
+import ch.andre601.advancedserverlist.core.commands.CommandTypePostprocessor;
 import ch.andre601.advancedserverlist.core.compat.maintenance.MaintenancePlaceholder;
 import ch.andre601.advancedserverlist.core.file.FileHandler;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
@@ -170,7 +171,7 @@ public class AdvancedServerList<F>{
         plugin().pluginLogger().info("");
         
         if(fileHandler().loadProfiles()){
-            plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().getProfiles().size());
+            plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().profiles().size());
         }else{
             plugin().pluginLogger().failure("Unable to load profiles! Check previous lines for errors.");
             return;
@@ -223,6 +224,7 @@ public class AdvancedServerList<F>{
         CommandManager<CmdSender> commandManager = plugin().commandManager();
         
         commandManager.parameterInjectorRegistry().registerInjector(AdvancedServerList.class, ParameterInjector.constantInjector(this));
+        commandManager.registerCommandPostProcessor(new CommandTypePostprocessor());
         
         AnnotationParser<CmdSender> annotationParser = new AnnotationParser<>(commandManager, CmdSender.class);
         annotationParser.registerBuilderModifier(
@@ -241,7 +243,7 @@ public class AdvancedServerList<F>{
                         StringParser.stringParser(),
                         Description.of("The profile to edit."),
                         SuggestionProvider.suggesting(
-                            fileHandler().getProfiles().stream()
+                            fileHandler().profiles().stream()
                                 .map(ServerListProfile::file)
                                 .map(Suggestion::suggestion)
                                 .toList()
