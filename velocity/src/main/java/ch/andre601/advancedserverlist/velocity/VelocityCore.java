@@ -26,6 +26,8 @@
 package ch.andre601.advancedserverlist.velocity;
 
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
@@ -53,7 +55,6 @@ import com.velocitypowered.api.proxy.server.ServerPing;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.util.Favicon;
 import de.myzelyam.api.vanish.VelocityVanishAPI;
-import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.charts.SimplePie;
 import org.bstats.velocity.Metrics;
@@ -142,7 +143,7 @@ public class VelocityCore implements PluginCore<Favicon>{
     @Override
     public void downloadLibrary(String groupId, String artifactId, String version){
         if(libraryManager == null){
-            libraryManager = new VelocityLibraryManager<>(this, this.logger, folderPath(), getProxy().getPluginManager());
+            libraryManager = new VelocityLibraryManager<>(this, this.logger, folderPath(), proxy().getPluginManager());
             libraryManager.addRepository("https://repo.papermc.io/repository/maven-public");
         }
         
@@ -158,7 +159,7 @@ public class VelocityCore implements PluginCore<Favicon>{
     
     @Override
     public void startScheduler(){
-        scheduledTask = getProxy().getScheduler().buildTask(this, this::fetchServers)
+        scheduledTask = proxy().getScheduler().buildTask(this, this::fetchServers)
             .repeat(10, TimeUnit.SECONDS)
             .schedule();
     }
@@ -193,7 +194,7 @@ public class VelocityCore implements PluginCore<Favicon>{
     
     @Override
     public String platformInfo(){
-        return getProxy().getVersion().getName() + " " + getProxy().getVersion().getVersion();
+        return proxy().getVersion().getName() + " " + proxy().getVersion().getVersion();
     }
     
     @Override
@@ -203,10 +204,10 @@ public class VelocityCore implements PluginCore<Favicon>{
     
     @Override
     public boolean isPluginEnabled(String plugin){
-        if(getProxy() == null)
+        if(proxy() == null)
             return false;
         
-        return getProxy().getPluginManager().isLoaded(plugin.toLowerCase(Locale.ROOT));
+        return proxy().getPluginManager().isLoaded(plugin.toLowerCase(Locale.ROOT));
     }
     
     @Override
@@ -220,25 +221,30 @@ public class VelocityCore implements PluginCore<Favicon>{
     }
     
     @Override
-    public DialogLike createDialog(ServerListProfile profile){
+    public AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title){
         return null;
     }
     
-    public ProxyServer getProxy(){
+    @Override
+    public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
+        return null;
+    }
+    
+    public ProxyServer proxy(){
         return proxy;
     }
     
-    public int getOnlinePlayers(RegisteredServer server){
-        if(getProxy() == null)
+    public int onlinePlayers(RegisteredServer server){
+        if(proxy() == null)
             return -1;
         
-        List<Player> players = new ArrayList<>(server == null ? getProxy().getAllPlayers() : server.getPlayersConnected());
+        List<Player> players = new ArrayList<>(server == null ? proxy().getAllPlayers() : server.getPlayersConnected());
         
         // Exclude players when PremiumVanish is enabled and player is hidden.
-        if(getProxy().getPluginManager().isLoaded("premiumvanish")){
+        if(proxy().getPluginManager().isLoaded("premiumvanish")){
             players.removeIf(VelocityVanishAPI::isInvisible);
         }else // Do the same if SayanVanish is enabled.
-        if(getProxy().getPluginManager().isLoaded("sayanvanish")){
+        if(proxy().getPluginManager().isLoaded("sayanvanish")){
             players.removeIf(player -> SayanVanishVelocityAPI.getInstance().isVanished(player.getUniqueId()));
         }
         
@@ -251,7 +257,7 @@ public class VelocityCore implements PluginCore<Favicon>{
     
     private void fetchServers(){
         fetchedServers.clear();
-        getProxy().getAllServers().forEach(server -> server.ping().whenComplete((ping, throwable) -> {
+        proxy().getAllServers().forEach(server -> server.ping().whenComplete((ping, throwable) -> {
             if(throwable != null)
                 return;
             

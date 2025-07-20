@@ -31,7 +31,10 @@ import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.api.velocity.objects.VelocityProxy;
 import ch.andre601.advancedserverlist.velocity.VelocityCore;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class VelocityServerPlaceholders extends PlaceholderProvider{
     
     private final VelocityCore plugin;
@@ -46,7 +49,7 @@ public class VelocityServerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!(server instanceof VelocityProxy proxy))
             return null;
         
@@ -66,7 +69,7 @@ public class VelocityServerPlaceholders extends PlaceholderProvider{
                         if(registeredServer == null)
                             continue;
                         
-                        int connected = plugin.getOnlinePlayers(registeredServer);
+                        int connected = plugin.onlinePlayers(registeredServer);
                         if(connected == -1)
                             continue;
                         
@@ -88,7 +91,7 @@ public class VelocityServerPlaceholders extends PlaceholderProvider{
                 if(args.length > 2)
                     yield "";
                 
-                if(args.length == 2 && args[1] != null && !args[1].isEmpty()){
+                if(args.length == 2 && !args[1].isEmpty()){
                     RegisteredServer info = proxy.getServers().get(args[1]);
                     if(info == null)
                         yield "";

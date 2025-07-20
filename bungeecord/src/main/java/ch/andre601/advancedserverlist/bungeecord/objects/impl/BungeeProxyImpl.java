@@ -27,12 +27,13 @@ package ch.andre601.advancedserverlist.bungeecord.objects.impl;
 
 import ch.andre601.advancedserverlist.api.bungeecord.objects.BungeeProxy;
 import net.md_5.bungee.api.config.ServerInfo;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 
 public record BungeeProxyImpl(Map<String, ServerInfo> servers, int playersOnline, int playersMax, String host) implements BungeeProxy{
     @Override
-    public Map<String, ServerInfo> getServers(){
+    public @NonNull Map<String, ServerInfo> getServers(){
         return servers;
     }
     

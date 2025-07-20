@@ -50,10 +50,10 @@ public class PlayerJoinEventListener implements Listener{
         plugin.core().playerHandler().addPlayer(address.getHostString(), player.getName(), player.getUniqueId());
         
         if(player.hasPermission("advancedserverlist.admin") || player.hasPermission("advancedserverlist.updatecheck")){
-            if(plugin.getAudiences() == null || plugin.core().updateChecker() == null)
+            if(plugin.audiences() == null || plugin.core().updateChecker() == null)
                 return;
             
-            BungeeCmdSender sender = new BungeeCmdSender(player, plugin.getAudiences());
+            BungeeCmdSender sender = new BungeeCmdSender(player, plugin.audiences());
             
             plugin.core().updateChecker().performCachedUpdateCheck(sender);
         }

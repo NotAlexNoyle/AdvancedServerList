@@ -38,13 +38,13 @@ public class ProxyPingEventListener{
     
     public ProxyPingEventListener(VelocityCore plugin){
         this.plugin = plugin;
-        plugin.getProxy().getEventManager().register(plugin, this);
+        plugin.proxy().getEventManager().register(plugin, this);
     }
     
     @Subscribe(priority = Short.MIN_VALUE + 1) // Equivalent to PostOrder.LAST which maintenance uses.
     public void onProxyPing(ProxyPingEvent event){
         ProfileEntry entry = PingEventHandler.handleEvent(new VelocityEventWrapper(plugin, event));
         
-        plugin.getProxy().getEventManager().fire(new PostServerListSetEvent(entry));
+        plugin.proxy().getEventManager().fire(new PostServerListSetEvent(entry));
     }
 }

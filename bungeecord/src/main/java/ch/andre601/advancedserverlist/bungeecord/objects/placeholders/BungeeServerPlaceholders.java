@@ -31,9 +31,12 @@ import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.bungeecord.BungeeCordCore;
 import net.md_5.bungee.api.config.ServerInfo;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.net.InetSocketAddress;
 
+@NullMarked
 public class BungeeServerPlaceholders extends PlaceholderProvider{
     
     private final BungeeCordCore plugin;
@@ -48,7 +51,7 @@ public class BungeeServerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!(server instanceof BungeeProxy proxy))
             return null;
         
@@ -68,7 +71,7 @@ public class BungeeServerPlaceholders extends PlaceholderProvider{
                         if(info == null)
                             continue;
                         
-                        players += plugin.getOnlinePlayers(info);
+                        players += plugin.onlinePlayers(info);
                     }
                     
                     yield String.valueOf(players);
@@ -87,7 +90,7 @@ public class BungeeServerPlaceholders extends PlaceholderProvider{
                 if(args.length > 2)
                     yield "";
                 
-                if(args.length == 2 && args[1] != null && !args[1].isEmpty()){
+                if(args.length == 2 && !args[1].isEmpty()){
                     ServerInfo info = proxy.getServers().get(args[1]);
                     if(info == null)
                         yield "";

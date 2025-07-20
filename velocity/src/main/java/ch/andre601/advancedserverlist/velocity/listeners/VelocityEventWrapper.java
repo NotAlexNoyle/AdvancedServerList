@@ -69,7 +69,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
     public GenericServerListEvent callEvent(ProfileEntry entry){
         PreServerListSetEventImpl event = new PreServerListSetEventImpl(entry);
         try{
-            plugin.getProxy().getEventManager().fire(event).get();
+            plugin.proxy().getEventManager().fire(event).get();
         }catch(InterruptedException | ExecutionException ignored){
             return null;
         }
@@ -145,7 +145,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
     
     @Override
     public boolean isMaintenanceModeActive(){
-        if(!plugin.getProxy().getPluginManager().isLoaded("maintenance"))
+        if(!plugin.proxy().getPluginManager().isLoaded("maintenance"))
             return false;
         
         return MaintenanceUtil.get().isMaintenanceEnabled();
@@ -158,7 +158,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
     
     @Override
     public int onlinePlayers(){
-        int players = plugin.getOnlinePlayers(null);
+        int players = plugin.onlinePlayers(null);
         if(players == -1)
             return builder.getOnlinePlayers();
         
@@ -177,7 +177,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
     
     @Override
     public String parsePAPIPlaceholders(String text, VelocityPlayerImpl player){
-        if(!plugin.getProxy().getPluginManager().isLoaded("papiproxybridge"))
+        if(!plugin.proxy().getPluginManager().isLoaded("papiproxybridge"))
             return text;
         
         if(!PAPIUtil.get().isCompatible())
@@ -187,7 +187,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
         if(server == null || server.isEmpty())
             return text;
         
-        RegisteredServer registeredServer = plugin.getProxy().getServer(server).orElse(null);
+        RegisteredServer registeredServer = plugin.proxy().getServer(server).orElse(null);
         if(registeredServer == null || registeredServer.getPlayersConnected().isEmpty())
             return text;
         
@@ -216,7 +216,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
     @Override
     public GenericServer createServer(int playersOnline, int playersMax, String host){
         Map<String, RegisteredServer> servers = new HashMap<>();
-        plugin.getProxy().getAllServers().forEach(server -> servers.put(server.getServerInfo().getName(), server));
+        plugin.proxy().getAllServers().forEach(server -> servers.put(server.getServerInfo().getName(), server));
         
         return new VelocityProxyImpl(servers, playersOnline, playersMax, host);
     }

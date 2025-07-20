@@ -25,15 +25,17 @@
 
 package ch.andre601.advancedserverlist.paper;
 
-import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
-import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import ch.andre601.advancedserverlist.paper.commands.PaperCommandManagerInterface;
+import ch.andre601.advancedserverlist.paper.dialogs.PaperDialog;
+import ch.andre601.advancedserverlist.paper.dialogs.PaperDialogList;
 import ch.andre601.advancedserverlist.paper.listeners.ServerLoadEventListener;
 import ch.andre601.advancedserverlist.paper.logging.PaperLogger;
 import ch.andre601.advancedserverlist.paper.objects.WorldCache;
@@ -43,14 +45,6 @@ import ch.andre601.advancedserverlist.paper.objects.placeholders.PaperServerPlac
 import com.alessiodp.libby.Library;
 import com.alessiodp.libby.PaperLibraryManager;
 import io.papermc.paper.ServerBuildInfo;
-import io.papermc.paper.dialog.Dialog;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.data.dialog.DialogBase;
-import io.papermc.paper.registry.data.dialog.body.DialogBody;
-import io.papermc.paper.registry.data.dialog.type.DialogType;
-import io.papermc.paper.registry.set.RegistrySet;
-import net.kyori.adventure.dialog.DialogLike;
-import net.kyori.adventure.text.Component;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -220,49 +214,14 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
         return Bukkit.loadServerIcon(image);
     }
     
+    @Override
+    public AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title){
+        return PaperDialogList.PaperDialogListBuilder.create(title);
+    }
     
     @Override
-    @SuppressWarnings("UnstableApiUsage")
-    public DialogLike createDialog(ServerListProfile profile){
-        DialogBase.Builder builder = DialogBase.builder(Component.text(profile.file()))
-            .body(List.of(
-                DialogBody.plainMessage(
-                    ComponentParser.text("""
-                        <gold><bold>WARNING!</bold></gold>
-                        
-                        Dialog-based Profile editing is considered <u>experimental!</u>
-                        You may encounter bugs and/or glitches.
-                        Features may also change or no longer work at any given time.
-                        
-                        <u>Always create backups before using this feature!</u>""").toComponent()
-                )
-            ));
-        
-        List<Dialog> dialogs = new ArrayList<>();
-        dialogs.add(
-            createProfileDialog(
-                profile,
-                "Main Settings",
-                -1
-            )
-        );
-        
-        for(int i = 0; i < profile.profiles().size(); i++){
-            dialogs.add(
-                createProfileDialog(
-                    profile,
-                    String.format("Profiles <aqua>#%d</aqua>", i + 1),
-                    i
-                )
-            );
-        }
-        
-        RegistrySet<Dialog> dialogRegistry = RegistrySet.valueSet(RegistryKey.DIALOG, dialogs);
-        
-        return Dialog.create(
-            factory -> factory.empty().base(builder.build())
-                .type(DialogType.dialogList(dialogRegistry).columns(3).build())
-        );
+    public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
+        return PaperDialog.PaperDialogBuilder.create(title, profile, profilesPosition);
     }
     
     public WorldCache worldCache(){
@@ -316,43 +275,5 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     	pluginLogger().warn("Please use at least Paper 1.20.6 or downgrade AdvancedServerList");
     	pluginLogger().warn("to v5.4.1.");
     	pluginLogger().warn("================================================================");
-    }
-    
-    private Dialog createProfileDialog(ServerListProfile profile, String title, int profilesPosition){
-        PaperDialogBuilder builder = PaperDialogBuilder.create(title, profile, profilesPosition)
-            .appendBody("""
-                <gold><bold>WARNING!</bold></gold>
-                
-                Dialog-based Profile editing is considered <u>experimental!</u>
-                You may encounter bugs and/or glitches.
-                <u>Always create backups before using this feature!</u>"""
-            );
-        
-        if(profilesPosition < 0){
-            builder.appendRange("priority", "Priority", profile.priority())
-                .appendInput("condition", "Condition", profile.condition(), 100);
-        }
-        
-        ProfileEntry entry;
-        if(profilesPosition >= 0){
-            entry = profile.profiles().get(profilesPosition);
-        }else{
-            entry = profile.defaultProfile();
-        }
-        
-        builder.appendTextbox("motd", "MOTD", String.join("\n", entry.motd()), 100, 2)
-            .appendInput("favicon", "Favicon", entry.favicon(), 100)
-            .appendBoolean("hidePlayers", "Hide Player Count", entry.hidePlayersEnabled())
-            .appendBoolean("hidePlayersHover", "Hide Player Count Hover", entry.hidePlayersHoverEnabled())
-            .appendTextbox("hover", "Player Count Hover", String.join("\n", entry.players()), 200, 10)
-            .appendInput("text", "Player Count Text", entry.playerCountText(), 100)
-            .appendBoolean("extraPlayersEnabled", "Enable Extra Players", entry.extraPlayersEnabled())
-            .appendInput("extraPlayersCount", "Extra Players Count", entry.extraPlayersCount(), 100)
-            .appendBoolean("maxPlayersEnabled", "Enable Max Players", entry.maxPlayersEnabled())
-            .appendInput("maxPlayersCount", "Max Players Count", entry.maxPlayersCount(), 100)
-            .appendBoolean("onlinePlayersEnabled", "Enable Online Players", entry.onlinePlayersEnabled())
-            .appendInput("onlinePlayersCount", "Online Players Count", entry.onlinePlayersCount(), 100);
-        
-        return builder.build(core());
     }
 }

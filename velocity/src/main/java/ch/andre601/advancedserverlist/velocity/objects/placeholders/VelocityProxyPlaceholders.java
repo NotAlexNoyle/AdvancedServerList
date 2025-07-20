@@ -6,7 +6,10 @@ import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.velocity.VelocityCore;
 import com.velocitypowered.api.proxy.server.ServerPing;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class VelocityProxyPlaceholders extends PlaceholderProvider{
     
     private final VelocityCore plugin;
@@ -22,7 +25,7 @@ public class VelocityProxyPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         String[] args = placeholder.split("\\s", 2);
         if(args.length < 2)
             return null;

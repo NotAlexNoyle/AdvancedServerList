@@ -52,7 +52,7 @@ public class PaperCommandManagerInterface implements CommandManagerInterface<Com
     public SenderMapper<CommandSourceStack, CmdSender> senderMapper(){
         return SenderMapper.create(
             PaperCmdSender::new,
-            sender -> ((PaperCmdSender)sender).getCommandSourceStack()
+            sender -> ((PaperCmdSender)sender).commandSourceStack()
         );
     }
 }

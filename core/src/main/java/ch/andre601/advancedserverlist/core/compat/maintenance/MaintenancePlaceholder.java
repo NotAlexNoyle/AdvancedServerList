@@ -4,7 +4,10 @@ import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class MaintenancePlaceholder extends PlaceholderProvider{
     
     private final AdvancedServerList<?> plugin;
@@ -15,7 +18,7 @@ public class MaintenancePlaceholder extends PlaceholderProvider{
         this.plugin = plugin;
     }
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!placeholder.equals("maintenanceEnabled") || !plugin.plugin().isPluginEnabled("Maintenance"))
             return null;
         

@@ -27,13 +27,14 @@ package ch.andre601.advancedserverlist.core.commands;
 import ch.andre601.advancedserverlist.api.objects.NullBool;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CommandType;
 import ch.andre601.advancedserverlist.core.migration.minimotd.MiniMOTDConfigMigrator;
 import ch.andre601.advancedserverlist.core.migration.serverlistplus.SLPConfigMigrator;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.profile.ProfileSerializer;
-import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotation.specifier.Greedy;
@@ -813,9 +814,26 @@ public class CommandHandler{
             return;
         }
         
-        DialogLike dialog = core.plugin().createDialog(slp);
+        AbstractDialogList.AbstractDialogListBuilder listBuilder = core.plugin().createDialogListBuilder(slp.file());
+        String warning = """
+            <gold><b>WARNING!</b></gold>
+            
+            Dialog-based profile editing is currently an <i>experimental feature</i>!
+            Please create backups first before using it and report any bugs and/or glitches you may find.""";
         
-        sender.audience().showDialog(dialog);
+        listBuilder.appendBody(warning);
+        
+        listBuilder.appendDialog(
+            createDialog(core, "Main Settings", warning, slp, slp.defaultProfile(), slp.priority(), slp.condition(), -1)
+        );
+        
+        for(int i = 0; i < slp.profiles().size(); i++){
+            listBuilder.appendDialog(
+                createDialog(core, "Profiles <aqua>#" + (i + 1), warning, slp, slp.profiles().get(i), -1, null, i)
+            );
+        }
+        
+        listBuilder.build().show(sender);
     }
     
     @Suggestions("help")
@@ -895,6 +913,40 @@ public class CommandHandler{
                 entry.maxPlayersEnabled().getOrDefault(false) ? entry.maxPlayersCount() : "<red>Disabled</red>",
                 entry.onlinePlayersEnabled().getOrDefault(false) ? entry.onlinePlayersCount() : "<red>Disabled</red>"
         );
+    }
+    
+    private AbstractDialog createDialog(
+        AdvancedServerList<?> core,
+        String title,
+        String warning,
+        ServerListProfile slp,
+        ProfileEntry entry,
+        int priority,
+        String condition,
+        int index
+    ){
+        AbstractDialog.AbstractDialogBuilder builder = core.plugin().createDialogBuilder(title, slp, index);
+        builder.appendBody(warning);
+        
+        if(index < 0){
+            builder.appendNumberRange("priority", "Priority", priority)
+                .appendTextInput("condition", "Condition", condition, 100);
+        }
+        
+        builder.appendTextbox("motd", "MOTD", entry.motd(), 100, 2)
+            .appendTextInput("favicon", "Favicon", entry.favicon(), 100)
+            .appendBoolean("hidePlayers", "Hide Player Count", entry.hidePlayersEnabled())
+            .appendBoolean("hidePlayersHover", "Hide Player Count Hover", entry.hidePlayersHoverEnabled())
+            .appendTextbox("hover", "Player Count Hover", entry.players(), 200, 10)
+            .appendTextInput("text", "Player Count Text", entry.playerCountText(), 100)
+            .appendBoolean("extraPlayersEnabled", "Enable Extra Players", entry.extraPlayersEnabled())
+            .appendTextInput("extraPlayersCount", "Extra Players Count", entry.extraPlayersCount(), 100)
+            .appendBoolean("maxPlayersEnabled", "Enable Max Players", entry.maxPlayersEnabled())
+            .appendTextInput("maxPlayersCount", "Max Players Count", entry.maxPlayersCount(), 100)
+            .appendBoolean("onlinePlayersEnabled", "Enable Online Players", entry.onlinePlayersEnabled())
+            .appendTextInput("onlinePlayersCount", "Online Players Count", entry.onlinePlayersCount(), 100);
+        
+        return builder.build();
     }
     
     public enum Plugin {

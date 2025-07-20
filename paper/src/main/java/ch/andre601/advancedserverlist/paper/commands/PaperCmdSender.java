@@ -32,7 +32,6 @@ import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("UnstableApiUsage")
 public class PaperCmdSender implements CmdSender{
     
     private final CommandSender sender;
@@ -70,7 +69,7 @@ public class PaperCmdSender implements CmdSender{
         return sender;
     }
     
-    public CommandSourceStack getCommandSourceStack(){
+    public CommandSourceStack commandSourceStack(){
         return commandSourceStack;
     }
 }

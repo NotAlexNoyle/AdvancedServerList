@@ -29,7 +29,10 @@ import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.api.velocity.objects.VelocityPlayer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class VelocityPlayerPlaceholders extends PlaceholderProvider{
     
     private VelocityPlayerPlaceholders(){
@@ -41,7 +44,7 @@ public class VelocityPlayerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!(player instanceof VelocityPlayer velocityPlayer))
             return null;
         

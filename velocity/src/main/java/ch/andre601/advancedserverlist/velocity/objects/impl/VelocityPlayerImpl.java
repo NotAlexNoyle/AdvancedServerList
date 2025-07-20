@@ -28,9 +28,11 @@ package ch.andre601.advancedserverlist.velocity.objects.impl;
 import ch.andre601.advancedserverlist.api.velocity.objects.VelocityPlayer;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import com.velocitypowered.api.network.ProtocolVersion;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.UUID;
 
+@NullMarked
 public record VelocityPlayerImpl(CachedPlayer player, int protocol) implements VelocityPlayer{
     
     @Override
