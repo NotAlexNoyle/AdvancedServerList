@@ -915,7 +915,7 @@ public class CommandHandler{
         );
     }
     
-    private AbstractDialog createDialog(
+    private AbstractDialog<?> createDialog(
         AdvancedServerList<?> core,
         String title,
         String warning,

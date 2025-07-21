@@ -221,7 +221,7 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     
     @Override
     public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
-        return PaperDialog.PaperDialogBuilder.create(title, profile, profilesPosition);
+        return PaperDialog.PaperDialogBuilder.create(core(), title, profile, profilesPosition);
     }
     
     public WorldCache worldCache(){
