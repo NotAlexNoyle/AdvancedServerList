@@ -26,8 +26,8 @@
 package ch.andre601.advancedserverlist.core.interfaces.core;
 
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
@@ -71,9 +71,9 @@ public interface PluginCore<F>{
     
     F createFavicon(BufferedImage image) throws Exception;
     
-    AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title);
+    IDialogList.IDialogListBuilder createDialogListBuilder(String title);
     
-    AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition);
+    IDialog.IDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition);
     
     default boolean isDebugEnabled(){
         if(core() == null)

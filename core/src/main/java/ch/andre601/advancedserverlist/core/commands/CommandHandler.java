@@ -27,10 +27,10 @@ package ch.andre601.advancedserverlist.core.commands;
 import ch.andre601.advancedserverlist.api.objects.NullBool;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CommandType;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.migration.minimotd.MiniMOTDConfigMigrator;
 import ch.andre601.advancedserverlist.core.migration.serverlistplus.SLPConfigMigrator;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
@@ -814,7 +814,7 @@ public class CommandHandler{
             return;
         }
         
-        AbstractDialogList.AbstractDialogListBuilder listBuilder = core.plugin().createDialogListBuilder(slp.file());
+        IDialogList.IDialogListBuilder listBuilder = core.plugin().createDialogListBuilder(slp.file());
         String warning = """
             <gold><b>WARNING!</b></gold>
             
@@ -915,7 +915,7 @@ public class CommandHandler{
         );
     }
     
-    private AbstractDialog<?> createDialog(
+    private IDialog<?> createDialog(
         AdvancedServerList<?> core,
         String title,
         String warning,
@@ -925,7 +925,7 @@ public class CommandHandler{
         String condition,
         int index
     ){
-        AbstractDialog.AbstractDialogBuilder builder = core.plugin().createDialogBuilder(title, slp, index);
+        IDialog.IDialogBuilder builder = core.plugin().createDialogBuilder(title, slp, index);
         builder.appendBody(warning);
         
         if(index < 0){

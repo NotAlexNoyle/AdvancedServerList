@@ -33,11 +33,11 @@ import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeePlay
 import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeeProxyPlaceholders;
 import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeeServerPlaceholders;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import com.alessiodp.libby.BungeeLibraryManager;
@@ -213,12 +213,12 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     }
     
     @Override
-    public AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title){
+    public IDialogList.IDialogListBuilder createDialogListBuilder(String title){
         return null;
     }
     
     @Override
-    public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
+    public IDialog.IDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
         return null;
     }
     

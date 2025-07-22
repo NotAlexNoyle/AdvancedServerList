@@ -1,7 +1,7 @@
 package ch.andre601.advancedserverlist.paper.dialogs;
 
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import io.papermc.paper.dialog.Dialog;
@@ -15,10 +15,16 @@ import net.kyori.adventure.text.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaperDialogList extends AbstractDialogList{
+public class PaperDialogList implements IDialogList{
     
-    protected PaperDialogList(String title, List<String> bodies, List<AbstractDialog> dialogs){
-        super(title, bodies, dialogs);
+    private final String title;
+    private final List<String> bodies;
+    private final List<IDialog<?>> dialogs;
+    
+    protected PaperDialogList(String title, List<String> bodies, List<IDialog<?>> dialogs){
+        this.title = title;
+        this.bodies = bodies;
+        this.dialogs = dialogs;
     }
     
     @Override
@@ -46,17 +52,18 @@ public class PaperDialogList extends AbstractDialogList{
         sender.audience().showDialog(dialog);
     }
     
-    public static class PaperDialogListBuilder extends AbstractDialogListBuilder{
+    public static class PaperDialogListBuilder implements IDialogListBuilder{
         
         public static PaperDialogListBuilder create(String title){
             return new PaperDialogListBuilder(title);
         }
         
+        private final String title;
         private final List<String> bodies = new ArrayList<>();
-        private final List<AbstractDialog> dialogs = new ArrayList<>();
+        private final List<IDialog<?>> dialogs = new ArrayList<>();
         
         private PaperDialogListBuilder(String title){
-            super(title);
+            this.title = title;
         }
         
         @Override
@@ -66,7 +73,7 @@ public class PaperDialogList extends AbstractDialogList{
         }
         
         @Override
-        public PaperDialogListBuilder appendDialog(AbstractDialog dialog){
+        public PaperDialogListBuilder appendDialog(IDialog<?> dialog){
             this.dialogs.add(dialog);
             return this;
         }

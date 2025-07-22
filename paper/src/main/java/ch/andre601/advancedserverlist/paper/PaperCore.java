@@ -26,8 +26,8 @@
 package ch.andre601.advancedserverlist.paper;
 
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
@@ -215,12 +215,12 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     }
     
     @Override
-    public AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title){
+    public IDialogList.IDialogListBuilder createDialogListBuilder(String title){
         return PaperDialogList.PaperDialogListBuilder.create(title);
     }
     
     @Override
-    public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
+    public IDialog.IDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
         return PaperDialog.PaperDialogBuilder.create(core(), title, profile, profilesPosition);
     }
     

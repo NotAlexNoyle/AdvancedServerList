@@ -3,7 +3,7 @@ package ch.andre601.advancedserverlist.paper.dialogs;
 import ch.andre601.advancedserverlist.api.objects.NullBool;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
+import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import io.papermc.paper.dialog.Dialog;
@@ -24,14 +24,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-public class PaperDialog extends AbstractDialog<Dialog>{
+public class PaperDialog implements IDialog<Dialog>{
     
+    private final AdvancedServerList<?> core;
+    private final String title;
+    private final ServerListProfile profile;
+    private final int profilesPosition;
     private final List<DialogBody> bodies;
     private final List<DialogInput> inputs;
     
     private PaperDialog(AdvancedServerList<?> core, String title, ServerListProfile profile, int profilesPosition, List<DialogBody> bodies, List<DialogInput> inputs){
-        super(core, title, profile, profilesPosition);
-        
+        this.core = core;
+        this.title = title;
+        this.profile = profile;
+        this.profilesPosition = profilesPosition;
         this.bodies = bodies;
         this.inputs = inputs;
     }
@@ -148,17 +154,24 @@ public class PaperDialog extends AbstractDialog<Dialog>{
         }
     }
     
-    public static class PaperDialogBuilder extends AbstractDialogBuilder{
+    public static class PaperDialogBuilder implements IDialogBuilder{
         
         public static PaperDialogBuilder create(AdvancedServerList<?> core, String title, ServerListProfile profile, int profilesPosition){
             return new PaperDialogBuilder(core, title, profile, profilesPosition);
         }
         
+        private final AdvancedServerList<?> core;
+        private final String title;
+        private final ServerListProfile profile;
+        private final int profilesPosition;
         private final List<DialogBody> bodies = new ArrayList<>();
         private final List<DialogInput> inputs = new ArrayList<>();
         
         private PaperDialogBuilder(AdvancedServerList<?> core, String title, ServerListProfile profile, int profilesPosition){
-            super(core, title, profile, profilesPosition);
+            this.core = core;
+            this.title = title;
+            this.profile = profile;
+            this.profilesPosition = profilesPosition;
         }
         
         @Override
