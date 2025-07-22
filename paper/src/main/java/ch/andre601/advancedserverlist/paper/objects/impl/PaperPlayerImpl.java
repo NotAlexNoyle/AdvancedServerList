@@ -28,14 +28,17 @@ package ch.andre601.advancedserverlist.paper.objects.impl;
 import ch.andre601.advancedserverlist.api.bukkit.objects.BukkitPlayer;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import org.bukkit.OfflinePlayer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
-public record PaperPlayerImpl(OfflinePlayer player, CachedPlayer cachedPlayer, int protocol) implements BukkitPlayer{
+@NullMarked
+public record PaperPlayerImpl(@Nullable OfflinePlayer player, CachedPlayer cachedPlayer, int protocol) implements BukkitPlayer{
     
     @Override
     public String getName(){
-        return player == null ? cachedPlayer.name() : player.getName();
+        return player == null || player.getName() == null ? cachedPlayer.name() : player.getName();
     }
     
     @Override
@@ -49,7 +52,7 @@ public record PaperPlayerImpl(OfflinePlayer player, CachedPlayer cachedPlayer, i
     }
     
     @Override
-    public OfflinePlayer getPlayer(){
+    public @Nullable OfflinePlayer getPlayer(){
         return player;
     }
     

@@ -27,12 +27,13 @@ package ch.andre601.advancedserverlist.velocity.objects.impl;
 
 import ch.andre601.advancedserverlist.api.velocity.objects.VelocityProxy;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 
 public record VelocityProxyImpl(Map<String, RegisteredServer> servers, int playersOnline, int playersMax, String host) implements VelocityProxy{
     @Override
-    public Map<String, RegisteredServer> getServers(){
+    public @NonNull Map<String, RegisteredServer> getServers(){
         return servers;
     }
     

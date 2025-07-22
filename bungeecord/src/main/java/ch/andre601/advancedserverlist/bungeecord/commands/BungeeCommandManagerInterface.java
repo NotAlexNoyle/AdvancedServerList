@@ -53,7 +53,7 @@ public class BungeeCommandManagerInterface implements CommandManagerInterface<Co
     @Override
     public SenderMapper<CommandSender, CmdSender> senderMapper(){
         return SenderMapper.create(
-            cmdSender -> new BungeeCmdSender(cmdSender, plugin.getAudiences()),
+            cmdSender -> new BungeeCmdSender(cmdSender, plugin.audiences()),
             sender -> ((BungeeCmdSender)sender).sender()
         );
     }

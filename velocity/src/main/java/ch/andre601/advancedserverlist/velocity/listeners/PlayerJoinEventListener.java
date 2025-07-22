@@ -39,7 +39,7 @@ public class PlayerJoinEventListener{
     
     public PlayerJoinEventListener(VelocityCore plugin){
         this.plugin = plugin;
-        plugin.getProxy().getEventManager().register(plugin, this);
+        plugin.proxy().getEventManager().register(plugin, this);
     }
     
     @Subscribe

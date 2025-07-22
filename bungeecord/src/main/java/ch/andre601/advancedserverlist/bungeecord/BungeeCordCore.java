@@ -33,6 +33,8 @@ import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeePlay
 import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeeProxyPlaceholders;
 import ch.andre601.advancedserverlist.bungeecord.objects.placeholders.BungeeServerPlaceholders;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialog;
+import ch.andre601.advancedserverlist.core.dialogs.AbstractDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
@@ -41,7 +43,6 @@ import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import com.alessiodp.libby.BungeeLibraryManager;
 import com.alessiodp.libby.Library;
 import de.myzelyam.api.vanish.BungeeVanishAPI;
-import net.kyori.adventure.dialog.DialogLike;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ServerPing;
@@ -212,15 +213,20 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     }
     
     @Override
-    public DialogLike createDialog(ServerListProfile profile){
-        return null; // Not used.
+    public AbstractDialogList.AbstractDialogListBuilder createDialogListBuilder(String title){
+        return null;
     }
     
-    public BungeeAudiences getAudiences(){
+    @Override
+    public AbstractDialog.AbstractDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
+        return null;
+    }
+    
+    public BungeeAudiences audiences(){
         return audiences;
     }
     
-    public int getOnlinePlayers(ServerInfo server){
+    public int onlinePlayers(ServerInfo server){
         List<ProxiedPlayer> players = new ArrayList<>(server == null ? getProxy().getPlayers() : server.getPlayers());
         
         // Exclude players when PremiumVanish is enabled and player is hidden.
@@ -234,7 +240,7 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
         return players.size();
     }
     
-    public Map<String, ServerPing> getFetchedServers(){
+    public Map<String, ServerPing> fetchedServers(){
         return fetchedServers;
     }
     

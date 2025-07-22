@@ -159,7 +159,7 @@ public class BungeeEventWrapper implements GenericEventWrapper<Favicon, BungeePl
     
     @Override
     public int onlinePlayers(){
-        return plugin.getOnlinePlayers(null);
+        return plugin.onlinePlayers(null);
     }
     
     @Override

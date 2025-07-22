@@ -9,7 +9,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class BungeeProxyPlaceholders extends PlaceholderProvider{
     
     private final BungeeCordCore plugin;
@@ -25,12 +28,12 @@ public class BungeeProxyPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         String[] args = placeholder.split("\\s", 2);
         if(args.length < 2)
             return null;
         
-        ServerPing ping = plugin.getFetchedServers().get(args[1]);
+        ServerPing ping = plugin.fetchedServers().get(args[1]);
         
         return switch(args[0]){
             case "status" -> ping == null ? "offline" : "online";

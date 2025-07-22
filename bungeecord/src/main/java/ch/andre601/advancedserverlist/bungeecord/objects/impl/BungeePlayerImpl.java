@@ -27,9 +27,11 @@ package ch.andre601.advancedserverlist.bungeecord.objects.impl;
 
 import ch.andre601.advancedserverlist.api.bungeecord.objects.BungeePlayer;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.UUID;
 
+@NullMarked
 public record BungeePlayerImpl(CachedPlayer player, int protocol) implements BungeePlayer{
     
     @Override

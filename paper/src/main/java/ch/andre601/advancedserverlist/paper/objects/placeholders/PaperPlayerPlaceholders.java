@@ -29,7 +29,10 @@ import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.paper.objects.impl.PaperPlayerImpl;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class PaperPlayerPlaceholders extends PlaceholderProvider{
     
     public PaperPlayerPlaceholders(){
@@ -37,7 +40,7 @@ public class PaperPlayerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!(player instanceof PaperPlayerImpl paperPlayer))
             return null;
         

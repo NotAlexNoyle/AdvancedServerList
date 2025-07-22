@@ -28,9 +28,12 @@ package ch.andre601.advancedserverlist.bungeecord.objects.placeholders;
 import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
 
+@NullMarked
 public class BungeePlayerPlaceholders extends PlaceholderProvider{
     
     private BungeePlayerPlaceholders(){
@@ -42,7 +45,7 @@ public class BungeePlayerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         return switch(placeholder.toLowerCase(Locale.ROOT)){
             case "name" -> player.getName();
             case "protocol" -> String.valueOf(player.getProtocol());

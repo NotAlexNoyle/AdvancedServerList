@@ -32,7 +32,10 @@ import ch.andre601.advancedserverlist.paper.PaperCore;
 import ch.andre601.advancedserverlist.paper.objects.impl.PaperServerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class PaperServerPlaceholders extends PlaceholderProvider{
     
     private final PaperCore plugin;
@@ -43,7 +46,7 @@ public class PaperServerPlaceholders extends PlaceholderProvider{
     }
     
     @Override
-    public String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
+    public @Nullable String parsePlaceholder(String placeholder, GenericPlayer player, GenericServer server){
         if(!(server instanceof PaperServerImpl paperServer))
             return null;
         
