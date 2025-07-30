@@ -50,7 +50,7 @@
         <dependency.adventure-api>4.23.0</dependency.adventure-api>
         <dependency.adventure-text-minimessage>4.23.0</dependency.adventure-text-minimessage>
         <dependency.adventure-text-serializer-legacy>4.23.0</dependency.adventure-text-serializer-legacy>
-        <dependency.adventure-platform-bungeecord>4.4.0</dependency.adventure-platform-bungeecord>
+        <dependency.adventure-platform-bungeecord>4.4.1</dependency.adventure-platform-bungeecord>
         <!-- Configurate version -->
         <dependency.configurate-yaml>4.2.0</dependency.configurate-yaml>
         <!-- Cloud versions -->
