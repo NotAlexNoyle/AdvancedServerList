@@ -62,3 +62,85 @@
     line-height: 0;
     color: var(--md-default-fg-color);
 }
+
+/* Animations */
+@keyframes balloon {
+    0% {
+        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+    }
+    10% {
+        transform: translate(0.05rem, -0.08rem) rotate(2deg) scale(1.95);
+    }
+    20% {
+        transform: translate(-0.07rem, 0.06rem) rotate(-3deg) scale(2);
+    }
+    30% {
+        transform: translate(0.1rem, -0.02rem) rotate(1.5deg) scale(2.05);
+    }
+    40% {
+        transform: translate(-0.06rem, -0.1rem) rotate(-2deg) scale(1.95);
+    }
+    50% {
+        transform: translate(0.02rem, 0.08rem) rotate(3deg) scale(2);
+    }
+    60% {
+        transform: translate(-0.1rem, -0.01rem) rotate(-1deg) scale(2.05);
+    }
+    70% {
+        transform: translate(0.08rem, 0.04rem) rotate(2.5deg) scale(1.95);
+    }
+    80% {
+        transform: translate(-0.03rem, -0.07rem) rotate(-2.5deg) scale(2);
+    }
+    90% {
+        transform: translate(0.06rem, 0.03rem) rotate(1deg) scale(2.05);
+    }
+    100% {
+        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+    }
+}
+
+@keyframes rainbow {
+    0% {
+        color: #ff6b6b;
+    }
+    10% {
+        color: #ffcc70;
+    }
+    20% {
+        color: #f7f48b;
+    }
+    30% {
+        color: #caffbf;
+    }
+    40% {
+        color: #9bf6ff;
+    }
+    50% {
+        color: #a0c4ff;
+    }
+    60% {
+        color: #bdb2ff;
+    }
+    70% {
+        color: #ffc6ff;
+    }
+    80% {
+        color: #ffadad;
+    }
+    90% {
+        color: #ffd6a5;
+    }
+    100% {
+        color: #ff6b6b;
+    }
+}
+
+
+.balloon {
+    animation: 20s ease-in-out infinite balloon;
+}
+
+.rainbow {
+    animation: 10s ease-in-out infinite rainbow;
+}
