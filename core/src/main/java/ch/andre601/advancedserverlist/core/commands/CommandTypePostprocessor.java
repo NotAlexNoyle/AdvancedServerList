@@ -13,8 +13,14 @@ public class CommandTypePostprocessor implements CommandPostprocessor<CmdSender>
         CmdSender sender = context.commandContext().sender();
         CommandType.Type type = context.commandContext().command().commandMeta().get(CommandHandler.COMMAND_TYPE);
         
+        System.out.println("1) Is Player? " + sender.isPlayer());
+        System.out.println("1) Is PLAYER_ONLY command? " + (type == CommandType.Type.PLAYER_ONLY));
+        
         if(type == CommandType.Type.ALL || (type == CommandType.Type.PLAYER_ONLY && sender.isPlayer()))
             return;
+        
+        System.out.println("2) Is Player? " + sender.isPlayer());
+        System.out.println("2) Is PLAYER_ONLY command? " + (type == CommandType.Type.PLAYER_ONLY));
         
         sender.sendErrorMsg("<red>This command can only be executed by players!");
         ConsumerService.interrupt();

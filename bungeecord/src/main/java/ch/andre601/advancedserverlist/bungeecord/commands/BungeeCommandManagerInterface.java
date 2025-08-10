@@ -45,7 +45,7 @@ public class BungeeCommandManagerInterface implements CommandManagerInterface<Co
     public CommandManager<CmdSender> commandHandler(){
         return new BungeeCommandManager<>(
             plugin,
-            ExecutionCoordinator.asyncCoordinator(),
+            ExecutionCoordinator.simpleCoordinator(),
             senderMapper()
         );
     }

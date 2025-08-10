@@ -21,7 +21,7 @@ public class PaperDialogList implements IDialogList{
     private final List<String> bodies;
     private final List<IDialog<?>> dialogs;
     
-    protected PaperDialogList(String title, List<String> bodies, List<IDialog<?>> dialogs){
+    private PaperDialogList(String title, List<String> bodies, List<IDialog<?>> dialogs){
         this.title = title;
         this.bodies = bodies;
         this.dialogs = dialogs;

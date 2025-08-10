@@ -26,6 +26,9 @@
 package ch.andre601.advancedserverlist.bungeecord;
 
 import ch.andre601.advancedserverlist.bungeecord.commands.BungeeCommandManagerInterface;
+import ch.andre601.advancedserverlist.bungeecord.dialogs.BungeeDialog;
+import ch.andre601.advancedserverlist.bungeecord.dialogs.BungeeDialogList;
+import ch.andre601.advancedserverlist.bungeecord.listeners.CustomClickListener;
 import ch.andre601.advancedserverlist.bungeecord.listeners.PlayerJoinEventListener;
 import ch.andre601.advancedserverlist.bungeecord.listeners.ProxyPingEventListener;
 import ch.andre601.advancedserverlist.bungeecord.logging.BungeeLogger;
@@ -114,6 +117,9 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     public void loadEvents(){
         new PlayerJoinEventListener(this);
         new ProxyPingEventListener(this);
+        
+        if(isDialogsSupported())
+            new CustomClickListener(this);
     }
     
     @Override
@@ -204,7 +210,12 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     
     @Override
     public boolean isDialogsSupported(){
-        return false;
+        try{
+            Class.forName("net.md_5.bungee.api.dialog.Dialog");
+            return true;
+        }catch(ClassNotFoundException ignored){
+            return false;
+        }
     }
     
     @Override
@@ -214,12 +225,12 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
     
     @Override
     public IDialogList.IDialogListBuilder createDialogListBuilder(String title){
-        return null;
+        return BungeeDialogList.BungeeDialogListBuilder.create(title);
     }
     
     @Override
     public IDialog.IDialogBuilder createDialogBuilder(String title, ServerListProfile profile, int profilesPosition){
-        return null;
+        return BungeeDialog.BungeeDialogBuilder.create(title, profile, profilesPosition);
     }
     
     public BungeeAudiences audiences(){

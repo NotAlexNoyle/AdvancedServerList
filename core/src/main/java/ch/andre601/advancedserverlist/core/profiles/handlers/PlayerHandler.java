@@ -117,8 +117,11 @@ public class PlayerHandler{
     }
     
     public void addPlayer(String ip, String name, UUID uuid){
-        if(contains(ip) || core.fileHandler().getBoolean("disableCache"))
+        if(core.fileHandler().getBoolean("disableCache"))
             return;
+        
+        // Remove to update the cached info
+        cachedPlayers.removeIf(player -> player.ip().equals(ip));
         
         cachedPlayers.add(new CachedPlayer(ip, name, uuid));
     }
