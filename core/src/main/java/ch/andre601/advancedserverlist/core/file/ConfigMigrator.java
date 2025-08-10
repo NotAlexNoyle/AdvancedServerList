@@ -46,7 +46,8 @@ public class ConfigMigrator{
     public static ConfigurationTransformation.Versioned create(){
         return ConfigurationTransformation.versionedBuilder()
             .versionKey("configVersion")
-            .addVersion(LATEST, eightToNine())
+            .addVersion(LATEST, nineToTen())
+            .addVersion(9, eightToNine())
             .addVersion(8, sevenToEight())
             .addVersion(7, sixToSeven())
             .addVersion(6, fiveToSix())
@@ -54,6 +55,12 @@ public class ConfigMigrator{
             .addVersion(4, threeToFour())
             .addVersion(3, twoToThree())
             .addVersion(2, oneToTwo())
+            .build();
+    }
+    
+    public static ConfigurationTransformation nineToTen(){
+        return ConfigurationTransformation.builder()
+            .addAction(NodePath.path("faviconStrategy"), TransformAction.rename("faviconResizeStrategy"))
             .build();
     }
     
