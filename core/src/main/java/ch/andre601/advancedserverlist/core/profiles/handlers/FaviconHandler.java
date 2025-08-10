@@ -110,6 +110,7 @@ public class FaviconHandler<F>{
     
     public void cleanCache(){
         localFavicons.clear();
+        faviconCache.invalidateAll();
         loadLocalFavicons();
     }
     
@@ -172,7 +173,8 @@ public class FaviconHandler<F>{
         }else
         if(input.toLowerCase(Locale.ROOT).endsWith(".png")){
             logger.debug(FaviconHandler.class, "Returning local Favicon '%s'...", input);
-            return localFavicons.get(input.toLowerCase(Locale.ROOT)).image();
+            FaviconPair<F> pair = localFavicons.get(input.toLowerCase(Locale.ROOT));
+            return pair == null ? null : pair.image();
         }else{
             logger.debug(FaviconHandler.class, "Handling Player Name/UUID '%s'...", input);
             return fromURL("https://mc-heads.net/avatar/" + input + "/64");

@@ -42,6 +42,13 @@ The mode used is set in the `faviconStrategy` option in the `config.yml` and can
 
 Please note that the actual favicon displayed will always be 64x64 pixels, even if the image(s) depicted in it aren't.
 
+## Updating local Images
+
+Local favicons (images in the `favicons` folder) are only loaded during the plugin's startup.  
+If you would like to add new images to be used, you have to execute [`/asl clearcache`](../../commands/clearcache.md) to add them.
+
+Note that this will also clear any dynamically created Favicons, requiring them to be created again.
+
 ## Example
 
 ```yaml

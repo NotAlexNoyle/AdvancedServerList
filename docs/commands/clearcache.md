@@ -11,4 +11,4 @@ title: /asl clearcache
 - `advancedserverlist.command.clearcache`
 ///
 
-Resets the current Favicon and Player cache.
+Clears currently loaded favicons and the player cache and loads local favicons again.
