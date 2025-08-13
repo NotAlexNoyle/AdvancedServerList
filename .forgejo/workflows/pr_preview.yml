@@ -109,7 +109,7 @@ jobs:
             | Name    | Link                                      |
             |---------|-------------------------------------------|
             | Commit  | ${{ github.event.pull_request.head.sha }} |
-            | Logs    | ${{ RUN_URL }}                            |
+            | Logs    | ${{ env.RUN_URL }}                            |
           comment-id: "${{ steps.comment.outputs.comment-id }}"
           issue-number: "${{ github.event.pull_request.number }}"
           token: "${{ secrets.BOT_TOKEN }}"
