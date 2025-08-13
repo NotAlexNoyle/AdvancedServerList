@@ -2,5 +2,5 @@ mkdocs-material==9.6.16
 mkdocs-glightbox==0.4.0
 mkdocs-redirects==1.2.2
 git+https://github.com/Andre601/mkdocs-pagenav-generator
-mkdocs-macros-plugin==1.3.7
+mkdocs-macros-plugin==1.3.9
 pygments-minimessage==1.0.0
