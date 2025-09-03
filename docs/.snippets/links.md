@@ -1,6 +1,6 @@
 [discord]: https://discord.gg/MyPTjpsgGH
 
-[placeholderapi]: https://hangar.papermc.io/HelpChat/PlaceholderAPI
+[placeholderapi]: https://modrinth.com/plugin/PlaceholderAPI
 [viaversion]: https://hangar.papermc.io/ViaVersion/ViaVersion
 [papiproxybridge]: https://hangar.papermc.io/William278/PAPIProxyBridge
 [maintenance]: https://hangar.papermc.io/kennytv/Maintenance
