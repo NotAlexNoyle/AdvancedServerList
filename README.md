@@ -63,7 +63,7 @@ AdvancedServerList soft-depends on the following plugins, meaning their inclusio
 
 | Plugin                                                                  | Supported Platforms                    |
 |-------------------------------------------------------------------------|----------------------------------------|
-| [PlaceholderAPI](https://hangar.papermc.io/HelpChat/PlaceholderAPI)     | Paper                                  |
+| [PlaceholderAPI](https://modrinth.com/plugin/PlaceholderAPI)            | Paper                                  |
 | [ViaVersion](https://hangar.papermc.io/ViaVersion/ViaVersion)           | Paper                                  |
 | [PAPIProxyBridge](https://hangar.papermc.io/William278/PAPIProxyBridge) | BungeeCord, Waterfall, Velocity        |
 | [Maintenance](https://hangar.papermc.io/kennytv/Maintenance)            | Paper, BungeeCord, Waterfall, Velocity |
