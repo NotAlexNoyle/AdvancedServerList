@@ -60,7 +60,7 @@ jobs:
           cd site
           git switch ${{ env.BRANCH_NAME }} 2>/dev/null || git switch -c ${{ env.BRANCH_NAME }}
       - name: "Setup Python 3.x"
-        uses: https://code.forgejo.org/actions/setup-python@v5
+        uses: https://code.forgejo.org/actions/setup-python@v6
         with:
           python-version: 3.x
       - name: "Install Dependencies"
