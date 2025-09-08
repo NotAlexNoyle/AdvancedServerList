@@ -1,4 +1,4 @@
-mkdocs-material==9.6.18
+mkdocs-material==9.6.19
 mkdocs-glightbox==0.5.1
 mkdocs-redirects==1.2.2
 git+https://github.com/Andre601/mkdocs-pagenav-generator
