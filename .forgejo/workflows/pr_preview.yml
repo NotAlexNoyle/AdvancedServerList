@@ -34,7 +34,7 @@ jobs:
           comment-author: "Andre_601-Bot"
       - name: "Create or update Comment"
         id: comment
-        uses: https://github.com/peter-evans/create-or-update-comment@v4
+        uses: https://github.com/peter-evans/create-or-update-comment@v5
         with:
           body: |-
             ## Pull request Preview
@@ -81,7 +81,7 @@ jobs:
       # Update comment on success or failure.
       #
       - name: "Comment Success"
-        uses: https://github.com/peter-evans/create-or-update-comment@v4
+        uses: https://github.com/peter-evans/create-or-update-comment@v5
         with:
           body: |-
             ## Pull request Preview
@@ -99,7 +99,7 @@ jobs:
           edit-mode: replace
       - name: "Comment Failure"
         if: ${{ failure() }}
-        uses: https://github.com/peter-evans/create-or-update-comment@v4
+        uses: https://github.com/peter-evans/create-or-update-comment@v5
         with:
           body: |-
             ## Pull request Preview
