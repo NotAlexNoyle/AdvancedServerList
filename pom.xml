@@ -58,7 +58,7 @@
         <dependency.cloud-bungee>2.0.0-SNAPSHOT</dependency.cloud-bungee>
         <dependency.cloud-paper>2.0.0-SNAPSHOT</dependency.cloud-paper>
         <dependency.cloud-velocity>2.0.0-SNAPSHOT</dependency.cloud-velocity>
-        <dependency.cloud-minecraft-extras>2.0.0-beta.12</dependency.cloud-minecraft-extras>
+        <dependency.cloud-minecraft-extras>2.0.0-beta.13</dependency.cloud-minecraft-extras>
     </properties>
     
     <profiles>
