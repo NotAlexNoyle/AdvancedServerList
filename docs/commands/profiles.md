@@ -2,7 +2,7 @@
 title: /asl profiles
 ---
 
-# `/asl profiles add <profile>`<br>`/asl profiles copy <profile> <name>`<br>`/asl profiles info <profile>`<br>`/asl profiles list`<br>`/asl profiles set <profile> <option> [value]`
+# `/asl profiles add <profile>`<br>`/asl profiles copy <profile> <name>`<br>`/asl profiles edit <profile>`<br>`/asl profiles info <profile>`<br>`/asl profiles list`<br>`/asl profiles set <profile> <option> [value]`
 
 /// info |
 **Permissions:**
@@ -55,6 +55,27 @@ Creates a new profile using default values.
 
 Creates a copy from the provided profile.  
 [`/asl reload`](reload.md) needs to be executed to load the new profile.
+
+## `/asl profiles edit <profile>` { #edit }
+
+/// info |
+**Permissions:**
+
+- `advancedserverlist.admin`
+- `advancedserverlist.command.profiles`
+- `advancedserverlist.command.profiles.edit`
+
+**Arguments:**
+
+- `<profile>` - Name of the profile to edit.
+///
+
+Opens a Dialog to edit the specified Profile.  
+The first Dialog allows you to select either the primary settings or the individual `profiles` with each option allowing you to edit their values according to what they support.
+
+/// warning
+This Feature only works for `v5.7.0-b1` and newer of AdvancedServerList and only for Paper 1.21.7 Builds 17 and newer due to lack of API in older versions.
+///
 
 ## `/asl profiles info <profile>` { #info }
 
