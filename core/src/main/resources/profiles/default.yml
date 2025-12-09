@@ -2,7 +2,7 @@
 # Set the priority of this profile.
 # If there are multiple profiles (files) will they be sorted by priority, starting with highest.
 #
-# Read more: https://asl.andre601.ch/profiles/#priority
+# Read more: https://asl.andre601.ch/profiles/options/priority/
 #
 priority: 0
 
@@ -14,7 +14,7 @@ priority: 0
 #
 # Removing the condition option or setting it to an empty String will be treated as a true condition being returned.
 #
-# Read more: https://asl.andre601.ch/profiles/#condition
+# Read more: https://asl.andre601.ch/profiles/options/condition
 #
 condition: ''
 
@@ -30,7 +30,7 @@ condition: ''
 #
 # When not present or empty (profiles: []), no profiles will be used and global options from the file will be used instead.
 #
-# Read more: https://asl.andre601.ch/profiles/#profiles
+# Read more: https://asl.andre601.ch/profiles/options/profiles
 #
 profiles:
   - motd: ['<aqua>Line A', '<gold>Line B']
@@ -50,7 +50,7 @@ profiles:
 #
 # When not present or empty (motd: []), no MOTD will be set.
 #
-# Read more: https://asl.andre601.ch/profiles/#motd
+# Read more: https://asl.andre601.ch/profiles/options/motd
 #
 motd:
   - '<grey>First Line'
@@ -71,7 +71,7 @@ motd:
 #
 # If not present or empty (favicon: ''), defaults to not modifying the favicon.
 #
-# Read more: https://asl.andre601.ch/profiles/#favicon
+# Read more: https://asl.andre601.ch/profiles/options/favicon
 #
 # "The favicon isn't showing!"
 #   This is a side effect of using either URLs or player names/UUIDs for the favicon.
@@ -87,7 +87,7 @@ favicon: ''
 #
 # Contains options for modifying the player count (Text displaying <online>/<max>).
 #
-# Read more: https://asl.andre601.ch/profiles/#playercount
+# Read more: https://asl.andre601.ch/profiles/options/playercount
 #
 playerCount:
   #
@@ -97,7 +97,7 @@ playerCount:
   #
   # If not present, defaults to false.
   #
-  # Read more: https://asl.andre601.ch/profiles/#hideplayers
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/hideplayers
   #
   hidePlayers: false
   #
@@ -106,7 +106,7 @@ playerCount:
   #
   # If not present, defaults to false.
   #
-  # Read more: https://asl.andre601.ch/profiles/#hideplayershover
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/hideplayershover
   #
   hidePlayersHover: false
   #
@@ -116,7 +116,7 @@ playerCount:
   #
   # If not present or empty (hover: []), defaults to not modifying the hover.
   #
-  # Read more: https://asl.andre601.ch/profiles/#hover
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/hover
   #
   hover:
     - '<aqua>Line 1'
@@ -130,7 +130,7 @@ playerCount:
   #
   # If not present or empty (text: ''), defaults to not modifying the text.
   #
-  # Read more: https://asl.andre601.ch/profiles/#text
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/text
   #
   text: ''
   #
@@ -139,7 +139,7 @@ playerCount:
   #
   # Using this feature will modify the ${server playersMax} placeholder, except for usage in the condition option.
   #
-  # Read more: https://asl.andre601.ch/profiles/#extraplayers
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/extraplayers
   #
   extraPlayers:
     #
@@ -149,7 +149,7 @@ playerCount:
     #
     # If not present, defaults to false.
     #
-    # Read more: https://asl.andre601.ch/profiles/#extraplayers-enabled
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/extraplayers#enabled
     #
     enabled: false
     #
@@ -161,7 +161,7 @@ playerCount:
     #
     # If not present, defaults to 0.
     #
-    # Read more: https://asl.andre601.ch/profiles/#extraplayers-amount
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/extraplayers#amount
     #
     amount: 0
   #
@@ -169,7 +169,7 @@ playerCount:
   #
   # Using this feature will modify the ${server playersMax} placeholder, except for usage in the condition option.
   #
-  # Read more: https://asl.andre601.ch/profiles/#maxplayers
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/maxplayers
   #
   maxPlayers:
     #
@@ -178,7 +178,7 @@ playerCount:
     #
     # If not present, defaults to false.
     #
-    # Read more: https://asl.andre601.ch/profiles/#maxplayers-enabled
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/maxplayers#enabled
     #
     enabled: false
     #
@@ -187,13 +187,13 @@ playerCount:
     #
     # If not present, defaults to 0.
     #
-    # Read more: https://asl.andre601.ch/profiles/#maxplayers-amount
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/maxplayers#amount
     #
     amount: 0
   #
   # The onlinePlayers feature allows to set a number to use as the online player count to display.
   #
-  # Read more: https://asl.andre601.ch/profiles/#onlineplayers
+  # Read more: https://asl.andre601.ch/profiles/options/playercount/onlineplayers
   #
   onlinePlayers:
     #
@@ -202,7 +202,7 @@ playerCount:
     #
     # If not present, defaults to false.
     #
-    # Read more: https://asl.andre601.ch/profiles/#onlineplayers-enabled
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/onlineplayers#enabled
     #
     enabled: false
     #
@@ -211,6 +211,6 @@ playerCount:
     #
     # If not present, defaults to current online player count.
     #
-    # Read more: https://asl.andre601.ch/profiles/#onlineplayers-amount
+    # Read more: https://asl.andre601.ch/profiles/options/playercount/onlineplayers#amount
     #
     amount: 0
