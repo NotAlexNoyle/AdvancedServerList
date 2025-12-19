@@ -91,7 +91,8 @@ public class ModrinthVersionUploader{
         
         List<ProjectVersion.ProjectDependency> paperDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
-            new ProjectVersion.ProjectDependency(null, "P1OZGk5p", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // ViaVersion
+            new ProjectVersion.ProjectDependency(null, "P1OZGk5p", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // ViaVersion
+            new ProjectVersion.ProjectDependency(null, "HQyibRsN", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // MiniPlaceholders
         );
         List<ProjectVersion.ProjectDependency> bungeeDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
@@ -99,7 +100,8 @@ public class ModrinthVersionUploader{
         );
         List<ProjectVersion.ProjectDependency> velocityDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
-            new ProjectVersion.ProjectDependency(null, "bEIUEGTX", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // PAPIProxyBridge
+            new ProjectVersion.ProjectDependency(null, "bEIUEGTX", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // PAPIProxyBridge
+            new ProjectVersion.ProjectDependency(null, "HQyibRsN", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // MiniPlaceholders
         );
         
         for(int i = 0; i < platforms.size(); i++){
