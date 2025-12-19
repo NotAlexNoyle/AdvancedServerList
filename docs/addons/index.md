@@ -19,6 +19,12 @@ These Addons are made by Andre601 and available together with the plugin downloa
     
     Addon for different Punishment plugins such as AdvancedBan, that add new placeholders to use in AdvancedServerList.
 
+-   [**LuckPerms**](first-party/luckperms.md)
+
+    ----
+    
+    Addon for adding LuckPerms-related placeholders to use in conditions.
+
 </div>
 
 ## Third-party

@@ -110,6 +110,7 @@ public class VelocityEventWrapper implements GenericEventWrapper<Favicon, Veloci
             String parsed = ComponentParser.text(lines.get(i))
                 .modifyText(text -> StringReplacer.replace(text, player, server))
                 .modifyText(text -> parsePAPIPlaceholders(text, player))
+                .applyMMTags(plugin())
                 .toString();
             
             players[i] = new ServerPing.SamplePlayer(parsed, UUID.randomUUID());

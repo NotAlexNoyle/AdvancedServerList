@@ -99,8 +99,12 @@ public class BungeeCordCore extends Plugin implements PluginCore<Favicon>{
         
         this.audiences = BungeeAudiences.create(this);
         this.handler = new BungeeCommandManagerInterface(this);
-        this.core = AdvancedServerList.init(this,
-            BungeePlayerPlaceholders.init(), BungeeServerPlaceholders.init(this), BungeeProxyPlaceholders.init(this));
+        this.core = AdvancedServerList.init(
+            this,
+            BungeePlayerPlaceholders.init(),
+            BungeeServerPlaceholders.init(this),
+            BungeeProxyPlaceholders.init(this)
+        );
     }
     
     @Override

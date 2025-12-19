@@ -1,0 +1,20 @@
+{
+  "id": "aslluckpermsaddon",
+  "name": "ASLLuckPermsAddon",
+  "version": "${plugin.version}",
+  "description": "LuckPerms Add-on for AdvancedServerList to add placeholders to use.",
+  "authors": [
+    "Andre_601"
+  ],
+  "dependencies": [
+    {
+      "id": "advancedserverlist",
+      "optional": true
+    },
+    {
+      "id": "luckperms",
+      "optional": true
+    }
+  ],
+  "main": "ch.andre601.advancedserverlist.luckperms.velocity.LuckPermsAddon"
+}

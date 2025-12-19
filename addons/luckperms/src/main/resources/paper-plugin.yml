@@ -1,0 +1,16 @@
+name: 'ASLLuckPermsAddon'
+author: 'Andre_601'
+version: '${plugin.version}'
+
+main: 'ch.andre601.advancedserverlist.luckperms.paper.LuckPermsAddon'
+
+api-version: '1.19'
+
+dependencies: 
+  server: 
+    AdvancedServerList:
+      required: false
+      load: BEFORE
+    LuckPerms:
+      required: false
+      load: BEFORE

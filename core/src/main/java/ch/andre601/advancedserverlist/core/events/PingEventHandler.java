@@ -93,6 +93,7 @@ public class PingEventHandler{
             String onlinePlayers = ComponentParser.text(entry.onlinePlayersCount())
                 .modifyText(text -> StringReplacer.replace(text, player, server))
                 .modifyText(text -> event.parsePAPIPlaceholders(text, player))
+                .applyMMTags(event.plugin())
                 .toString();
             
             try{
@@ -110,6 +111,7 @@ public class PingEventHandler{
             String extraPlayers = ComponentParser.text(entry.extraPlayersCount())
                 .modifyText(text -> StringReplacer.replace(text, player, server))
                 .modifyText(text -> event.parsePAPIPlaceholders(text, player))
+                .applyMMTags(event.plugin())
                 .toString();
             
             try{
@@ -127,6 +129,7 @@ public class PingEventHandler{
             String maxPlayers = ComponentParser.text(entry.maxPlayersCount())
                 .modifyText(text -> StringReplacer.replace(text, player, server))
                 .modifyText(text -> event.parsePAPIPlaceholders(text, player))
+                .applyMMTags(event.plugin())
                 .toString();
             
             try{
@@ -149,6 +152,7 @@ public class PingEventHandler{
                     .modifyText(text -> StringReplacer.replace(text, player, finalServer))
                     .modifyText(text -> event.parsePAPIPlaceholders(text, player))
                     .modifyText(text -> plugin.core().textCenterUtil().getCenteredText(text))
+                    .applyMMTags(event.plugin())
                     .toComponent()
                 )
                 .toList();
@@ -171,6 +175,7 @@ public class PingEventHandler{
                 ComponentParser.text(entry.playerCountText())
                     .modifyText(text -> StringReplacer.replace(text, player, finalServer))
                     .modifyText(text -> event.parsePAPIPlaceholders(text, player))
+                    .applyMMTags(event.plugin())
                     .toString()
             );
         }

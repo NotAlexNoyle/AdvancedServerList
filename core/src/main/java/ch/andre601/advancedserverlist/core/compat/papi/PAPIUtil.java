@@ -72,14 +72,14 @@ public class PAPIUtil{
         if(values.isEmpty())
             return null;
         
-        return List.copyOf(values).get(0);
+        return List.copyOf(values).getFirst();
     }
     
     public <P> P getPlayer(Collection<P> players){
         if(players.isEmpty())
             return null;
         
-        return List.copyOf(players).get(0);
+        return List.copyOf(players).getFirst();
     }
     
     public String parse(String text, UUID carrier, UUID player){

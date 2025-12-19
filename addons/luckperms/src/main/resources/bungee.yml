@@ -1,0 +1,10 @@
+name: 'ASLLuckPermsAddon'
+author: 'Andre_601'
+version: '${plugin.version}'
+description: 'LuckPerms Add-on for AdvancedServerList to add placeholders to use.'
+
+softDepends:
+  - AdvancedServerList
+  - LuckPerms
+
+main: 'ch.andre601.advancedserverlist.luckperms.bungee.LuckPermsAddon'

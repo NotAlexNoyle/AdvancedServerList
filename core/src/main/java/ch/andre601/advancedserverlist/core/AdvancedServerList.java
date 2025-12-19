@@ -36,6 +36,7 @@ import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CommandType;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
 import ch.andre601.advancedserverlist.core.parsing.TextCenterUtil;
+import ch.andre601.advancedserverlist.core.placeholders.DatePlaceholder;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.conditions.ProfileConditionParser;
 import ch.andre601.advancedserverlist.core.profiles.handlers.PlayerHandler;
@@ -54,6 +55,7 @@ import org.incendo.cloud.suggestion.SuggestionProvider;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -61,7 +63,10 @@ import java.util.Properties;
 public class AdvancedServerList<F>{
     
     public static <F> AdvancedServerList<F> init(PluginCore<F> plugin, PlaceholderProvider... placeholders){
-        return new AdvancedServerList<>(plugin, Arrays.asList(placeholders));
+        List<PlaceholderProvider> providers = new ArrayList<>(Arrays.asList(placeholders));
+        providers.add(new DatePlaceholder());
+        
+        return new AdvancedServerList<>(plugin, providers);
     }
     
     private final PluginCore<F> plugin;

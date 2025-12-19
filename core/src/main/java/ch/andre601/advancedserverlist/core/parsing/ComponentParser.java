@@ -25,8 +25,11 @@
 
 package ch.andre601.advancedserverlist.core.parsing;
 
+import ch.andre601.advancedserverlist.core.compat.miniplaceholders.MiniPlaceholdersUtil;
+import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.function.Function;
@@ -58,6 +61,17 @@ public class ComponentParser{
     public ComponentParser modifyText(Function<String, String> function){
         this.text = function.apply(text);
         
+        return this;
+    }
+    
+    public ComponentParser applyMMTags(PluginCore<?> plugin){
+        if(!plugin.isPluginEnabled("MiniPlaceholders"))
+            return this;
+        
+        TagResolver resolver = MiniPlaceholdersUtil.tagResolvers();
+        Component component = mm.deserialize(this.text, resolver);
+        
+        this.text = mm.serialize(component);
         return this;
     }
     

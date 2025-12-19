@@ -235,5 +235,6 @@ nav:
     - addons/index.md
     - First-party:
       - BanPlugins: addons/first-party/banplugins.md
+      - LuckPerms: addons/first-party/luckperms.md
     - Third-party:
       - SayanVanish: addons/third-party/sayanvanish.md

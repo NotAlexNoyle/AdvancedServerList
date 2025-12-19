@@ -74,6 +74,22 @@ These placeholders require the [Maintenance](https://hangar.papermc.io/kennytv/M
 |-------------------------------------|----------------------------------------------------------------|
 | `${maintenance maintenanceEnabled}` | Returns whether the Global maintenance mode is enabled or not. |
 
+### Date
+
+These placeholders can be used to get the current date or compare it with another.
+
+| Placeholder               | Description                                                                                                               |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `${date current}`         | Returns the current date.                                                                                                 |
+| `${date isBefore <date>}` | Returns, whether the current date is before the specified one. The specified date needs to match the date pattern used.   |
+| `${date isExact <date>}`  | Returns, whether the current date is equal to the specified one. The specified date needs to match the date pattern used. |
+| `${date isAfter <date>}`  | Returns, whether the current date is after the specified one. The specified date needs to match the date pattern used.    |
+
+/// note
+Each placeholder accepts an optional date pattern that follows Java's SimpleDateFormat structure.  
+If none is provided does each default to `dd/MM/yyyy`
+///
+
 ## Adding your own Placeholders
 
 Thanks to the API of AdvancedServerList are you able to add your own Placeholders that can be used using the `${identifier value}` pattern.  

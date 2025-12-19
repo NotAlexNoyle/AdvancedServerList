@@ -225,6 +225,7 @@ public class PaperEventWrapper implements GenericEventWrapper<CachedServerIcon, 
             String parsed = ComponentParser.text(line)
                 .modifyText(text -> StringReplacer.replace(text, player, server))
                 .modifyText(text -> parsePAPIPlaceholders(text, player))
+                .applyMMTags(plugin())
                 .toString();
             
             playerList.add(function.apply(parsed));
