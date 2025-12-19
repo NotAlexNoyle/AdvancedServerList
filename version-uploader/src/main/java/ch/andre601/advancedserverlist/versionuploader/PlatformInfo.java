@@ -33,7 +33,8 @@ public enum PlatformInfo{
         "paper",
         List.of(
             "paper/target/AdvancedServerList-Paper-{{version}}.jar",
-            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar"
+            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar",
+            "addons/luckperms/target/AdvancedServerList-Luckperms-Addon-{{version}}.jar"
         ),
         List.of("Paper", "Folia")
     ),
@@ -41,7 +42,8 @@ public enum PlatformInfo{
         "bungeecord",
         List.of(
             "bungeecord/target/AdvancedServerList-BungeeCord-{{version}}.jar",
-            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar"
+            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar",
+            "addons/luckperms/target/AdvancedServerList-Luckperms-Addon-{{version}}.jar"
         ),
         List.of("BungeeCord", "Waterfall")
     ),
@@ -49,7 +51,8 @@ public enum PlatformInfo{
         "velocity",
         List.of(
             "velocity/target/AdvancedServerList-Velocity-{{version}}.jar",
-            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar"
+            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar",
+            "addons/luckperms/target/AdvancedServerList-Luckperms-Addon-{{version}}.jar"
         ),
         List.of("Velocity")
     );

@@ -40,5 +40,5 @@ public class ReleaseHolder{
         return releases;
     }
     
-    record ReleaseInfo(String type, String platform, String url){}
+    public record ReleaseInfo(String type, String platform, String url){}
 }

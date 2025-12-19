@@ -29,6 +29,7 @@ steps:
         - "paper/target/AdvancedServerList-*.jar"
         - "velocity/target/AdvancedServerList-*.jar"
         - "addons/banplugins/target/AdvancedServerList-*.jar"
+        - "addons/luckperms/target/AdvancedServerList-*.jar"
       api_key:
         from_secret: cb_token
   - name: "Create Post on Mastodon"
