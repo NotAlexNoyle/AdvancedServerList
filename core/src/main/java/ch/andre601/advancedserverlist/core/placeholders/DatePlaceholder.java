@@ -68,7 +68,7 @@ public class DatePlaceholder extends PlaceholderProvider{
         SimpleDateFormat dateFormat;
         try{
             dateFormat = new SimpleDateFormat(format);
-            Date targetDate = dateFormat.parse(format);
+            Date targetDate = dateFormat.parse(targetDateStr);
             int diff = new Date().compareTo(targetDate);
             
             return String.valueOf(function.apply(diff));
