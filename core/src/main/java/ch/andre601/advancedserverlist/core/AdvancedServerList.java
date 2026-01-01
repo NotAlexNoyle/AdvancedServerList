@@ -266,6 +266,7 @@ public class AdvancedServerList<F>{
                             Permission.permission("advancedserverlist.command.profiles.set")
                         )
                     )
+                    .meta(CommandHandler.COMMAND_TYPE, CommandType.Type.ALL)
             );
         }
         
