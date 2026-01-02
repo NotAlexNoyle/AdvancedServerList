@@ -61,7 +61,7 @@ public class DatePlaceholder extends PlaceholderProvider{
         
         String targetDateStr = args[1];
         String format = "dd/MM/yyyy";
-        if(args.length > 3){
+        if(args.length > 2){
             format = format(Arrays.copyOfRange(args, 2, args.length));
         }
         
