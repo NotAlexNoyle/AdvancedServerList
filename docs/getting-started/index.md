@@ -105,6 +105,10 @@ The plugin also supports these additional plugins. They are all optional.
     
     ----
 
+    Official Add-on for AdvancedServerList that adds placeholders for LuckPerms.
+
+    ----
+
     **Supported on:**  
     <!-- icon:all -->
 ///
