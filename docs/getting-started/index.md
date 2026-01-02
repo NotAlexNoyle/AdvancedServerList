@@ -90,7 +90,7 @@ The plugin also supports these additional plugins. They are all optional.
     **Supported on:**  
     <!-- icon:all -->
 
--   [**BanPlugins Addon**][addon]
+-   [**BanPlugins Addon**][banplugins-addon]
     
     ----
     
@@ -100,9 +100,17 @@ The plugin also supports these additional plugins. They are all optional.
 
     **Supported on:**  
     <!-- icon:all -->
+
+-   [**LuckPerms Addon**][luckperms-addon]
+    
+    ----
+
+    **Supported on:**  
+    <!-- icon:all -->
 ///
 
-[addon]: ../addons/first-party/banplugins.md
+[banplugins-addon]: ../addons/first-party/banplugins.md
+[luckperms-addon]: ../addons/first-party/luckperms.md
 
 ## 2. Installation { #installation }
 
