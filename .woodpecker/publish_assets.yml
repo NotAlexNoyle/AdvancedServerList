@@ -4,7 +4,7 @@ when:
 
 steps:
   - name: "Build Jar and Upload"
-    image: maven:3.9.12-eclipse-temurin-21
+    image: maven:3.9.13-eclipse-temurin-21
     environment:
       CODEBERG_API_TOKEN:
         from_secret: cb_token
