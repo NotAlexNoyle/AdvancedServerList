@@ -129,3 +129,13 @@ PlaceholderAPI placeholders can be used both on the Server (Paper) and on the pr
 However, the Proxy version requires the usage of [PAPIProxyBridge] to function properly.
 
 Placeholders can also not be used within the [`condition`](options/condition.md) option of a Server List Profile.
+
+## MiniPlaceholders
+
+/// info | New since `v5.7.0`
+///
+
+Placeholders provided through [MiniPlaceholders](https://modrinth.com/plugin/miniplaceholders) are supported for all text options except [`condition`](options/condition.md).
+
+Note that due to various limitations, only the `global` placeholders/tags - meaning ones that do not require a player - will work.  
+Support also only works for Paper and Velocity.
