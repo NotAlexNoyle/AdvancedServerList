@@ -10,7 +10,7 @@ on:
       - ".forgejo/workflows/deploy_wiki.yml"
       - "docs/**"
       - "domains"
-      - "mkdocs.yml"
+      - "properdocs.yml"
       - "requirements.txt"
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
       - name: "Install Dependencies"
         run: "pip install -r requirements.txt"
       - name: "Build Website"
-        run: "mkdocs build"
+        run: "properdocs build"
       - name: "Commit and Push"
         run: |
           git config --global user.email "andre_601-bot@noreply.codeberg.org"
