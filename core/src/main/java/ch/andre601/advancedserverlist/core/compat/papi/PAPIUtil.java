@@ -40,7 +40,7 @@ public class PAPIUtil{
     private static PAPIUtil instance;
     
     private final ValueCache<CompletableFuture<Set<String>>> serversCache = new ValueCache<>(Duration.ofSeconds(10));
-    private final Cache<UUID, CompletableFuture<String>> textCache = CacheBuilder.newBuilder()
+    private final Cache<CacheKey, CompletableFuture<String>> textCache = CacheBuilder.newBuilder()
         .expireAfterWrite(Duration.ofSeconds(10))
         .build();
     private final PlaceholderAPI papi;
@@ -84,9 +84,11 @@ public class PAPIUtil{
     
     public String parse(String text, UUID carrier, UUID player){
         try{
-            return textCache.get(player, () -> papi.formatPlaceholders(text, carrier, player)).getNow(text);
+            return textCache.get(new CacheKey(player, text), () -> papi.formatPlaceholders(text, carrier, player)).getNow(text);
         }catch(ExecutionException ex){
             return text;
         }
     }
+    
+    private record CacheKey(UUID uuid, String text){}
 }
