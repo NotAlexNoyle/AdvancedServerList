@@ -220,7 +220,11 @@ public class FaviconHandler<F>{
             
             logger.success("Loaded <white>%s</white> local Favicon(s).", localFavicons.size());
         }catch(IOException ex){
-            logger.warn("Encountered IOException while loading local favicons.", ex);
+            if(core.fileHandler().getBool(false, "debug")){
+                logger.warn("Encountered IOException while loading local favicons.", ex);
+            }else{
+                logger.warn("Encountered IOException while loading local favicons. Reason: %s", ex.getMessage());
+            }
         }
     }
     
@@ -236,9 +240,17 @@ public class FaviconHandler<F>{
             
             localFavicons.put(path.getFileName().toString().toLowerCase(Locale.ROOT), new FaviconPair<>(image, favicon));
         }catch(IOException ex){
-            logger.warn("Encountered IOException while creating a Favicon from '%s'.", ex, path.getFileName().toString());
+            if(core.fileHandler().getBool(false, "debug")){
+                logger.warn("Encountered IOException while creating a Favicon from '%s'.", ex, path.getFileName().toString());
+            }else{
+                logger.warn("Encountered IOException while creating a Favicon from '%s'. Reason: %s", path.getFileName().toString(), ex.getMessage());
+            }
         }catch(Exception ex){
-            logger.warn("Encountered an Exceotion while creating a Favicon from '%s'.", ex, path.getFileName().toString());
+            if(core.fileHandler().getBool(false, "debug")){
+                logger.warn("Encountered Exception while creating a Favicon from '%s'.", ex, path.getFileName().toString());
+            }else{
+                logger.warn("Encountered Exception while creating a Favicon from '%s'. Reason: %s", path.getFileName().toString(), ex.getMessage());
+            }
         }
     }
     
@@ -253,14 +265,29 @@ public class FaviconHandler<F>{
             try(InputStream stream = client.send(request, HttpResponse.BodyHandlers.ofInputStream()).body()){
                 return createBufferedImage(stream);
             }catch(IOException ex){
-                logger.warn("Encountered IOException while performing a web request for '%s'.", ex, url);
+                if(core.fileHandler().getBool(false, "debug")){
+                    logger.warn("Encountered IOException while performing a web request for '%s'.", ex, url);
+                }else{
+                    logger.warn("Encountered IOException while performing a web request for '%'. Reason: %s", url, ex.getMessage());
+                }
+                
                 return null;
             }catch(InterruptedException ex){
-                logger.warn("Encountered an InterruptedException while performing a web request for '%s'.", ex, url);
+                if(core.fileHandler().getBool(false, "debug")){
+                    logger.warn("Encountered an InterruptedException while performing a web request for '%s'.", ex, url);
+                }else{
+                    logger.warn("Encountered an InterruptedException while performing a web request for '%s'. Reason: %s", url, ex.getMessage());
+                }
+                
                 return null;
             }
         }catch(URISyntaxException ex){
-            logger.warn("Received URISyntaxException for URL '%s'", ex, url);
+            if(core.fileHandler().getBool(false, "debug")){
+                logger.warn("Encountered an URISyntaxException while performing a web request for '%s'.", ex, url);
+            }else{
+                logger.warn("Encountered an URISyntaxException while performing a web request for '%s'. Reason: %s", url, ex.getMessage());
+            }
+                
             return null;
         }
     }
@@ -320,7 +347,11 @@ public class FaviconHandler<F>{
         try{
             return core.plugin().createFavicon(image);
         }catch(Exception ex){
-            logger.warn("Encountered an Exception while trying to create a Favicon instance.", ex);
+            if(core.fileHandler().getBool(false, "debug")){
+                logger.warn("Encountered an Exception while trying to create a Favicon instance.", ex);
+            }else{
+                logger.warn("Encountered an Exception while trying to create a Favicon instance. Reason: %s", ex.getMessage());
+            }
             return null;
         }
     }
