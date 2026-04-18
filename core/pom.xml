@@ -174,7 +174,7 @@
         <dependency>
             <groupId>eu.kennytv.maintenance</groupId>
             <artifactId>maintenance-api</artifactId>
-            <version>4.2.1</version>
+            <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
