@@ -473,7 +473,7 @@ faviconCacheTime: 1
 #
 # Setting any not listed option or leaving this blank/removing it sets the option to resize.
 #
-faviconStrategy: 'resize'
+faviconResizeStrategy: 'resize'
 
 #
 # Options to disable while the Maintenance Plugin is present and Maintenance Mode is active.
@@ -543,7 +543,7 @@ disableDuringMaintenance:
 # This is used internally to determine if the config needs to be migrated.
 # Changing or even removing this option could result in your config being broken.
 #
-configVersion: 9
+configVersion: 10
 ```
 ///
 
