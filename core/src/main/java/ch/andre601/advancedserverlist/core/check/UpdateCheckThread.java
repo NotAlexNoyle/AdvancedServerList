@@ -25,13 +25,13 @@
 
 package ch.andre601.advancedserverlist.core.check;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.ThreadFactory;
 
 public class UpdateCheckThread implements ThreadFactory{
     @Override
-    public Thread newThread(@NotNull Runnable r){
+    public Thread newThread(@NonNull Runnable r){
         Thread t = new Thread(r, "AdvancedServerList-UpdateThread");
         t.setDaemon(true);
         return t;

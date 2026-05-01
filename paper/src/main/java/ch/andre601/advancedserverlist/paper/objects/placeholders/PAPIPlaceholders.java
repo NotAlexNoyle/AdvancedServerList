@@ -41,7 +41,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,17 +58,17 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
     }
     
     @Override
-    public @NotNull String getIdentifier(){
+    public @NonNull String getIdentifier(){
         return "asl";
     }
     
     @Override
-    public @NotNull String getAuthor(){
+    public @NonNull String getAuthor(){
         return "Andre601";
     }
     
     @Override
-    public @NotNull String getVersion(){
+    public @NonNull String getVersion(){
         return plugin.core().version();
     }
     
@@ -78,7 +78,7 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
     }
     
     @Override
-    public String onPlaceholderRequest(Player pl, @NotNull String identifier){
+    public String onPlaceholderRequest(Player pl, @NonNull String identifier){
         String host = pl.getVirtualHost() == null ? null : pl.getVirtualHost().getHostString();
         CachedPlayer cached = plugin.core().playerHandler().getCachedPlayer(pl.getUniqueId());
         

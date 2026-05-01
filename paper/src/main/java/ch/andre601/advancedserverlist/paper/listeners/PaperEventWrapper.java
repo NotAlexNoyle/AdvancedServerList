@@ -35,11 +35,9 @@ import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.replacer.StringReplacer;
 import ch.andre601.advancedserverlist.paper.PaperCore;
-import ch.andre601.advancedserverlist.paper.objects.FakePlayerProfile;
 import ch.andre601.advancedserverlist.paper.objects.impl.PaperPlayerImpl;
 import ch.andre601.advancedserverlist.paper.objects.impl.PaperServerImpl;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
-import com.destroystokyo.paper.profile.PlayerProfile;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -101,8 +99,7 @@ public class PaperEventWrapper implements GenericEventWrapper<CachedServerIcon, 
             Class.forName("com.destroystokyo.paper.event.server.PaperServerListPingEvent$ListedPlayerInfo");
             setListedPlayers(lines, player, server);
         }catch(ClassNotFoundException ex){
-            // Version before latest 1.20.6 builds(?)
-            setPlayerSample(lines, player, server);
+            plugin.pluginLogger().warn("playerCount -> hover is not supported on this Paper Version!");
         }
     }
     
@@ -112,7 +109,7 @@ public class PaperEventWrapper implements GenericEventWrapper<CachedServerIcon, 
             Class.forName("com.destroystokyo.paper.event.server.PaperServerListPingEvent$ListedPlayerInfo");
             clearListedPlayers();
         }catch(ClassNotFoundException ex){
-            clearPlayerSample();
+            plugin.pluginLogger().warn("playerCount -> hidePlayers is not supported on this Paper Version!");
         }
     }
     
@@ -204,19 +201,6 @@ public class PaperEventWrapper implements GenericEventWrapper<CachedServerIcon, 
             text -> new PaperServerListPingEvent.ListedPlayerInfo(text, UUID.randomUUID()));
         
         event.getListedPlayers().addAll(playerList);
-    }
-    
-    @SuppressWarnings({"Deprecation", "removal"})
-    private void clearPlayerSample(){
-        event.getPlayerSample().clear();
-    }
-    
-    @SuppressWarnings({"Deprecation", "removal"})
-    private void setPlayerSample(List<String> lines, PaperPlayerImpl player, GenericServer server){
-        clearPlayerSample();
-        List<PlayerProfile> playerProfiles = getPlayerList(lines, player, server, FakePlayerProfile::create);
-        
-        event.getPlayerSample().addAll(playerProfiles);
     }
     
     private <T> List<T> getPlayerList(List<String> lines, PaperPlayerImpl player, GenericServer server, Function<String, T> function){
