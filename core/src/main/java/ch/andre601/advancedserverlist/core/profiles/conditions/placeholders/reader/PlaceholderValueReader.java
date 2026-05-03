@@ -37,8 +37,8 @@ import java.util.List;
 public class PlaceholderValueReader extends ValueReader{
     @Override
     public ExpressionTemplate read(ExpressionTemplateParser parser, List<Token> tokens, ParseWarnCollector collector){
-        if(tokens.get(0) instanceof PlaceholderToken){
-            PlaceholderToken token = (PlaceholderToken)tokens.remove(0);
+        if(tokens.getFirst() instanceof PlaceholderToken){
+            PlaceholderToken token = (PlaceholderToken)tokens.removeFirst();
             return token.getValue();
         }
         return null;

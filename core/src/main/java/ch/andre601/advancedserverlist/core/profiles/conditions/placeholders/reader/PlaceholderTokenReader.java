@@ -31,19 +31,38 @@ import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.toke
 import ch.andre601.advancedserverlist.core.profiles.replacer.StringReplacer;
 import ch.andre601.expressionparser.ParseWarnCollector;
 import ch.andre601.expressionparser.tokens.Token;
+import ch.andre601.expressionparser.tokens.readers.TokenReader;
 
 import java.text.ParsePosition;
 
-public class PlaceholderTokenReader extends CustomTokenReader{
+public class PlaceholderTokenReader extends TokenReader{
     
     public PlaceholderTokenReader(int priority){
         super(priority);
     }
     
     @Override
-    public Token read(String text, ParsePosition position, GenericPlayer player, GenericServer server, ParseWarnCollector collector){
+    public Token read(String text, ParsePosition position, ParseWarnCollector collector, Object... args){
+        GenericPlayer player = null;
+        GenericServer server = null;
+        
+        for(Object arg : args){
+            if(arg instanceof GenericPlayer pl){
+                player = pl;
+            }else
+            if(arg instanceof GenericServer srv){
+                server = srv;
+            }
+        }
+        
+        if(player == null || server == null){
+            collector.appendWarning(position.getIndex(), "Received null GenericPlayer or GenericServer instance.");
+            return null;
+        }
+        
         if(position.getIndex() + 1 < text.length() && text.charAt(position.getIndex()) == '$' && text.charAt(position.getIndex() + 1) == '{'){
             position.setIndex(position.getIndex() + 2);
+            
             return new PlaceholderToken(StringReplacer.parsePlaceholder(text, position, player, server, collector));
         }
         return null;

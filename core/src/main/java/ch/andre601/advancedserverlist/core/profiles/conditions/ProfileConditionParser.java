@@ -25,16 +25,15 @@
 
 package ch.andre601.advancedserverlist.core.profiles.conditions;
 
-import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
-import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.reader.PlaceholderTokenReader;
 import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.reader.PlaceholderValueReader;
-import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.tokens.CustomExpressionTokenizer;
 import ch.andre601.expressionparser.ExpressionParserEngine;
 import ch.andre601.expressionparser.ParseWarnCollector;
+import ch.andre601.expressionparser.expressions.ExpressionTokenizer;
 import ch.andre601.expressionparser.operator.Operator;
 import ch.andre601.expressionparser.parsers.ExpressionTemplateParser;
 import ch.andre601.expressionparser.parsers.ValueReader;
+import ch.andre601.expressionparser.templates.ConstantExpressionTemplate;
 import ch.andre601.expressionparser.templates.ExpressionTemplate;
 import ch.andre601.expressionparser.tokens.Token;
 import ch.andre601.expressionparser.tokens.readers.TokenReader;
@@ -45,11 +44,11 @@ import java.util.List;
 
 public class ProfileConditionParser implements ExpressionParserEngine{
     
-    private final CustomExpressionTokenizer tokenizer;
+    private final ExpressionTokenizer tokenizer;
     private final ExpressionTemplateParser parser;
     
     private ProfileConditionParser(List<TokenReader> tokenReaders, ImmutableMap<Token, Operator> operators, ImmutableList<ValueReader> valueReaders){
-        this.tokenizer = new CustomExpressionTokenizer(tokenReaders);
+        this.tokenizer = new ExpressionTokenizer(tokenReaders);
         this.parser = new ExpressionTemplateParser(operators, valueReaders);
     }
     
@@ -60,17 +59,13 @@ public class ProfileConditionParser implements ExpressionParserEngine{
             .build();
     }
     
-    public boolean evaluate(String text, GenericPlayer player, GenericServer server, ParseWarnCollector collector){
-        ExpressionTemplate result = parser.parse(tokenizer.parse(text, player, server, collector), collector);
-        if(result == null)
-            return false;
-        
-        return result.returnBooleanExpression().evaluate();
-    }
-    
     @Override
-    public ExpressionTemplate compile(String s, ParseWarnCollector parseWarnCollector){
-        return null;
+    public ExpressionTemplate compile(String text, ParseWarnCollector collector, Object... args){
+        ExpressionTemplate result = parser.parse(tokenizer.parse(text, collector, args), collector);
+        if(result == null)
+            return ConstantExpressionTemplate.of(false);
+        
+        return result;
     }
     
     private static class ProfileConditionParserBuilder extends ExpressionParserEngine.Builder<ProfileConditionParser>{

@@ -48,7 +48,16 @@ public record ServerListProfile(int priority, String condition, ProfileEntry def
         ParseWarnCollector collector = new ParseWarnCollector(condition);
         PluginLogger logger = core.plugin().pluginLogger();
         
-        boolean result = core.parser().evaluate(condition, player, server, collector);
+        boolean result;
+        try{
+            result = core.parser().compileToBoolean(condition, collector, player, server);
+        }catch(Exception ex){
+            logger.warn("Encountered an Exception while parsing condition '%s'. Cause: %s", condition, ex.getMessage());
+            if(core.fileHandler().getBool(false, "debug"))
+                logger.warn("Stacktrace:", ex);
+            
+            return false;
+        }
         
         if(collector.hasWarnings()){
             logger.warn("Encountered <white>%d</white> Error(s) while parsing condition for file '<white>%s</white>':", collector.getWarnings().size(), file);
@@ -70,7 +79,7 @@ public record ServerListProfile(int priority, String condition, ProfileEntry def
         }
         
         if(profiles.size() == 1)
-            return profiles.get(0); // No need to run a random for 1 profile.
+            return profiles.getFirst(); // No need to run a random for 1 profile.
         
         synchronized(random){
             return profiles.get(random.nextInt(profiles.size()));

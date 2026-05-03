@@ -25,11 +25,16 @@
 
 package ch.andre601.advancedserverlist.core;
 
+import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
+import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.core.profiles.conditions.ProfileConditionParser;
 import ch.andre601.expressionparser.ParseWarnCollector;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,13 +44,16 @@ public class ExpressionParserTests{
     private final DummyPluginLogger logger = new DummyPluginLogger();
     private final Map<String, Boolean> testValuesMap = getTestMap();
     
+    private final TestPlayer player = new TestPlayer();
+    private final TestServer server = new TestServer();
+    
     @Test
     public void testBasicExpressionResults(){
         for(Map.Entry<String, Boolean> values : testValuesMap.entrySet()){
             logger.info("TEST[expression=\"%s\", expected=%b]", values.getKey(), values.getValue());
             
             ParseWarnCollector collector = new ParseWarnCollector(values.getKey());
-            boolean result = parser.evaluate(values.getKey(), null, null, collector);
+            boolean result = parser.compileToBoolean(values.getKey(), collector, player, server);
             
             logger.info("Result (Output, Expected?): %b, %b", result, (result == values.getValue()));
             assertEquals(result, values.getValue());
@@ -65,5 +73,39 @@ public class ExpressionParserTests{
             "true or 100 > 10", true,
             "false or 100 < 10", false
         );
+    }
+    
+    private static class TestPlayer implements GenericPlayer{
+        @Override
+        public @NonNull String getName(){
+            return "Lorem";
+        }
+        
+        @Override
+        public int getProtocol(){
+            return 1;
+        }
+        
+        @Override
+        public @NonNull UUID getUUID(){
+            return UUID.randomUUID();
+        }
+    }
+    
+    private static class TestServer implements GenericServer{
+        @Override
+        public int getPlayersOnline(){
+            return 10;
+        }
+        
+        @Override
+        public int getPlayersMax(){
+            return 20;
+        }
+        
+        @Override
+        public @Nullable String getHost(){
+            return "play.example.com";
+        }
     }
 }

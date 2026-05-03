@@ -41,7 +41,7 @@
         
         <project.build.build_id/>
         
-        <plugin.version>5.7.3</plugin.version>
+        <plugin.version>5.8.0</plugin.version>
         <plugin.description>Create multiple Server lists based on conditions.</plugin.description>
         
         <api.version>4.1.1</api.version>
