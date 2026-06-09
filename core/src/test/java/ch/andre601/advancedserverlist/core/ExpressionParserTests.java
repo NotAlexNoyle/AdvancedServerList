@@ -27,7 +27,7 @@ package ch.andre601.advancedserverlist.core;
 
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
-import ch.andre601.advancedserverlist.core.profiles.conditions.ProfileConditionParser;
+import ch.andre601.expressionparser.DefaultExpressionParserEngine;
 import ch.andre601.expressionparser.ParseWarnCollector;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExpressionParserTests{
     
-    private final ProfileConditionParser parser = ProfileConditionParser.create();
+    private final DefaultExpressionParserEngine parser = DefaultExpressionParserEngine.createDefault();
     private final DummyPluginLogger logger = new DummyPluginLogger();
     private final Map<String, Boolean> testValuesMap = getTestMap();
     

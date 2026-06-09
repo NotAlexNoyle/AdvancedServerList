@@ -23,9 +23,9 @@
  *
  */
 
-package ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.reader;
+package ch.andre601.advancedserverlist.core.profiles.conditions.reader;
 
-import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.tokens.PlaceholderToken;
+import ch.andre601.advancedserverlist.core.profiles.conditions.tokens.PlaceholderToken;
 import ch.andre601.expressionparser.ParseWarnCollector;
 import ch.andre601.expressionparser.parsers.ExpressionTemplateParser;
 import ch.andre601.expressionparser.parsers.ValueReader;

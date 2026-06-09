@@ -28,16 +28,14 @@ package ch.andre601.advancedserverlist.versionuploader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReleaseHolder{
+public record ReleaseHolder(List<ReleaseInfo> releases){
     
-    private final List<ReleaseInfo> releases = new ArrayList<>();
+    public static ReleaseHolder create(){
+        return new ReleaseHolder(new ArrayList<>());
+    }
     
     public void addRelease(String type, String platform, String url){
         releases.add(new ReleaseInfo(type, platform, url));
-    }
-    
-    public List<ReleaseInfo> getReleases(){
-        return releases;
     }
     
     public record ReleaseInfo(String type, String platform, String url){}

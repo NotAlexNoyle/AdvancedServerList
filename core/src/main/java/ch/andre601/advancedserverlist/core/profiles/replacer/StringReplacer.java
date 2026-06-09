@@ -30,7 +30,7 @@ import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
-import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.tokens.PlaceholderToken;
+import ch.andre601.advancedserverlist.core.profiles.conditions.tokens.PlaceholderToken;
 import ch.andre601.expressionparser.ParseWarnCollector;
 
 import java.text.ParsePosition;

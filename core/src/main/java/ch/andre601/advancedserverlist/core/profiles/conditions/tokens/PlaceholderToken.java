@@ -23,7 +23,7 @@
  *
  */
 
-package ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.tokens;
+package ch.andre601.advancedserverlist.core.profiles.conditions.tokens;
 
 import ch.andre601.expressionparser.expressions.ToBooleanExpression;
 import ch.andre601.expressionparser.expressions.ToDoubleExpression;

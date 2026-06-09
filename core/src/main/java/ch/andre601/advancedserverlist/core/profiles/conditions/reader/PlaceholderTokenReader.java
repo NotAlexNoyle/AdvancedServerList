@@ -23,11 +23,11 @@
  *
  */
 
-package ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.reader;
+package ch.andre601.advancedserverlist.core.profiles.conditions.reader;
 
 import ch.andre601.advancedserverlist.api.objects.GenericPlayer;
 import ch.andre601.advancedserverlist.api.objects.GenericServer;
-import ch.andre601.advancedserverlist.core.profiles.conditions.placeholders.tokens.PlaceholderToken;
+import ch.andre601.advancedserverlist.core.profiles.conditions.tokens.PlaceholderToken;
 import ch.andre601.advancedserverlist.core.profiles.replacer.StringReplacer;
 import ch.andre601.expressionparser.ParseWarnCollector;
 import ch.andre601.expressionparser.tokens.Token;
@@ -37,8 +37,8 @@ import java.text.ParsePosition;
 
 public class PlaceholderTokenReader extends TokenReader{
     
-    public PlaceholderTokenReader(int priority){
-        super(priority);
+    public PlaceholderTokenReader(){
+        super(-20);
     }
     
     @Override

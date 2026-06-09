@@ -53,7 +53,28 @@ public class VersionUploader{
         
         if(args.length == 0){
             LOGGER.warn("MISSING ARGUMENT!");
-            LOGGER.warn("Usage: java -jar VersionUploader.jar <--help | --all | --modrinth | --hangar> [--dryrun]");
+            LOGGER.warn("Usage: java -jar VersionUploader.jar <help|upload <platform> [--dryrun]>");
+            System.exit(1);
+            return;
+        }
+        
+        if(args[0].equalsIgnoreCase("help")){
+            LOGGER.info("Usage: java -jar VersionUploader.jar <command>");
+            LOGGER.info("");
+            LOGGER.info("Commands:");
+            LOGGER.info("  help                          Prints this help page and exits.");
+            LOGGER.info("  upload <platform> [--dryrun]  Uploads to the specified platform.");
+            LOGGER.info("");
+            LOGGER.info("Upload Arguments:");
+            LOGGER.info("  <platform>  The platforms to upload to. Allowed are all, modrinth and hangar.");
+            LOGGER.info("  --dryrun    Do not upload and instead print the generated JSON.");
+            System.exit(0);
+            return;
+        }
+        
+        if(!args[0].equalsIgnoreCase("upload")){
+            LOGGER.warn("Unknown command {}.", args[0]);
+            LOGGER.warn("Use 'java -jar VersionUploader.jar help' for available commands.");
             System.exit(1);
             return;
         }
@@ -67,37 +88,22 @@ public class VersionUploader{
         }
         
         boolean dryrun = false;
-        if(args.length >= 2){
-            dryrun = args[1].equalsIgnoreCase("--dryrun");
+        if(args.length >= 3){
+            dryrun = args[2].equalsIgnoreCase("--dryrun");
         }
         
         CompletableFuture<?> future;
-        ReleaseHolder releaseHolder = new ReleaseHolder();
-        switch(args[0].toLowerCase(Locale.ROOT)){
-            case "--modrinth" -> future = new ModrinthVersionUploader().performUpload(release, releaseHolder, dryrun);
-            case "--hangar" -> future = new HangarVersionUploader().performUpload(release, releaseHolder, dryrun);
-            case "--all" -> future = CompletableFuture.allOf(
+        ReleaseHolder releaseHolder = ReleaseHolder.create();
+        switch(args[1].toLowerCase(Locale.ROOT)){
+            case "modrinth" -> future = new ModrinthVersionUploader().performUpload(release, releaseHolder, dryrun);
+            case "hangar" -> future = new HangarVersionUploader().performUpload(release, releaseHolder, dryrun);
+            case "all" -> future = CompletableFuture.allOf(
                 new ModrinthVersionUploader().performUpload(release, releaseHolder, dryrun),
                 new HangarVersionUploader().performUpload(release, releaseHolder, dryrun)
             );
-            case "--help" -> {
-                LOGGER.info("Usage: java -jar VersionUploader.jar <command> [args]");
-                LOGGER.info("");
-                LOGGER.info("Commands:");
-                LOGGER.info("  --help      Prints this help page and exits.");
-                LOGGER.info("  --all       Performs an upload to all sites.");
-                LOGGER.info("  --modrinth  Performs an upload to Modrinth.");
-                LOGGER.info("  --hangar    Performs an upload to Hangar.");
-                LOGGER.info("");
-                LOGGER.info("Arguments:");
-                LOGGER.info("  --dryrun  Prints the JSON in console while not uploading to any platform.");
-                LOGGER.info("");
-                System.exit(0);
-                return;
-            }
             default -> {
-                LOGGER.warn("Unknown argument '{}' provided.", args[0]);
-                LOGGER.warn("Usage: java -jar VersionUploader.jar <--help | --all | --modrinth | --hangar> [--dryrun]");
+                LOGGER.warn("Unknown argument '{}' provided.", args[1]);
+                LOGGER.warn("Usage: java -jar VersionUploader.jar upload <all|hangar|modrinth> [--dryrun]");
                 System.exit(1);
                 return;
             }
@@ -121,7 +127,7 @@ public class VersionUploader{
             System.exit(1);
         }
         
-        if(releaseHolder.getReleases().isEmpty()){
+        if(releaseHolder.releases().isEmpty()){
             LOGGER.warn("No releases to share on Discord... Skipping.");
             return;
         }
@@ -147,7 +153,7 @@ public class VersionUploader{
         
         StringJoiner modrinthText = new StringJoiner("\n");
         String hangarText = null;
-        for(ReleaseHolder.ReleaseInfo info : releaseHolder.getReleases()){
+        for(ReleaseHolder.ReleaseInfo info : releaseHolder.releases()){
             String text = String.format("[%s](%s)", info.platform(), info.url());
             
             if(info.type().equalsIgnoreCase("modrinth")){

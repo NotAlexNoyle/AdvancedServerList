@@ -38,8 +38,10 @@ import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
 import ch.andre601.advancedserverlist.core.parsing.TextCenterUtil;
 import ch.andre601.advancedserverlist.core.placeholders.DatePlaceholder;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
-import ch.andre601.advancedserverlist.core.profiles.conditions.ProfileConditionParser;
+import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderTokenReader;
+import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderValueReader;
 import ch.andre601.advancedserverlist.core.profiles.handlers.PlayerHandler;
+import ch.andre601.expressionparser.DefaultExpressionParserEngine;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.description.Description;
@@ -75,7 +77,11 @@ public class AdvancedServerList<F>{
     private final TextCenterUtil textCenterUtil;
     
     private static final AdvancedServerListAPI api = AdvancedServerListAPI.get();
-    private final ProfileConditionParser parser = ProfileConditionParser.create();
+    private final DefaultExpressionParserEngine parser = new DefaultExpressionParserEngine.DefaultBuilder()
+        .addDefaults()
+        .addTokenReader(new PlaceholderTokenReader())
+        .addValueReader(new PlaceholderValueReader())
+        .build();
     
     private UpdateChecker updateChecker;
     
@@ -120,7 +126,7 @@ public class AdvancedServerList<F>{
         return version;
     }
     
-    public ProfileConditionParser parser(){
+    public DefaultExpressionParserEngine parser(){
         return parser;
     }
     
