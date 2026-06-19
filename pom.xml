@@ -55,10 +55,10 @@
         <dependency.configurate-yaml>4.2.0</dependency.configurate-yaml>
         <!-- Cloud versions -->
         <dependency.cloud-annotations>2.0.0</dependency.cloud-annotations>
-        <dependency.cloud-bungee>2.0.0-beta.15</dependency.cloud-bungee>
-        <dependency.cloud-paper>2.0.0-beta.15</dependency.cloud-paper>
-        <dependency.cloud-velocity>2.0.0-beta.15</dependency.cloud-velocity>
-        <dependency.cloud-minecraft-extras>2.0.0-beta.15</dependency.cloud-minecraft-extras>
+        <dependency.cloud-bungee>2.0.0-beta.16</dependency.cloud-bungee>
+        <dependency.cloud-paper>2.0.0-beta.16</dependency.cloud-paper>
+        <dependency.cloud-velocity>2.0.0-beta.16</dependency.cloud-velocity>
+        <dependency.cloud-minecraft-extras>2.0.0-beta.16</dependency.cloud-minecraft-extras>
     </properties>
     
     <profiles>
