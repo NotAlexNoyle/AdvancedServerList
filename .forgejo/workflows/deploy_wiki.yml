@@ -15,7 +15,7 @@ on:
 
 jobs:
   deployWiki:
-    runs-on: codeberg-tiny
+    runs-on: codeberg-small
     steps:
       - name: "Checkout Repository"
         uses: https://code.forgejo.org/actions/checkout@v7
