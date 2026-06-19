@@ -18,7 +18,7 @@ jobs:
     runs-on: codeberg-tiny
     steps:
       - name: "Checkout Repository"
-        uses: https://code.forgejo.org/actions/checkout@v6
+        uses: https://code.forgejo.org/actions/checkout@v7
         with:
           token: "${{ secrets.BOT_TOKEN }}"
       - name: "Setup Python 3.x"
