@@ -20,7 +20,7 @@ env:
 
 jobs:
   createPreview:
-    runs-on: codeberg-tiny
+    runs-on: codeberg-small
     steps:
       #
       # Finding and updating comment in Pull request.
