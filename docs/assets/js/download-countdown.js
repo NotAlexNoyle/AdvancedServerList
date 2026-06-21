@@ -21,6 +21,8 @@ document$.subscribe(async () => {
         link.appendChild(linkText);
         link.title = "Visit Modrinth";
         link.href = "https://modrinth.com/plugin/advancedserverlist";
+        link.target = "_blank";
+        link.rel = "nofollow";
 
         count.appendChild(link);
     }
