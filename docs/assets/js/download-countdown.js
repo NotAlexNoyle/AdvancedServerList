@@ -26,7 +26,7 @@ document$.subscribe(async () => {
     }
 
     async function fetchDownloads() {
-        const data = await fetch('https://api.modrinth.com/v2/project/advancedserverlist')
+        const data = await fetch('https://api.modrinth.com/v3/project/advancedserverlist')
             .then(_ => _.json());
         
         const downloads = data.downloads
