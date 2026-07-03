@@ -95,7 +95,6 @@ public class HangarVersionUploader{
         
         final List<Path> filePaths = List.of(
             new File(PlatformInfo.PAPER.getFilePaths().get(0).replace("{{version}}", pluginVersion)).toPath(),
-            new File(PlatformInfo.BUNGEECORD.getFilePaths().get(0).replace("{{version}}", pluginVersion)).toPath(),
             new File(PlatformInfo.VELOCITY.getFilePaths().get(0).replace("{{version}}", pluginVersion)).toPath()
         );
         
@@ -103,11 +102,6 @@ public class HangarVersionUploader{
             Dependency.fromNamespace("ViaVersion", false),
             Dependency.fromNamespace("Maintenance", false),
             Dependency.fromNamespace("PlaceholderAPI", false),
-            Dependency.fromUrl("ServerListPlus", "https://github.com/Minecrell/ServerListPlus", false)
-        );
-        final List<Dependency> bungeeDependencies = List.of(
-            Dependency.fromNamespace("PapiProxyBridge", false),
-            Dependency.fromNamespace("Maintenance", false),
             Dependency.fromUrl("ServerListPlus", "https://github.com/Minecrell/ServerListPlus", false)
         );
         final List<Dependency> velocityDependencies = List.of(
@@ -118,7 +112,6 @@ public class HangarVersionUploader{
         
         final List<MultipartObject> fileInfo = List.of(
             new MultipartObject(Collections.singletonList(Platform.PAPER), null),
-            new MultipartObject(Collections.singletonList(Platform.WATERFALL), null),
             new MultipartObject(Collections.singletonList(Platform.VELOCITY), null)
         );
         
@@ -126,12 +119,10 @@ public class HangarVersionUploader{
             releaseVersion,
             Map.of(
                 Platform.PAPER, paperDependencies,
-                Platform.WATERFALL, bungeeDependencies,
                 Platform.VELOCITY, velocityDependencies
             ),
             Map.of(
                 Platform.PAPER, List.of("1.20.6", "1.21.x"),
-                Platform.WATERFALL, List.of("1.19.x", "1.20.x", "1.21"),
                 Platform.VELOCITY, List.of("3.2", "3.3", "3.4")
             ),
             changelog.replaceAll("\r\n", "\n"),

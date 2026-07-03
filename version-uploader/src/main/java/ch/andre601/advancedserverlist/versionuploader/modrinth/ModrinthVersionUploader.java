@@ -50,12 +50,13 @@ public class ModrinthVersionUploader{
     
     private final List<PlatformInfo> platforms = List.of(
         PlatformInfo.PAPER,
-        PlatformInfo.BUNGEECORD,
         PlatformInfo.VELOCITY
     );
     private final List<String> paperVersions = List.of(
         "1.20.6",
-        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.9", "1.21.10", "1.21.11"
+        "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.9", "1.21.10", "1.21.11",
+        "26.1", "26.1.1", "26.1.2",
+        "26.2"
     );
     private final List<String> versions = List.of(
         "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
@@ -94,10 +95,6 @@ public class ModrinthVersionUploader{
             new ProjectVersion.ProjectDependency(null, "P1OZGk5p", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // ViaVersion
             new ProjectVersion.ProjectDependency(null, "HQyibRsN", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // MiniPlaceholders
         );
-        List<ProjectVersion.ProjectDependency> bungeeDependencies = List.of(
-            new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
-            new ProjectVersion.ProjectDependency(null, "bEIUEGTX", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // PAPIProxyBridge
-        );
         List<ProjectVersion.ProjectDependency> velocityDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
             new ProjectVersion.ProjectDependency(null, "bEIUEGTX", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // PAPIProxyBridge
@@ -126,7 +123,6 @@ public class ModrinthVersionUploader{
             
             switch(platformInfo){
                 case PAPER -> builder.dependencies(paperDependencies);
-                case BUNGEECORD -> builder.dependencies(bungeeDependencies);
                 case VELOCITY -> builder.dependencies(velocityDependencies);
             }
             

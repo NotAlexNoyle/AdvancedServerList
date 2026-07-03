@@ -27,6 +27,5 @@ package ch.andre601.advancedserverlist.versionuploader.hangar.version;
 
 public enum Platform{
     PAPER,
-    WATERFALL,
     VELOCITY
 }

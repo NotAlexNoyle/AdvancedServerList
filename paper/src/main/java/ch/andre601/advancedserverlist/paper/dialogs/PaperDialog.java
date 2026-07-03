@@ -3,6 +3,7 @@ package ch.andre601.advancedserverlist.paper.dialogs;
 import ch.andre601.advancedserverlist.api.objects.NullBool;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
+import ch.andre601.advancedserverlist.core.commands.CmdProfiles;
 import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
@@ -77,26 +78,26 @@ public class PaperDialog implements IDialog<Dialog>{
     }
     
     private void handle(Audience audience, DialogResponseView view, ServerListProfile slp, int profilesPosition){
-        Float priority = view.getFloat("priority");
-        String condition = view.getText("condition");
+        Float priority = view.getFloat(CmdProfiles.ProfileOption.PRIORITY.toDialogKey());
+        String condition = view.getText(CmdProfiles.ProfileOption.CONDITION.toDialogKey());
         
-        String motd = view.getText("motd");
-        String favicon = view.getText("favicon");
+        String motd = view.getText(CmdProfiles.ProfileOption.MOTD.toDialogKey());
+        String favicon = view.getText(CmdProfiles.ProfileOption.FAVICON.toDialogKey());
         
-        NullBool hidePlayers = NullBool.resolve(view.getBoolean("hidePlayers"));
-        NullBool hidePlayersHover = NullBool.resolve(view.getBoolean("hidePlayersHover"));
+        NullBool hidePlayers = NullBool.resolve(view.getBoolean(CmdProfiles.ProfileOption.PLAYERCOUNT_HIDEPLAYERS.toDialogKey()));
+        NullBool hidePlayersHover = NullBool.resolve(view.getBoolean(CmdProfiles.ProfileOption.PLAYERCOUNT_HIDEPLAYERSHOVER.toDialogKey()));
         
-        String hover = view.getText("hover");
-        String playerCountText = view.getText("text");
+        String hover = view.getText(CmdProfiles.ProfileOption.PLAYERCOUNT_HOVER.toDialogKey());
+        String playerCountText = view.getText(CmdProfiles.ProfileOption.PLAYERCOUNT_TEXT.toDialogKey());
         
-        NullBool extraPlayersEnabled = NullBool.resolve(view.getBoolean("extraPlayersEnabled"));
-        String extraPlayersCount = view.getText("extraPlayersCount");
+        NullBool extraPlayersEnabled = NullBool.resolve(view.getBoolean(CmdProfiles.ProfileOption.PLAYERCOUNT_EXTRAPLAYERS_ENABLED.toDialogKey()));
+        String extraPlayersCount = view.getText(CmdProfiles.ProfileOption.PLAYERCOUNT_EXTRAPLAYERS_AMOUNT.toDialogKey());
         
-        NullBool maxPlayersEnabled = NullBool.resolve(view.getBoolean("maxPlayersEnabled"));
-        String maxPlayersCount = view.getText("maxPlayersCount");
+        NullBool maxPlayersEnabled = NullBool.resolve(view.getBoolean(CmdProfiles.ProfileOption.PLAYERCOUNT_MAXPLAYERS_ENABLED.toDialogKey()));
+        String maxPlayersCount = view.getText(CmdProfiles.ProfileOption.PLAYERCOUNT_MAXPLAYERS_AMOUNT.toDialogKey());
         
-        NullBool onlinePlayersEnabled = NullBool.resolve(view.getBoolean("onlinePlayersEnabled"));
-        String onlinePlayersCount = view.getText("onlinePlayersCount");
+        NullBool onlinePlayersEnabled = NullBool.resolve(view.getBoolean(CmdProfiles.ProfileOption.PLAYERCOUNT_ONLINEPLAYERS_ENABLED.toDialogKey()));
+        String onlinePlayersCount = view.getText(CmdProfiles.ProfileOption.PLAYERCOUNT_ONLINEPLAYERS_AMOUNT.toDialogKey());
         
         ProfileEntry.Builder builder = ProfileEntry.empty().builder();
         if(motd != null && !motd.isEmpty())
@@ -181,8 +182,8 @@ public class PaperDialog implements IDialog<Dialog>{
         }
         
         @Override
-        public PaperDialogBuilder appendTextInput(String key, String title, String initValue, int maxLength){
-            this.inputs.add(DialogInput.text(key, Component.text(title))
+        public PaperDialogBuilder appendTextInput(CmdProfiles.ProfileOption option, String title, String initValue, int maxLength){
+            this.inputs.add(DialogInput.text(option.toDialogKey(), Component.text(title))
                 .initial(initValue == null ? "" : initValue)
                 .maxLength(maxLength)
                 .build()
@@ -191,8 +192,8 @@ public class PaperDialog implements IDialog<Dialog>{
         }
         
         @Override
-        public PaperDialogBuilder appendTextbox(String key, String title, List<String> initValue, int maxLength, int rows){
-            this.inputs.add(DialogInput.text(key, Component.text(title))
+        public PaperDialogBuilder appendTextbox(CmdProfiles.ProfileOption option, String title, List<String> initValue, int maxLength, int rows){
+            this.inputs.add(DialogInput.text(option.toDialogKey(), Component.text(title))
                 .initial(initValue == null ? "" : String.join("\n", initValue))
                 .maxLength(maxLength)
                 .multiline(TextDialogInput.MultilineOptions.create(rows, null))
@@ -202,11 +203,11 @@ public class PaperDialog implements IDialog<Dialog>{
         }
         
         @Override
-        public PaperDialogBuilder appendNumberRange(String key, String title, int initValue){
+        public PaperDialogBuilder appendNumberRange(CmdProfiles.ProfileOption option, String title, int initValue){
             float minValue = Math.min((float)initValue, -100.0F);
             float maxValue = Math.max((float)initValue, 100.0F);
             
-            this.inputs.add(DialogInput.numberRange(key, Component.text(title), minValue, maxValue)
+            this.inputs.add(DialogInput.numberRange(option.toDialogKey(), Component.text(title), minValue, maxValue)
                 .step(1.0F)
                 .initial((float)initValue)
                 .build()
@@ -215,8 +216,8 @@ public class PaperDialog implements IDialog<Dialog>{
         }
         
         @Override
-        public PaperDialogBuilder appendBoolean(String key, String title, NullBool initValue){
-            this.inputs.add(DialogInput.bool(key, Component.text(title))
+        public PaperDialogBuilder appendBoolean(CmdProfiles.ProfileOption option, String title, NullBool initValue){
+            this.inputs.add(DialogInput.bool(option.toDialogKey(), Component.text(title))
                 .initial(initValue.getOrDefault(false))
                 .build()
             );

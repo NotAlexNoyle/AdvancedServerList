@@ -38,15 +38,6 @@ public enum PlatformInfo{
         ),
         List.of("Paper", "Folia")
     ),
-    BUNGEECORD(
-        "bungeecord",
-        List.of(
-            "bungeecord/target/AdvancedServerList-BungeeCord-{{version}}.jar",
-            "addons/banplugins/target/AdvancedServerList-BanPlugins-Addon-{{version}}.jar",
-            "addons/luckperms/target/AdvancedServerList-Luckperms-Addon-{{version}}.jar"
-        ),
-        List.of("BungeeCord", "Waterfall")
-    ),
     VELOCITY(
         "velocity",
         List.of(

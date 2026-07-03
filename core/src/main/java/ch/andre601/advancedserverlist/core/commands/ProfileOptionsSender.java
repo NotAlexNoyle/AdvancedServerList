@@ -90,7 +90,7 @@ public class ProfileOptionsSender{
         private String prefix = "├─";
         private ColorName color = ColorName.AQUA;
         private String hover = "<i>Not set</i>";
-        private String option = null;
+        private CmdProfiles.ProfileOption option = null;
         
         private OptionStringBuilder(String displayName){
             this.displayName = displayName;
@@ -116,7 +116,7 @@ public class ProfileOptionsSender{
             return this;
         }
         
-        public OptionStringBuilder option(String option){
+        public OptionStringBuilder option(CmdProfiles.ProfileOption option){
             this.option = option;
             return this;
         }
@@ -135,7 +135,7 @@ public class ProfileOptionsSender{
                     .append("\">");
             }
             
-            if(option != null && !option.isEmpty() && file != null && !file.isEmpty()){
+            if(option != null && file != null && !file.isEmpty()){
                 builder.append("<click:suggest_command:/asl profiles set ")
                     .append(file)
                     .append(" ")
@@ -145,7 +145,7 @@ public class ProfileOptionsSender{
             
             builder.append(displayName);
             
-            if(option != null && !option.isEmpty() && file != null && !file.isEmpty())
+            if(option != null && file != null && !file.isEmpty())
                 builder.append("</click>");
             
             if(hover != null && !hover.isEmpty())

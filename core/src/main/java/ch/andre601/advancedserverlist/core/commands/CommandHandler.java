@@ -29,61 +29,16 @@ import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CommandType;
-import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialog;
-import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
-import ch.andre601.advancedserverlist.core.migration.minimotd.MiniMOTDConfigMigrator;
-import ch.andre601.advancedserverlist.core.migration.serverlistplus.SLPConfigMigrator;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
-import ch.andre601.advancedserverlist.core.profiles.profile.ProfileSerializer;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.annotation.specifier.Greedy;
-import org.incendo.cloud.annotations.Argument;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Permission;
-import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.context.CommandInput;
-import org.incendo.cloud.help.result.CommandEntry;
 import org.incendo.cloud.key.CloudKey;
-import org.incendo.cloud.minecraft.extras.MinecraftHelp;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
-@Command("advancedserverlist|asl")
-@CommandDescription("Main command of the plugin.")
-@Permission("advancedserverlist.admin")
-@CommandType(CommandType.Type.ALL)
 public class CommandHandler{
     
     public static final CloudKey<CommandType.Type> COMMAND_TYPE = CloudKey.of("command_type", CommandType.Type.class);
     public static final CloudKey<String> OPTION = CloudKey.of("profile_option", String.class);
-    public static final List<String> PROFILE_OPTIONS = List.of(
-        "priority",
-        "condition",
-        "motd",
-        "favicon",
-        "playercount.hideplayers",
-        "playercount.hideplayershover",
-        "playercount.hover",
-        "playercount.text",
-        "playercount.extraplayers.enabled",
-        "playercount.extraplayers.amount",
-        "playercount.maxplayers.enabled",
-        "playercount.maxplayers.amount",
-        "playercount.onlineplayers.enabled",
-        "playercount.onlineplayers.amount"
-    );
     
     public static void handleSet(AdvancedServerList<?> core, CommandContext<CmdSender> context){
         CmdSender sender = context.sender();
@@ -105,8 +60,8 @@ public class CommandHandler{
         List<String> oldValues = new ArrayList<>();
         List<String> newValues = new ArrayList<>();
         
-        switch(option.toLowerCase(Locale.ROOT)){
-            case "priority" -> {
+        switch(CmdProfiles.ProfileOption.fromString(option)){
+            case PRIORITY -> {
                 oldValues.add(String.valueOf(slp.priority()));
                 
                 if(value == null || value.isEmpty()){
@@ -123,7 +78,7 @@ public class CommandHandler{
                     return;
                 }
             }
-            case "condition" -> {
+            case CONDITION -> {
                 oldValues.add(slp.condition());
                 
                 if(value == null || value.isEmpty()){
@@ -134,7 +89,7 @@ public class CommandHandler{
                 condition = value;
                 newValues.add(value);
             }
-            case "motd" -> {
+            case MOTD -> {
                 oldValues.addAll(entry.motd());
                 
                 if(value == null || value.isEmpty()){
@@ -142,7 +97,7 @@ public class CommandHandler{
                     break;
                 }
                 
-                String[] lines = value.split("\\\\n|<newline>");
+                String[] lines = value.split("\\\\n|<newline>|<br>");
                 if(lines.length == 0){
                     builder.motd(Collections.emptyList());
                     break;
@@ -159,7 +114,7 @@ public class CommandHandler{
                 
                 newValues.addAll(Arrays.asList(lines));
             }
-            case "favicon" -> {
+            case FAVICON -> {
                 oldValues.add(entry.favicon());
                 
                 if(value == null || value.isEmpty()){
@@ -171,7 +126,7 @@ public class CommandHandler{
                 
                 newValues.add(value);
             }
-            case "playercount.hideplayers" -> {
+            case PLAYERCOUNT_HIDEPLAYERS -> {
                 if(!entry.hidePlayersEnabled().isNotSet())
                     oldValues.add(String.valueOf(entry.hidePlayersEnabled().getOrDefault(false)));
                 
@@ -185,7 +140,7 @@ public class CommandHandler{
                 
                 newValues.add(String.valueOf(bool.getOrDefault(false)));
             }
-            case "playercount.hideplayershover" -> {
+            case PLAYERCOUNT_HIDEPLAYERSHOVER -> {
                 if(!entry.hidePlayersHoverEnabled().isNotSet())
                     oldValues.add(String.valueOf(entry.hidePlayersHoverEnabled().getOrDefault(false)));
                 
@@ -199,7 +154,7 @@ public class CommandHandler{
                 
                 newValues.add(String.valueOf(bool.getOrDefault(false)));
             }
-            case "playercount.hover" -> {
+            case PLAYERCOUNT_HOVER -> {
                 oldValues.addAll(entry.players());
                 
                 if(value == null || value.isEmpty()){
@@ -217,7 +172,7 @@ public class CommandHandler{
                 
                 newValues.addAll(Arrays.asList(lines));
             }
-            case "playercount.text" -> {
+            case PLAYERCOUNT_TEXT -> {
                 if(!entry.playerCountText().isEmpty())
                     oldValues.add(entry.playerCountText());
                 
@@ -230,7 +185,7 @@ public class CommandHandler{
                 
                 newValues.add(value);
             }
-            case "playercount.extraplayers.enabled" -> {
+            case PLAYERCOUNT_EXTRAPLAYERS_ENABLED -> {
                 if(!entry.extraPlayersEnabled().isNotSet())
                     oldValues.add(String.valueOf(entry.extraPlayersEnabled().getOrDefault(false)));
                 
@@ -244,7 +199,7 @@ public class CommandHandler{
                 
                 newValues.add(String.valueOf(bool.getOrDefault(false)));
             }
-            case "playercount.extraplayers.amount" -> {
+            case PLAYERCOUNT_EXTRAPLAYERS_AMOUNT -> {
                 if(!entry.extraPlayersCount().isEmpty())
                     oldValues.add(entry.extraPlayersCount());
                 
@@ -257,7 +212,7 @@ public class CommandHandler{
                 
                 newValues.add(value);
             }
-            case "playercount.maxplayers.enabled" -> {
+            case PLAYERCOUNT_MAXPLAYERS_ENABLED -> {
                 if(!entry.maxPlayersEnabled().isNotSet())
                     oldValues.add(String.valueOf(entry.maxPlayersEnabled().getOrDefault(false)));
                 
@@ -271,7 +226,7 @@ public class CommandHandler{
                 
                 newValues.add(String.valueOf(bool.getOrDefault(false)));
             }
-            case "playercount.maxplayers.amount" -> {
+            case PLAYERCOUNT_MAXPLAYERS_AMOUNT -> {
                 if(!entry.maxPlayersCount().isEmpty())
                     oldValues.add(entry.extraPlayersCount());
                 
@@ -284,7 +239,7 @@ public class CommandHandler{
                 
                 newValues.add(value);
             }
-            case "playercount.onlineplayers.enabled" -> {
+            case PLAYERCOUNT_ONLINEPLAYERS_ENABLED -> {
                 if(!entry.onlinePlayersEnabled().isNotSet())
                     oldValues.add(String.valueOf(entry.onlinePlayersEnabled().getOrDefault(false)));
                 
@@ -298,7 +253,7 @@ public class CommandHandler{
                 
                 newValues.add(String.valueOf(bool.getOrDefault(false)));
             }
-            case "playercount.onlineplayers.amount" -> {
+            case PLAYERCOUNT_ONLINEPLAYERS_AMOUNT -> {
                 if(!entry.onlinePlayersCount().isEmpty())
                     oldValues.add(entry.onlinePlayersCount());
                 
@@ -311,8 +266,8 @@ public class CommandHandler{
                 
                 newValues.add(value);
             }
-            default -> {
-                sender.sendErrorMsg("<red>Unknown option</red> %s<red>!", option);
+            case null, default -> {
+                sender.sendErrorMsg("<red>Unknown option </red>%s<red>!", option);
                 return;
             }
         }
@@ -355,14 +310,14 @@ public class CommandHandler{
         }
     }
     
-    private static ServerListProfile profile(AdvancedServerList<?> core, String name){
+    public static ServerListProfile profile(AdvancedServerList<?> core, String name){
         return core.fileHandler().profiles().stream()
             .filter(p -> p.file().equalsIgnoreCase(profileName(name)))
             .findFirst()
             .orElse(null);
     }
     
-    private static String profileName(String name){
+    public static String profileName(String name){
         if(name == null || name.isEmpty())
             return "";
         
@@ -389,568 +344,5 @@ public class CommandHandler{
             case String str -> str;
             default -> obj.toString();
         };
-    }
-    
-    private final CommandManager<CmdSender> commandManager;
-    private final MinecraftHelp<CmdSender> help;
-    
-    public CommandHandler(CommandManager<CmdSender> commandManager){
-        this.commandManager = commandManager;
-        this.help = MinecraftHelp.<CmdSender>builder()
-            .commandManager(commandManager)
-            .audienceProvider(CmdSender::audience)
-            .commandPrefix("/advancedserverlist help")
-            .colors(MinecraftHelp.helpColors(
-                NamedTextColor.WHITE, NamedTextColor.AQUA, NamedTextColor.WHITE, NamedTextColor.GRAY, NamedTextColor.DARK_GRAY
-            ))
-            .build();
-    }
-    
-    @Command("help [query]")
-    @CommandDescription("Displays the commands available for AdvancedServerList")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.help"})
-    @CommandType(CommandType.Type.ALL)
-    public void help(
-        CmdSender sender,
-        @Nullable @Argument(description = "Query to receive info of a specific command.", suggestions = "help") @Greedy String query
-    ){
-        this.help.queryCommands(query == null ? "" : query, sender);
-    }
-    
-    @Command("reload")
-    @CommandDescription("Reloads the config.yml and all existing profiles.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.reload"})
-    @CommandType(CommandType.Type.ALL)
-    public void reload(CmdSender sender, AdvancedServerList<?> core){
-        sender.sendPrefixedMsg("Reloading plugin...");
-        
-        if(core.fileHandler().reloadConfig()){
-            sender.sendPrefixedMsg("<green>Reloaded </green>config.yml<green>!");
-        }else{
-            sender.sendErrorMsg("<red>Error while reloading </red>config.yml<red>.");
-            sender.sendErrorMsg("<red>Check console for details.");
-        }
-        
-        if(core.fileHandler().reloadProfiles()){
-            sender.sendPrefixedMsg("<green>(Re)loaded </green>%d<green> Profile(s)!", core.fileHandler().profiles().size());
-        }else{
-            sender.sendErrorMsg("<red>Error while (re)loading profiles.");
-            sender.sendErrorMsg("<red>Check console for details.");
-        }
-        
-        sender.sendPrefixedMsg("<green>Reload complete!");
-    }
-    
-    @Command("clearcache")
-    @CommandDescription("Clears the Favicon and Player cache of the plugin.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.clearcache"})
-    @CommandType(CommandType.Type.ALL)
-    public void clearCache(CmdSender sender, AdvancedServerList<?> core){
-        sender.sendPrefixedMsg("Clearing cache...");
-        
-        core.clearFaviconCache();
-        sender.sendPrefixedMsg("Cleared Favicon cache.");
-        
-        core.clearPlayerCache();
-        sender.sendPrefixedMsg("Cleared Player cache.");
-        
-        sender.sendPrefixedMsg("<green>Cache clearing complete!");
-    }
-    
-    @Command("migrate <plugin>")
-    @CommandDescription("Migrates Profiles from other plugins to itself.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.migrate"})
-    @CommandType(CommandType.Type.ALL)
-    public void migrate(
-        CmdSender sender,
-        AdvancedServerList<?> core,
-        @NonNull @Argument(description = "The plugin to migrate from.") Plugin plugin
-    ){
-        if(plugin == Plugin.SERVERLISTPLUS){
-            if(!core.plugin().isPluginEnabled("ServerListPlus")){
-                sender.sendErrorMsg("<red>ServerListPlus is not enabled.");
-                sender.sendErrorMsg("<red>The plugin is required for the migration to work.");
-                return;
-            }
-            
-            sender.sendPrefixedMsg("Migrating from ServerListPlus...");
-            
-            int migrated = SLPConfigMigrator.migrate(core, sender);
-            if(migrated == 0){
-                sender.sendErrorMsg("<red>Unable to migrate any profiles from ServerListPlus.");
-                sender.sendErrorMsg("<red>Check console for details.");
-            }else{
-                sender.sendPrefixedMsg("<green>Successfully migrated </green>%d<green> Profile(s)", migrated);
-            }
-        }else
-        if(plugin == Plugin.MINIMOTD){
-            sender.sendPrefixedMsg("Migrating from MiniMOTD...");
-            
-            if(MiniMOTDConfigMigrator.migrate(core, sender)){
-                sender.sendPrefixedMsg("<green>Successfully migrated from MiniMOTD!");
-            }else{
-                sender.sendErrorMsg("<red>Unable to migrate from MiniMOTD.");
-                sender.sendErrorMsg("<red>Check console for details.");
-            }
-        }else{
-            sender.sendErrorMsg("<red>Received invalid Plugin name </red>%s<red>.", plugin);
-            sender.sendMsg("<grey>Supported plugins [Click for command]:");
-            sender.sendMsg();
-            sender.sendMsg(" <grey>-</grey> <click:suggest_command:/asl migrate serverlistplus>ServerListPlus</click>");
-            sender.sendMsg(" <grey>-</grey> <click:suggest_command:/asl migrate minimotd>MiniMOTD</click>");
-        }
-    }
-    
-    @Command("profiles list")
-    @CommandDescription("Lists all available profiles with their priority, conditions and if they are valid.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.list"})
-    @CommandType(CommandType.Type.ALL)
-    public void list(CmdSender sender, AdvancedServerList<?> core){
-        sender.sendMsg();
-        sender.sendPrefixedMsg("Available Profiles");
-        sender.sendMsg("<dark_grey>│");
-        
-        List<ServerListProfile> profiles = core.fileHandler().profiles().stream()
-                .sorted(Comparator.comparingInt(ServerListProfile::priority).reversed())
-                .toList();
-        
-        if(profiles.isEmpty()){
-            sender.sendMsg("<dark_grey>└─</dark_grey> <i>No profiles found</i>");
-        }else{
-            for(int i = 0; i < profiles.size(); i++){
-                sender.sendMsg(
-                    "<dark_grey>%s─</dark_grey> <aqua>" +
-                    "<hover:show_text:\"%s\">" +
-                    "<click:suggest_command:/asl profiles info %s>" +
-                    "%s" +
-                    "</click>" +
-                    "</hover>" +
-                    "</aqua>",
-                    (i + 1) == profiles.size() ? "└" : "├",
-                    hover(profiles.get(i)),
-                    profiles.get(i).file(),
-                    profiles.get(i).file()
-                );
-            }
-        }
-        if(sender.isPlayer()){
-            sender.sendMsg();
-            sender.sendMsg("<grey>[<white>Hover a name for details. Click for a command</white>]</grey>");
-        }
-        sender.sendMsg();
-    }
-    
-    @Command("profiles info <profile>")
-    @CommandDescription("Provides info about a profile.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.info"})
-    @CommandType(CommandType.Type.PLAYER_ONLY)
-    public void info(
-        CmdSender sender,
-        AdvancedServerList<?> core,
-        @NonNull @Argument(description = "Name of the profile to view.", suggestions = "profiles") String profile
-    ){
-        if(profile.isEmpty()){
-            sender.sendErrorMsg("<red>Insufficient arguments.");
-            sender.sendErrorMsg("<red>Please provide a proper profile name.");
-            return;
-        }
-        
-        ServerListProfile slp = profile(core, profile);
-        
-        if(slp == null){
-            sender.sendErrorMsg("<red>Unable to find profile with name </red>%s<red>.", profile);
-            sender.sendErrorMsg("<red>Make sure you typed it correctly.");
-            return;
-        }
-        
-        ProfileOptionsSender optionsSender = new ProfileOptionsSender(slp.file());
-        
-        optionsSender
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Priority", slp.priority())
-                    .option("priority")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Condition", slp.condition())
-                    .option("condition")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Profiles")
-                    .color(slp.profiles().isEmpty() ? ProfileOptionsSender.ColorName.RED : ProfileOptionsSender.ColorName.GREEN)
-            );
-        
-        if(!slp.profiles().isEmpty()){
-            for(int i = 0; i < slp.profiles().size(); i++){
-                optionsSender.append(
-                    ProfileOptionsSender.OptionStringBuilder.of("#" + (i + 1), profileHover(slp.profiles().get(i)))
-                        .prefix("│    %s─".formatted((i + 1) == slp.profiles().size() ? "└" : "├"))
-                        .color(ProfileOptionsSender.ColorName.AQUA)
-                );
-            }
-        }
-        
-        ProfileEntry entry = slp.defaultProfile();
-        
-        optionsSender
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("MOTD", entry.motd())
-                    .option("motd")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Favicon", entry.favicon())
-                    .option("favicon")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Player count")
-                    .prefix("└─")
-                    .color(ProfileOptionsSender.ColorName.AQUA)
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Hide Player count?", entry.hidePlayersEnabled())
-                    .prefix("     ├─")
-                    .option("playercount.hideplayers")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Hide Player count hover?", entry.hidePlayersHoverEnabled())
-                    .prefix("     ├─")
-                    .option("playercount.hideplayershover")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Player count hover", entry.players())
-                    .prefix("     ├─")
-                    .option("playercount.hover")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Player count text", entry.playerCountText())
-                    .prefix("     ├─")
-                    .option("playercount.text")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Extra Players")
-                    .prefix("     ├─")
-                    .color(ProfileOptionsSender.ColorName.AQUA)
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Enabled?", entry.extraPlayersEnabled())
-                    .prefix("     │    ├─")
-                    .option("playercount.extraplayers.enabled")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Amount", entry.extraPlayersCount())
-                    .prefix("     │    └─")
-                    .option("playercount.extraplayers.amount")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Max Players")
-                    .prefix("     ├─")
-                    .color(ProfileOptionsSender.ColorName.AQUA)
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Enabled?", entry.maxPlayersEnabled())
-                    .prefix("     │    ├─")
-                    .option("playercount.maxplayers.enabled")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Amount", entry.maxPlayersCount())
-                    .prefix("     │    └─")
-                    .option("playercount.maxplayers.amount")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Online Players")
-                    .prefix("     └─")
-                    .color(ProfileOptionsSender.ColorName.AQUA)
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Enabled?", entry.onlinePlayersEnabled())
-                    .prefix("          ├─")
-                    .option("playercount.onlineplayers.enabled")
-            )
-            .append(
-                ProfileOptionsSender.OptionStringBuilder.of("Amount", entry.onlinePlayersCount())
-                    .prefix("          └─")
-                    .option("playercount.onlineplayers.amount")
-            )
-            .send(sender);
-    }
-    
-    @Command("profiles add <name>")
-    @CommandDescription("Creates a new profile with default values applied.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.add"})
-    @CommandType(CommandType.Type.ALL)
-    public void add(
-        CmdSender sender,
-        AdvancedServerList<?> core,
-        @NonNull @Argument(description = "Name of the profile to create.") String name
-    ){
-        if(name.isEmpty()){
-            sender.sendErrorMsg("<red>Insufficient arguments.");
-            sender.sendErrorMsg("<red>Please provide a proper file name.");
-            return;
-        }
-        
-        if(profile(core, name) != null){
-            sender.sendErrorMsg("<red>A profile with name </red>%s<red> already exists.", name);
-            return;
-        }
-        
-        String fileName = profileName(name);
-        
-        if(core.fileHandler().createFile(fileName)){
-            sender.sendPrefixedMsg("<green>Successfully created </green>%s<green>!", fileName);
-            sender.sendPrefixedMsg("<green>Use <white><click:suggest_command:/asl reload>/asl reload</click></white> to load the file.");
-        }else{
-            sender.sendErrorMsg("<red>Error while creating new profile.");
-            sender.sendErrorMsg("<red>Check console for details.");
-        }
-    }
-    
-    @Command("profiles copy <profile> <name>")
-    @CommandDescription("Creates a copy of an existing profile.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.copy"})
-    @CommandType(CommandType.Type.ALL)
-    public void copy(
-        CmdSender sender,
-        AdvancedServerList<?> core,
-        @NonNull @Argument(description = "Name of the profile to copy.", suggestions = "profiles") String profile,
-        @NonNull @Argument(description = "Name of the copy.") String name
-    ){
-        if(profile.isEmpty() || name.isEmpty()){
-            sender.sendErrorMsg("<red>Insufficient arguments.");
-            sender.sendErrorMsg("<red>Please provide a profile name and name for the copy.");
-            return;
-        }
-        
-        String profileName = profileName(profile);
-        String copyName = profileName(name);
-        
-        ServerListProfile targetProfile = profile(core, profile);
-        boolean copyExists = profile(core, name) != null;
-        
-        if(targetProfile == null){
-            sender.sendErrorMsg("<red>No profile with name </red>%s<red> exists.", profile);
-            return;
-        }
-        
-        if(copyExists){
-            sender.sendErrorMsg("<red>A file with name </red>%<red> already exists!", copyName);
-            return;
-        }
-        
-        Path profilePath = core.plugin().folderPath().resolve("profiles").resolve(copyName);
-        if(!Files.exists(profilePath)){
-            try{
-                Files.createFile(profilePath);
-            }catch(IOException ex){
-                sender.sendErrorMsg("<red>Encountered IOException while creating file </red>%s<red>.", copyName);
-                sender.sendErrorMsg("<red>Check console for details.");
-                
-                core.plugin().pluginLogger().warn("Encountered IOException while creating file <white>%s</white>", ex, copyName);
-                return;
-            }
-        }
-        
-        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-            .path(profilePath)
-            .indent(2)
-            .nodeStyle(NodeStyle.BLOCK)
-            .defaultOptions(opt -> opt.serializers(builder -> builder.register(ProfileEntry.class, ProfileSerializer.INSTANCE)))
-            .build();
-        
-        ConfigurationNode node;
-        try{
-            node = loader.load();
-        }catch(IOException ex){
-            sender.sendErrorMsg("<red>There was an IOException while loading file </red>%s<red>!", copyName);
-            sender.sendErrorMsg("<red>Check console for details.");
-            
-            core.plugin().pluginLogger().warn("Encountered IOException while loading file <white>%s</white>", ex, copyName);
-            return;
-        }
-        
-        try{
-            node.node("priority").set(targetProfile.priority());
-            node.node("condition").set(targetProfile.condition());
-            
-            node.node("profiles").setList(ProfileEntry.class, targetProfile.profiles());
-            
-            node.set(ProfileEntry.class, targetProfile.defaultProfile());
-        }catch(SerializationException ex){
-            sender.sendErrorMsg("<red>There was a SerializationException while copying values from </red>%s<red>.", profile);
-            sender.sendErrorMsg("<red>Check console for details.");
-            
-            core.plugin().pluginLogger().warn("Encountered IOException while copying data from <white>%s</white> to <white>%s</white>.", ex, profileName, copyName);
-            return;
-        }
-        
-        try{
-            loader.save(node);
-            sender.sendPrefixedMsg("<green>Successfully made copy of </green>%s<green> as </green>%s<green>!", profile, copyName);
-            sender.sendPrefixedMsg("<green>Use </green><click:suggest_command:/asl reload>/asl reload</click><green> to load the file.");
-        }catch(IOException ex){
-            sender.sendErrorMsg("<red>There was an IOException while loading file </red>%s<red>!", copyName);
-            sender.sendErrorMsg("<red>Check console for details.");
-            
-            core.plugin().pluginLogger().warn("Encountered IOException while loading file <white>%s</white>", ex, copyName);
-        }
-    }
-    
-    @Command("profiles edit <profile>")
-    @CommandDescription("Opens a Dialog to edit a profile.")
-    @Permission({"advancedserverlist.admin", "advancedserverlist.command.profiles", "advancedserverlist.command.profiles.edit"})
-    @CommandType(CommandType.Type.PLAYER_ONLY)
-    public void edit(
-        CmdSender sender,
-        AdvancedServerList<?> core,
-        @NonNull @Argument(description = "Name of the profile to edit.", suggestions = "profiles") String profile
-    ){
-        if(!core.plugin().isDialogsSupported()){
-            sender.sendErrorMsg("This command requires the new Dialog feature to be available!");
-            return;
-        }
-        
-        ServerListProfile slp = profile(core, profile);
-        if(slp == null){
-            sender.sendErrorMsg("No profile with name <white>%s</white> found.", profile);
-            return;
-        }
-        
-        IDialogList.IDialogListBuilder listBuilder = core.plugin().createDialogListBuilder(slp.file());
-        String warning = """
-            <gold><b>WARNING!</b></gold>
-            
-            Dialog-based profile editing is currently an <i>experimental feature</i>!
-            Please create backups first before using it and report any bugs and/or glitches you may find.""";
-        
-        listBuilder.appendBody(warning);
-        
-        listBuilder.appendDialog(
-            createDialog(core, "Main Settings", warning, slp, slp.defaultProfile(), slp.priority(), slp.condition(), -1)
-        );
-        
-        for(int i = 0; i < slp.profiles().size(); i++){
-            listBuilder.appendDialog(
-                createDialog(core, "Profiles <aqua>#" + (i + 1), warning, slp, slp.profiles().get(i), -1, null, i)
-            );
-        }
-        
-        listBuilder.build().show(sender);
-    }
-    
-    @Suggestions("help")
-    public List<String> helpQueries(CommandContext<CmdSender> context){
-        return this.commandManager.createHelpHandler()
-            .queryRootIndex(context.sender())
-            .entries()
-            .stream()
-            .filter(entry -> context.hasPermission(entry.command().commandPermission()))
-            .filter(entry -> {
-                CommandType.Type type = entry.command().commandMeta().getOrDefault(COMMAND_TYPE, CommandType.Type.ALL);
-                
-                return type == CommandType.Type.ALL || type == CommandType.Type.PLAYER_ONLY && context.sender().isPlayer();
-            })
-            .map(CommandEntry::syntax)
-            .toList();
-    }
-    
-    @Suggestions("profiles")
-    public List<String> profilesSuggestions(CommandInput input, AdvancedServerList<?> core){
-        String name = input.readString();
-        List<String> profiles = core.fileHandler().profiles().stream()
-            .map(profile -> profile.file().substring(0, profile.file().lastIndexOf('.')))
-            .toList();
-        if(name.isEmpty())
-            return profiles;
-        
-        List<String> matches = new ArrayList<>(profiles.size());
-        for(String str : profiles){
-            if(str.length() >= name.length() && str.regionMatches(true, 0, name, 0, name.length()))
-                matches.add(str);
-        }
-        
-        return matches;
-    }
-    
-    private String hover(ServerListProfile profile){
-        return """
-            <grey>Priority: <white>%d</white>
-            Condition: <white>%s</white>
-            
-            Is valid? %s""".formatted(
-                profile.priority(),
-                profile.condition() == null || profile.condition().isEmpty() ? "<i>None</i>" : profile.condition(), 
-                profile.isInvalidProfile() ? "<red>No</red>" : "<green>Yes</green>"
-            );
-    }
-    
-    private String profileHover(ProfileEntry entry){
-        return """
-            <grey>MOTD:
-            %s<reset>
-            
-            <grey>Favicon: %s<reset>
-            
-            <grey>Hide Playercount? %s
-            Hide Playercount Hover? %s
-            
-            Playercount Hover:
-            %s<reset>
-            
-            <grey>Playercount Text: %s<reset>
-            
-            <grey>Extra Players: %s<reset>
-            <grey>Max Players: %s<reset>
-            <grey>Online Players: %s""".formatted(
-                entry.motd() == null || entry.motd().isEmpty() ?
-                    "<i><white>None</white></i>" : String.join("<reset>\n", entry.motd()),
-                entry.favicon() == null || entry.favicon().isEmpty() ?
-                    "<i><white>None</white></i>" : entry.favicon(),
-                entry.hidePlayersEnabled().getOrDefault(false) ? "<green>Enabled</green>" : "<red>Disabled</red>",
-                entry.hidePlayersHoverEnabled().getOrDefault(false) ? "<green>Enabled</green>" : "<red>Disabled</red>",
-                entry.players().isEmpty() ? "<i><white>None</white></i>" : String.join("<reset>\n", entry.players()),
-                entry.playerCountText() == null || entry.playerCountText().isEmpty() ?
-                    "<i><white>None</white></i>" : entry.playerCountText(),
-                entry.extraPlayersEnabled().getOrDefault(false) ? entry.extraPlayersCount() : "<red>Disabled</red>",
-                entry.maxPlayersEnabled().getOrDefault(false) ? entry.maxPlayersCount() : "<red>Disabled</red>",
-                entry.onlinePlayersEnabled().getOrDefault(false) ? entry.onlinePlayersCount() : "<red>Disabled</red>"
-        );
-    }
-    
-    private IDialog<?> createDialog(
-        AdvancedServerList<?> core,
-        String title,
-        String warning,
-        ServerListProfile slp,
-        ProfileEntry entry,
-        int priority,
-        String condition,
-        int index
-    ){
-        IDialog.IDialogBuilder builder = core.plugin().createDialogBuilder(title, slp, index);
-        builder.appendBody(warning);
-        
-        if(index < 0){
-            builder.appendNumberRange("priority", "Priority", priority)
-                .appendTextInput("condition", "Condition", condition, 100);
-        }
-        
-        builder.appendTextbox("motd", "MOTD", entry.motd(), 100, 2)
-            .appendTextInput("favicon", "Favicon", entry.favicon(), 100)
-            .appendBoolean("hidePlayers", "Hide Player Count", entry.hidePlayersEnabled())
-            .appendBoolean("hidePlayersHover", "Hide Player Count Hover", entry.hidePlayersHoverEnabled())
-            .appendTextbox("hover", "Player Count Hover", entry.players(), 200, 10)
-            .appendTextInput("text", "Player Count Text", entry.playerCountText(), 100)
-            .appendBoolean("extraPlayersEnabled", "Enable Extra Players", entry.extraPlayersEnabled())
-            .appendTextInput("extraPlayersCount", "Extra Players Count", entry.extraPlayersCount(), 100)
-            .appendBoolean("maxPlayersEnabled", "Enable Max Players", entry.maxPlayersEnabled())
-            .appendTextInput("maxPlayersCount", "Max Players Count", entry.maxPlayersCount(), 100)
-            .appendBoolean("onlinePlayersEnabled", "Enable Online Players", entry.onlinePlayersEnabled())
-            .appendTextInput("onlinePlayersCount", "Online Players Count", entry.onlinePlayersCount(), 100);
-        
-        return builder.build();
-    }
-    
-    public enum Plugin {
-        SERVERLISTPLUS,
-        MINIMOTD
     }
 }

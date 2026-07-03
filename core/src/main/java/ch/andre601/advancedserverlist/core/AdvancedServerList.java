@@ -28,8 +28,7 @@ package ch.andre601.advancedserverlist.core;
 import ch.andre601.advancedserverlist.api.AdvancedServerListAPI;
 import ch.andre601.advancedserverlist.api.PlaceholderProvider;
 import ch.andre601.advancedserverlist.core.check.UpdateChecker;
-import ch.andre601.advancedserverlist.core.commands.CommandHandler;
-import ch.andre601.advancedserverlist.core.commands.CommandTypePostprocessor;
+import ch.andre601.advancedserverlist.core.commands.*;
 import ch.andre601.advancedserverlist.core.compat.maintenance.MaintenancePlaceholder;
 import ch.andre601.advancedserverlist.core.file.FileHandler;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
@@ -45,7 +44,6 @@ import ch.andre601.expressionparser.DefaultExpressionParserEngine;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.description.Description;
-import org.incendo.cloud.injection.ParameterInjector;
 import org.incendo.cloud.parser.ParserDescriptor;
 import org.incendo.cloud.parser.standard.BooleanParser;
 import org.incendo.cloud.parser.standard.IntegerParser;
@@ -234,7 +232,6 @@ public class AdvancedServerList<F>{
         
         CommandManager<CmdSender> commandManager = plugin().commandManager();
         
-        commandManager.parameterInjectorRegistry().registerInjector(AdvancedServerList.class, ParameterInjector.constantInjector(this));
         commandManager.registerCommandPostProcessor(new CommandTypePostprocessor());
         
         AnnotationParser<CmdSender> annotationParser = new AnnotationParser<>(commandManager, CmdSender.class);
@@ -242,9 +239,15 @@ public class AdvancedServerList<F>{
             CommandType.class,
             (annotation, builder) -> builder.meta(CommandHandler.COMMAND_TYPE, annotation.value())
         );
-        annotationParser.parse(new CommandHandler(commandManager));
+        annotationParser.parse(
+            CmdClearCache.create(this),
+            CmdHelp.create(commandManager),
+            CmdMigrate.create(this),
+            CmdProfiles.create(this),
+            CmdReload.create(this)
+        );
         
-        for(String option : CommandHandler.PROFILE_OPTIONS){
+        for(String option : CmdProfiles.ProfileOption.list()){
             commandManager.command(
                 commandManager.commandBuilder("advancedserverlist", "asl")
                     .literal("profiles")
