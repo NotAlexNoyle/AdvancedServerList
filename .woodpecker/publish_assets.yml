@@ -25,7 +25,6 @@ steps:
     settings:
       base_url: https://codeberg.org
       files:
-        - "bungeecord/target/AdvancedServerList-*.jar"
         - "paper/target/AdvancedServerList-*.jar"
         - "velocity/target/AdvancedServerList-*.jar"
         - "addons/banplugins/target/AdvancedServerList-*.jar"

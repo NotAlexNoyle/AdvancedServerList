@@ -19,6 +19,8 @@ To ensure proper safety and support are only certain versions and Platforms of A
 
 | Server/Proxy Version* | Supported |
 |-----------------------|-----------|
+| 26.2                  | Yes       |
+| 26.1.x                | Yes       |
 | 1.21.x                | Yes       |
 | 1.20.x                | Yes       |
 | 1.19.x                | No        |
@@ -53,8 +55,6 @@ To ensure proper safety and support are only certain versions and Platforms of A
 
 | Proxy      | Supported |
 |------------|-----------|
-| BungeeCord | Yes**     |
-| Waterfall  | Yes**     |
+| BungeeCord | No        |
+| Waterfall  | No        |
 | Velocity   | Yes       |
-
-\*\*Platform version of this plugin is maintenance only, not receiving any bug fixes for major breaking changes anymore.
