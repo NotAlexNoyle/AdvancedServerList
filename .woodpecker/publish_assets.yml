@@ -19,7 +19,7 @@ steps:
       - cd version-uploader/target
       - mv VersionUploader.jar ../../
       - cd ../../
-      - java -jar VersionUploader.jar --all
+      - java -jar VersionUploader.jar upload all
   - name: "Upload Jars to Codeberg"
     image: woodpeckerci/plugin-gitea-release
     settings:
