@@ -124,7 +124,6 @@ Here is a quick table showing the jar file name with the platforms it is made fo
 | Jar file name                                                                       | Platforms             |
 |-------------------------------------------------------------------------------------|-----------------------|
 | `AdvancedServerList-Paper-{version}.jar`{ data-md-component="plugin-version" }      | Paper                 |
-| `AdvancedServerList-BungeeCord-{version}.jar`{ data-md-component="plugin-version" } | BungeeCord, Waterfall |
 | `AdvancedServerList-Velocity-{version}.jar`{ data-md-component="plugin-version" }   | Velocity              |
 
 After you added it to your plugins folder - alongside any other dependency you may want - (re)start your server or proxy to enable the plugin.  
