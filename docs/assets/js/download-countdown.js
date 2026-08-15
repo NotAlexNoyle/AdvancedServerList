@@ -33,7 +33,7 @@ document$.subscribe(async () => {
         
         const downloads = data.downloads
 
-        if (downloads != null) {
+        if (downloads !== null) {
             __md_set("__downloads_count", downloads, sessionStorage);
             applyCount(downloads)
         }
