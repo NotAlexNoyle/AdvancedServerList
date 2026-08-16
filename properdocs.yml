@@ -55,7 +55,6 @@ extra_css:
 
 extra_javascript:
   - assets/js/repo-stats.js
-  - assets/js/download-countdown.js
 
 extra:
   social:

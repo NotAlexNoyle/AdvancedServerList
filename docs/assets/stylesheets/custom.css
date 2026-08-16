@@ -100,6 +100,42 @@
     }
 }
 
+@keyframes balloon2 {
+    0% {
+        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+    }
+    10% {
+        transform: translate(0.02rem, -0.04rem) rotate(5deg) scale(1.75);
+    }
+    20% {
+        transform: translate(-0.09rem, 0.08rem) rotate(-1deg) scale(2);
+    }
+    30% {
+        transform: translate(0.05rem, -0.06rem) rotate(3deg) scale(2.2);
+    }
+    40% {
+        transform: translate(-0.03rem, -0.09rem) rotate(-1.5deg) scale(1.85);
+    }
+    50% {
+        transform: translate(0.04rem, 0.1rem) rotate(1deg) scale(2);
+    }
+    60% {
+        transform: translate(-0.5rem, -0.04rem) rotate(-2deg) scale(1.95);
+    }
+    70% {
+        transform: translate(0.06rem, 0.02rem) rotate(1.25deg) scale(2.05);
+    }
+    80% {
+        transform: translate(-0.01rem, -0.03rem) rotate(-3deg) scale(2);
+    }
+    90% {
+        transform: translate(0.02rem, 0.07rem) rotate(0.5deg) scale(2.15);
+    }
+    100% {
+        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+    }
+}
+
 @keyframes rainbow {
     0% {
         color: #ff6b6b;
@@ -141,6 +177,14 @@
     animation: 20s ease-in-out infinite balloon;
 }
 
+.balloon2 {
+    animation: 19s ease-in-out infinite balloon2;
+}
+
 .rainbow {
     animation: 10s ease-in-out infinite rainbow;
+}
+
+a.modrinth {
+    color: #1bd96a;
 }
