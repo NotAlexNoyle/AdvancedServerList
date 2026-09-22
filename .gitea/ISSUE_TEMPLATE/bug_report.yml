@@ -16,13 +16,14 @@ body:
       label: Platform
       description: On what platform do you use the plugin?
       options:
-        - BungeeCord
-        - Other (Please specify)
         - Paper
         - Purpur
-        - Spigot
+        - Folia
         - Velocity
-        - Waterfall
+        - Other (Please specify)
+        - Spigot (DISCONTINUED)
+        - BungeeCord (DISCONTINUED)
+        - Waterfall (DISCONTINUED)
     validations:
       required: true
   - type: input
@@ -32,6 +33,24 @@ body:
         Please provide the name of the platform (Proxy/Server) you use, if you selected `Other (Please specify)` in the above section.
         Leave empty otherwise.
       placeholder: SomeProxy
+  - type: input
+    attributes:
+      label: Server/Proxy version
+      description: |-
+        Provide the Version of your Server/Proxy.  
+        For Paper and its forks, run `/version` and for Velocity run `/velocity info`
+      placeholder: This server is running Paper version ...
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Plugin version
+      description: |-
+        Provide the Version of the Plugin.  
+        On Paper and its forks, run `/version AdvancedServerList` and on Velocity, run `/velocity plugins` and find the AdvancedServerList entry.
+      placeholder: 5.9.0
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: What happened?
@@ -49,7 +68,7 @@ body:
       placeholder: |-
         1. Do this
         2. ...
-        3. Profit!
+        3. Prof-... Bug!
     validations:
       required: true
   - type: textarea
