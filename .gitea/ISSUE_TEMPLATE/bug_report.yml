@@ -51,6 +51,17 @@ body:
       placeholder: 5.9.0
     validations:
       required: true
+  - type: input
+    attributes:
+      label: Logs
+      description: |-
+        Provide Logs from your Server/Proxy, uploaded to [mclo.gs](https://mclo.gs).
+
+        **DO NOT SKIP THIS!**  
+        Skipping this by writing "Not needed", "private", etc. will get your issue closed without warning!
+      placeholder: 'https://mclo.gs/...'
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: What happened?
