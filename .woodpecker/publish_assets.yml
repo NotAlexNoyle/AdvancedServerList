@@ -54,7 +54,7 @@ steps:
       identifier: andre601.ch
       app_password:
         from_secret: bluesky_app_password
-      languages: en
+      languages: en-US
       text: |-
         #AdvancedServerList was updated to ${CI_COMMIT_TAG} and can be downloaded from #Modrinth, #Hangar and #Codeberg!
 
