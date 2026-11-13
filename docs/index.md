@@ -69,7 +69,7 @@ AdvancedServerList supports the following platforms:
     - [/asl clearcache](commands/clearcache.md)
     - [/asl help](commands/help.md)
     - [/asl migrate](commands/migrate.md)
-    - [/asl profiles](commands/profiles.md)
+    - [/asl profiles](commands/profiles/index.md)
     - [/asl reload](commands/reload.md)
 
 -   [:octicons-note-24: **Profiles**](profiles/index.md)

@@ -4,16 +4,21 @@ title: /asl help
 
 # `/asl help [query]`
 
-/// info |
-**Permissions:**
+## Permissions
+
+Any of the following permissions will work:
 
 - `advancedserverlist.admin`
 - `advancedserverlist.command.help`
 
-**Arguments:**
+## Arguments
 
-- `[query]` - Optional search query to use
-///
+| Argument  | Description                   |
+|-----------|-------------------------------|
+| `[query]` | Optional search query to use. |
 
-Displays information about provided commands.  
-If no query is provided will it list all commands. A page number can be used as query to switch between pages.
+## Description
+
+Lists all available commands in a paginated list.  
+Providing a number as `[query]` will switch to the page, if available.  
+Providing a command as `[query]` will provided detailed info regarding the command.

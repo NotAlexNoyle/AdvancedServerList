@@ -144,7 +144,14 @@ nav:
     - commands/clearcache.md
     - commands/help.md
     - commands/migrate.md
-    - commands/profiles.md
+    - /asl profiles:
+      - commands/profiles/index.md
+      - commands/profiles/add.md
+      - commands/profiles/copy.md
+      - commands/profiles/edit.md
+      - commands/profiles/info.md
+      - commands/profiles/list.md
+      - commands/profiles/set.md
     - commands/reload.md
   - Profiles:
     - profiles/index.md

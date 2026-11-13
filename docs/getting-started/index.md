@@ -581,7 +581,7 @@ motd:
 
 ### Additional profiles
 
-Additional profiles can be created to display different content under specific situations. To create a new file, either manually create a YAML file in the `profiles` folder, or use [`/asl profiles add {name}`](../commands/profiles.md#add) to have one created for you. In either case is it recommended to only use alphanummeric (`a-z` abd `0-9`) characters, dashes and underscores for the file name. You should also choose a name that fits the purpose of the file (i.e. for a profile that displays stuff when someone is banned, name it `banned.yml`).
+Additional profiles can be created to display different content under specific situations. To create a new file, either manually create a YAML file in the `profiles` folder, or use [`/asl profiles add {name}`](../commands/profiles/add.md) to have one created for you. In either case is it recommended to only use alphanummeric (`a-z` abd `0-9`) characters, dashes and underscores for the file name. You should also choose a name that fits the purpose of the file (i.e. for a profile that displays stuff when someone is banned, name it `banned.yml`).
 
 In case you manually created a YAML file, make sure it contains the [`priority`](../profiles/options/priority.md) setting and one of the other settings, to have a valid profile.  
 You should also add a [`condition`](../profiles/options/condition.md) to ensure that the profile is only loaded when needed. The [Expressions page](../profiles/expressions.md) covers what counts as valid expressions and conditions.  
