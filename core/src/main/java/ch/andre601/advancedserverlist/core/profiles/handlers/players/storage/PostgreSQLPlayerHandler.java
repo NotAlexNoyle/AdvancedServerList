@@ -12,6 +12,7 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
     @Override
     public void loadDependencies(){
         core().plugin().downloadLibrary("org.postgresql", "postgresql", core().versions().get("postgres"));
+        core().plugin().downloadLibrary("org.flywaydb", "flyway-database-postgresql", core().versions().get("flyway"));
         
         super.loadDependencies();
     }

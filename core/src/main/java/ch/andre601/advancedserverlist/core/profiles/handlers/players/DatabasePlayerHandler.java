@@ -20,6 +20,8 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     public DatabasePlayerHandler(AdvancedServerList<?> core, String dataSourceClass){
         super(core);
         
+        loadDependencies();
+        
         this.config.setDataSourceClassName(dataSourceClass);
         this.config.setUsername(core.fileHandler().getString("root", "storage", "username"));
         this.config.setPassword(core.fileHandler().getString("", "storage", "password"));

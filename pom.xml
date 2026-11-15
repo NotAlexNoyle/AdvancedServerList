@@ -41,7 +41,7 @@
         
         <project.build.build_id/>
         
-        <plugin.version>5.9.1</plugin.version>
+        <plugin.version>6.0.0</plugin.version>
         <plugin.description>Create multiple Server lists based on conditions.</plugin.description>
         
         <api.version>5.0.0-b2</api.version>
@@ -60,11 +60,10 @@
         <dependency.cloud-minecraft-extras>2.0.1</dependency.cloud-minecraft-extras>
         <!-- Database stuff -->
         <dependency.hikaricp>7.1.0</dependency.hikaricp>
-        <dependency.flyway>13.12.1</dependency.flyway>
-        <dependency.mongodb>5.0.0</dependency.mongodb>
-        <dependency.redis>5.1.2</dependency.redis>
-        <dependency.mariadb>3.3.3</dependency.mariadb>
-        <dependency.postgres>42.7.3</dependency.postgres>
+        <dependency.mariadb>3.5.11</dependency.mariadb>
+        <dependency.postgres>42.7.14</dependency.postgres>
+        <!-- Flyway + drivers -->
+        <dependency.flyway>13.12.2</dependency.flyway>
     </properties>
     
     <profiles>

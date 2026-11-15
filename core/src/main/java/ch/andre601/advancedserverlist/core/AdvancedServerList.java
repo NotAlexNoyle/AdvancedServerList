@@ -231,8 +231,7 @@ public class AdvancedServerList<F>{
     private PlayerHandler resolveHandler(String key){
         return switch(Handlers.fromString(key)){
             case JSON -> new JSONPlayerHandler(this);
-            case REDIS -> null;
-            case MARIADB -> new MariaDBPlayerHandler(this);
+            case MYSQL, MARIADB -> new MariaDBPlayerHandler(this);
             case POSTGRESQL -> new PostgreSQLPlayerHandler(this);
             case UNKNOW -> {
                 plugin().pluginLogger().warn("Received unknown Storage type <white>%s</white>. Defaulting to JSON.", key);

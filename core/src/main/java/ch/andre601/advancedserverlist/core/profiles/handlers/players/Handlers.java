@@ -4,9 +4,9 @@ public enum Handlers{
     
     JSON,
     
+    MYSQL,
     MARIADB,
     POSTGRESQL,
-    REDIS,
     
     UNKNOW;
     
