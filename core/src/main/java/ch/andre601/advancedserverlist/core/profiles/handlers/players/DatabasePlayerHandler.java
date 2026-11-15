@@ -25,6 +25,10 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         this.config.setDataSourceClassName(dataSourceClass);
         this.config.setUsername(core.fileHandler().getString("root", "storage", "username"));
         this.config.setPassword(core.fileHandler().getString("", "storage", "password"));
+        this.config.addDataSourceProperty("serverName", core().fileHandler().getString("localhost", "storage", "url"));
+        this.config.addDataSourceProperty("portNumber", core().fileHandler().getLong(3306, 1, "storage", "port"));
+        this.config.addDataSourceProperty("databaseName", core().fileHandler().getString("playercache", "storage", "name"));
+        
         
         this.dataSource = new HikariDataSource(config);
         

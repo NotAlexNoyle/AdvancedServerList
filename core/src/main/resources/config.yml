@@ -158,17 +158,22 @@ storage:
   #
   type: 'json'
   #
-  # The IP to connect to for the database. Only used if the type is set to anything but json.
+  # The URL/IP to connect to for the database. Only used if the type is set to anything but json.
   #
-  # Default: 127.0.0.1
+  # Default: localhost
   #
-  ip: '127.0.0.1'
+  url: 'localhost'
   #
   # The port to use when connecting to the Database. Only used if the type is set to anything but json.
   #
-  # Default: 5432
+  # Common default ports:
   #
-  port: 5432
+  # - MySQL/MariaDB: 3306
+  # - PostgreSQL:    5432
+  #
+  # Default: 3306
+  #
+  port: 3306
   #
   # The name of the Database to connect to. Only used if the type is set to anything but json.
   #

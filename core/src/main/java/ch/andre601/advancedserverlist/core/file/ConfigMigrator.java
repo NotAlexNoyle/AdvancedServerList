@@ -46,7 +46,8 @@ public class ConfigMigrator{
     public static ConfigurationTransformation.Versioned create(){
         return ConfigurationTransformation.versionedBuilder()
             .versionKey("configVersion")
-            .addVersion(LATEST, nineToTen())
+            .addVersion(LATEST, tenToEleven())
+            .addVersion(10, nineToTen())
             .addVersion(9, eightToNine())
             .addVersion(8, sevenToEight())
             .addVersion(7, sixToSeven())
@@ -55,6 +56,21 @@ public class ConfigMigrator{
             .addVersion(4, threeToFour())
             .addVersion(3, twoToThree())
             .addVersion(2, oneToTwo())
+            .build();
+    }
+    
+    public static ConfigurationTransformation tenToEleven(){
+        return ConfigurationTransformation.builder()
+            .addAction(NodePath.path(), (path, value) -> {
+                value.node("storage", "type").set("json");
+                value.node("storage", "url").set("localhost");
+                value.node("storage", "port").set(3306);
+                value.node("storage", "name").set("playercache");
+                value.node("storage", "username").set("root");
+                value.node("storage", "password").set("");
+                
+                return null;
+            })
             .build();
     }
     
@@ -174,7 +190,7 @@ public class ConfigMigrator{
             
             properties.load(is);
             
-            return Integer.parseInt(properties.getProperty("config-version"));
+            return Integer.parseInt(properties.getProperty("config"));
         }catch(IOException | NumberFormatException ex){
             return -1;
         }
