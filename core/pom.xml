@@ -44,8 +44,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <plugin.config.version>10</plugin.config.version>
-
-
     </properties>
     
     <repositories>
