@@ -95,7 +95,8 @@ public class ModrinthVersionUploader{
         List<ProjectVersion.ProjectDependency> paperDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
             new ProjectVersion.ProjectDependency(null, "P1OZGk5p", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // ViaVersion
-            new ProjectVersion.ProjectDependency(null, "HQyibRsN", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // MiniPlaceholders
+            new ProjectVersion.ProjectDependency(null, "HQyibRsN", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // MiniPlaceholders
+            new ProjectVersion.ProjectDependency(null, "lKEzGugV", null, ProjectVersion.ProjectDependencyType.OPTIONAL)  // PlaceholderAPI
         );
         List<ProjectVersion.ProjectDependency> velocityDependencies = List.of(
             new ProjectVersion.ProjectDependency(null, "VCAqN1ln", null, ProjectVersion.ProjectDependencyType.OPTIONAL), // Maintenance
@@ -116,7 +117,7 @@ public class ModrinthVersionUploader{
                 .projectId("xss83sOY")
                 .name(String.format("v%s (%s)", releaseVersion, String.join(", ", platformInfo.getLoaders())))
                 .versionNumber(releaseVersion)
-                .changelog(changelog.replaceAll("\r\n", "\n"))
+                .changelog(changelog.replace("\r\n", "\n"))
                 .featured(false)
                 .files(files)
                 .gameVersions(platformInfo == PlatformInfo.PAPER ? paperVersions : versions)

@@ -25,13 +25,13 @@
 
 package ch.andre601.advancedserverlist.paper.objects.impl;
 
-import ch.andre601.advancedserverlist.api.bukkit.objects.BukkitServer;
+import ch.andre601.advancedserverlist.api.paper.objects.PaperServer;
 import org.bukkit.World;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 
-public record PaperServerImpl(Map<String, World> worlds, int playersOnline, int playersMax, String host) implements BukkitServer {
+public record PaperServerImpl(Map<String, World> worlds, int playersOnline, int playersMax, String host) implements PaperServer{
     @Override
     public @NonNull Map<String, World> getWorlds(){
         return worlds;

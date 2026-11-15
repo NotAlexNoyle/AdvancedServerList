@@ -41,6 +41,8 @@ public interface PluginCore<F>{
     
     void loadEvents();
     
+    void unloadEvents();
+    
     void loadMetrics();
     
     void loadFaviconHandler(AdvancedServerList<F> core);

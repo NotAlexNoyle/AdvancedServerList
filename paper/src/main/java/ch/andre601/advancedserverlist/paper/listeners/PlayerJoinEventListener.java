@@ -25,6 +25,7 @@
 
 package ch.andre601.advancedserverlist.paper.listeners;
 
+import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.paper.PaperCore;
 import ch.andre601.advancedserverlist.paper.commands.PaperCmdSender;
 import org.bukkit.Bukkit;
@@ -51,7 +52,7 @@ public class PlayerJoinEventListener implements Listener{
             return;
         
         Player player = event.getPlayer();
-        plugin.core().playerHandler().addPlayer(address.getHostString(), player.getName(), player.getUniqueId());
+        plugin.core().playerHandler().add(new CachedPlayer(address.getHostString(), player.getName(), player.getUniqueId()));
         
         if(player.hasPermission("advancedserverlist.admin")  || player.hasPermission("advancedserverlist.updatecheck")){
             if(plugin.core().updateChecker() == null)

@@ -125,7 +125,7 @@ public class HangarVersionUploader{
                 Platform.PAPER, List.of("1.20.6", "1.21.x", "26.1.x", "26.2"),
                 Platform.VELOCITY, List.of("3.2", "3.3", "3.4")
             ),
-            changelog.replaceAll("\r\n", "\n"),
+            changelog.replace("\r\n", "\n"),
             fileInfo,
             preRelease ? "Beta" : "Release"
         );
@@ -184,7 +184,7 @@ public class HangarVersionUploader{
                         
                         releaseInfo.addRelease(
                             "hangar",
-                            "Paper, Waterfall, Velocity",
+                            "Paper, Velocity",
                             json.getAsJsonPrimitive("url").getAsString()
                         );
                         return true;

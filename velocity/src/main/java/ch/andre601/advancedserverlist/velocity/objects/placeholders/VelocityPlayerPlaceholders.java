@@ -35,12 +35,12 @@ import org.jspecify.annotations.Nullable;
 @NullMarked
 public class VelocityPlayerPlaceholders extends PlaceholderProvider{
     
-    private VelocityPlayerPlaceholders(){
-        super("player");
-    }
-    
     public static VelocityPlayerPlaceholders init(){
         return new VelocityPlayerPlaceholders();
+    }
+    
+    private VelocityPlayerPlaceholders(){
+        super("player");
     }
     
     @Override

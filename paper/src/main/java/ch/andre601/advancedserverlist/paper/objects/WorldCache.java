@@ -36,15 +36,15 @@ public record WorldCache(Map<String, World> worlds){
         this(new HashMap<>());
     }
     
-    public boolean containsWorld(String name){
-        return this.worlds.containsKey(name);
-    }
-    
     public void addWorld(World world){
         this.worlds.put(world.getName(), world);
     }
     
     public void removeWorld(String name){
         this.worlds.remove(name);
+    }
+    
+    public void clear(){
+        this.worlds.clear();
     }
 }

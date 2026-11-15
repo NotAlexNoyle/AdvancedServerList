@@ -44,6 +44,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <plugin.config.version>10</plugin.config.version>
+
+
     </properties>
     
     <repositories>
@@ -187,6 +189,44 @@
             <groupId>io.github.miniplaceholders</groupId>
             <artifactId>miniplaceholders-api</artifactId>
             <version>3.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Database stuff -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${dependency.hikaricp}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${dependency.flyway}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>${dependency.mongodb}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${dependency.redis}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${dependency.postgres}</version>
             <scope>provided</scope>
         </dependency>
         

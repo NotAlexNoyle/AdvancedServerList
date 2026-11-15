@@ -25,7 +25,7 @@
 
 package ch.andre601.advancedserverlist.paper.objects.impl;
 
-import ch.andre601.advancedserverlist.api.bukkit.objects.BukkitPlayer;
+import ch.andre601.advancedserverlist.api.paper.objects.PaperPlayer;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import org.bukkit.OfflinePlayer;
 import org.jspecify.annotations.NullMarked;
@@ -34,7 +34,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.UUID;
 
 @NullMarked
-public record PaperPlayerImpl(@Nullable OfflinePlayer player, CachedPlayer cachedPlayer, int protocol) implements BukkitPlayer{
+public record PaperPlayerImpl(@Nullable OfflinePlayer player, CachedPlayer cachedPlayer, int protocol) implements PaperPlayer{
     
     @Override
     public String getName(){

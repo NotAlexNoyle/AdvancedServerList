@@ -50,6 +50,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.CachedServerIcon;
@@ -109,6 +110,11 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     }
     
     @Override
+    public void unloadEvents(){
+        HandlerList.unregisterAll(this);
+    }
+    
+    @Override
     public void loadMetrics(){
         new Metrics(this, 15584).addCustomChart(new SimplePie("profiles",
             () -> String.valueOf(core.fileHandler().profiles().size())
@@ -157,7 +163,7 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     
     @Override
     public Path folderPath(){
-        return getDataFolder().toPath();
+        return getDataPath();
     }
     
     @Override

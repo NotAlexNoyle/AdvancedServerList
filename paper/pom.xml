@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>ch.andre601.asl-api</groupId>
-            <artifactId>platform-bukkit</artifactId>
+            <artifactId>platform-paper</artifactId>
             <version>${api.version}</version>
             <scope>compile</scope>
         </dependency>

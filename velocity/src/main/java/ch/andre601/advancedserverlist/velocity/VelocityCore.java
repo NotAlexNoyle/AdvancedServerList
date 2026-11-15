@@ -40,6 +40,8 @@ import ch.andre601.advancedserverlist.velocity.logging.VelocityLogger;
 import ch.andre601.advancedserverlist.velocity.objects.placeholders.VelocityPlayerPlaceholders;
 import ch.andre601.advancedserverlist.velocity.objects.placeholders.VelocityProxyPlaceholders;
 import ch.andre601.advancedserverlist.velocity.objects.placeholders.VelocityServerPlaceholders;
+import ch.andre601.advancedserverlist.velocity.vanish.PremiumVanishUtil;
+import ch.andre601.advancedserverlist.velocity.vanish.SayanVanishUtil;
 import com.alessiodp.libby.Library;
 import com.alessiodp.libby.VelocityLibraryManager;
 import com.google.inject.Inject;
@@ -54,12 +56,10 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerPing;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.util.Favicon;
-import de.myzelyam.api.vanish.VelocityVanishAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.charts.SimplePie;
 import org.bstats.velocity.Metrics;
 import org.incendo.cloud.CommandManager;
-import org.sayandev.sayanvanish.velocity.api.SayanVanishVelocityAPI;
 
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
@@ -102,13 +102,13 @@ public class VelocityCore implements PluginCore<Favicon>{
     }
     
     @Subscribe
-    public void init(ProxyInitializeEvent event){
+    public void onProxyInitialize(ProxyInitializeEvent event){
         this.core = AdvancedServerList.init(this,
             VelocityPlayerPlaceholders.init(), VelocityServerPlaceholders.init(this), VelocityProxyPlaceholders.init(this));
     }
     
     @Subscribe
-    public void pluginDisable(ProxyShutdownEvent event){
+    public void onProxyShutdown(ProxyShutdownEvent event){
         core.disable();
         if(scheduledTask != null)
             scheduledTask.cancel();
@@ -119,6 +119,9 @@ public class VelocityCore implements PluginCore<Favicon>{
         new PlayerJoinEventListener(this);
         new ProxyPingEventListener(this);
     }
+    
+    @Override
+    public void unloadEvents(){}
     
     @Override
     public void loadMetrics(){
@@ -242,10 +245,10 @@ public class VelocityCore implements PluginCore<Favicon>{
         
         // Exclude players when PremiumVanish is enabled and player is hidden.
         if(proxy().getPluginManager().isLoaded("premiumvanish")){
-            players.removeIf(VelocityVanishAPI::isInvisible);
+            players.removeIf(PremiumVanishUtil::isVanished);
         }else // Do the same if SayanVanish is enabled.
         if(proxy().getPluginManager().isLoaded("sayanvanish")){
-            players.removeIf(player -> SayanVanishVelocityAPI.getInstance().isVanished(player.getUniqueId()));
+            players.removeIf(SayanVanishUtil::isVanished);
         }
         
         return players.size();

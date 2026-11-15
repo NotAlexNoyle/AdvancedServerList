@@ -39,7 +39,11 @@ import ch.andre601.advancedserverlist.core.placeholders.DatePlaceholder;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderTokenReader;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderValueReader;
-import ch.andre601.advancedserverlist.core.profiles.handlers.PlayerHandler;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.Handlers;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.PlayerHandler;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.JSONPlayerHandler;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.MariaDBPlayerHandler;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.PostgreSQLPlayerHandler;
 import ch.andre601.expressionparser.DefaultExpressionParserEngine;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -55,10 +59,7 @@ import org.incendo.cloud.suggestion.SuggestionProvider;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class AdvancedServerList<F>{
     
@@ -71,7 +72,7 @@ public class AdvancedServerList<F>{
     
     private final PluginCore<F> plugin;
     private final FileHandler fileHandler;
-    private final PlayerHandler playerHandler;
+    private PlayerHandler playerHandler;
     private final TextCenterUtil textCenterUtil;
     
     private static final AdvancedServerListAPI api = AdvancedServerListAPI.get();
@@ -83,12 +84,11 @@ public class AdvancedServerList<F>{
     
     private UpdateChecker updateChecker;
     
-    private String version;
+    private final Map<String, String> versions = new HashMap<>();
     
     private AdvancedServerList(PluginCore<F> plugin, List<PlaceholderProvider> placeholders){
         this.plugin = plugin;
         this.fileHandler = new FileHandler(this);
-        this.playerHandler = new PlayerHandler(this);
         this.textCenterUtil = new TextCenterUtil(this);
         
         plugin.pluginLogger().info("Registering internal Placeholders...");
@@ -100,7 +100,7 @@ public class AdvancedServerList<F>{
         }
         
         resolveVersion();
-        plugin().pluginLogger().info("Starting <white>AdvancedServerList v%s</white>...", version);
+        plugin().pluginLogger().info("Starting <white>AdvancedServerList v%s</white>...", versions.get("plugin"));
         load();
     }
     
@@ -120,8 +120,8 @@ public class AdvancedServerList<F>{
         return playerHandler;
     }
     
-    public String version(){
-        return version;
+    public Map<String, String> versions(){
+        return versions;
     }
     
     public DefaultExpressionParserEngine parser(){
@@ -137,13 +137,14 @@ public class AdvancedServerList<F>{
     }
     
     public void disable(){
-        plugin().pluginLogger().info("[-] Saving <white>playercache.json</white> file...");
         playerHandler().save();
         
         if(updateChecker != null){
             plugin().pluginLogger().info("[-] Disabling Update Checker...");
             updateChecker.disable();
         }
+        
+        plugin().unloadEvents();
         
         plugin().pluginLogger().success("AdvancedServerList disabled!");
     }
@@ -153,7 +154,7 @@ public class AdvancedServerList<F>{
     }
     
     public void clearPlayerCache(){
-        playerHandler().clearCache();
+        playerHandler.clear();
     }
     
     private void load(){
@@ -178,6 +179,9 @@ public class AdvancedServerList<F>{
         
         plugin().pluginLogger().info("Platform: <white>%s</white>", plugin.platformInfo());
         plugin().pluginLogger().info("");
+        
+        plugin().pluginLogger().info("Loading PlayerCache Handler...");
+        this.playerHandler = resolveHandler(fileHandler().getString("unknown", "storage", "type"));
         
         if(fileHandler().loadProfiles()){
             plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().profiles().size());
@@ -216,11 +220,25 @@ public class AdvancedServerList<F>{
             Properties properties = new Properties();
             
             properties.load(stream);
+            versions.clear();
             
-            version = properties.getProperty("version");
-        }catch(IOException ex){
-            version = "UNKNOWN";
-        }
+            for(String key : properties.stringPropertyNames()){
+                versions.put(key, properties.getProperty(key));
+            }
+        }catch(IOException ignored){}
+    }
+    
+    private PlayerHandler resolveHandler(String key){
+        return switch(Handlers.fromString(key)){
+            case JSON -> new JSONPlayerHandler(this);
+            case REDIS -> null;
+            case MARIADB -> new MariaDBPlayerHandler(this);
+            case POSTGRESQL -> new PostgreSQLPlayerHandler(this);
+            case UNKNOW -> {
+                plugin().pluginLogger().warn("Received unknown Storage type <white>%s</white>. Defaulting to JSON.", key);
+                yield new JSONPlayerHandler(this);
+            }
+        };
     }
     
     private void addPlaceholder(PlaceholderProvider placeholderProvider){

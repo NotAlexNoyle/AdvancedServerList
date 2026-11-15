@@ -60,7 +60,7 @@ public class PingEventHandler{
         int max = event.maxPlayers();
         
         P player = event.createPlayer(
-            plugin.core().playerHandler().getCachedPlayer(event.playerIP()),
+            plugin.core().playerHandler().player(event.playerIP()),
             event.protocolVersion()
         );
         GenericServer server = event.createServer(online, max, host);

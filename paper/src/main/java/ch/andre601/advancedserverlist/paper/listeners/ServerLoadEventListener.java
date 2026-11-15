@@ -47,6 +47,7 @@ public class ServerLoadEventListener implements Listener{
         new WorldEventsListener(plugin);
         
         // Load currently loaded worlds into the WorldCache
+        plugin.worldCache().clear();
         Bukkit.getWorlds().forEach(world -> plugin.worldCache().addWorld(world));
         
         // Print a warning if server load was after a reload.

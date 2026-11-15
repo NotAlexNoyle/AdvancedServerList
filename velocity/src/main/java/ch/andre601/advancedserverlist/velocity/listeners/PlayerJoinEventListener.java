@@ -25,6 +25,7 @@
 
 package ch.andre601.advancedserverlist.velocity.listeners;
 
+import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.velocity.VelocityCore;
 import ch.andre601.advancedserverlist.velocity.commands.VelocityCmdSender;
 import com.velocitypowered.api.event.Subscribe;
@@ -47,7 +48,7 @@ public class PlayerJoinEventListener{
         InetSocketAddress address = event.getPlayer().getRemoteAddress();
         Player player = event.getPlayer();
         
-        plugin.core().playerHandler().addPlayer(address.getHostString(), player.getUsername(), player.getUniqueId());
+        plugin.core().playerHandler().add(new CachedPlayer(address.getHostString(), player.getUsername(), player.getUniqueId()));
         
         if(player.hasPermission("advancedserverlist.admin") || player.hasPermission("advancedserverlist.updatecheck")){
             if(plugin.core().updateChecker() == null)

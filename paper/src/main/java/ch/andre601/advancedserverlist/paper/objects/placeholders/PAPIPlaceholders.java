@@ -25,8 +25,8 @@
 
 package ch.andre601.advancedserverlist.paper.objects.placeholders;
 
-import ch.andre601.advancedserverlist.api.bukkit.objects.BukkitPlayer;
-import ch.andre601.advancedserverlist.api.bukkit.objects.BukkitServer;
+import ch.andre601.advancedserverlist.api.paper.objects.PaperPlayer;
+import ch.andre601.advancedserverlist.api.paper.objects.PaperServer;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
@@ -69,7 +69,7 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
     
     @Override
     public @NonNull String getVersion(){
-        return plugin.core().version();
+        return plugin.core().versions().getOrDefault("plugin", "-1");
     }
     
     @Override
@@ -80,14 +80,14 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
     @Override
     public String onPlaceholderRequest(Player pl, @NonNull String identifier){
         String host = pl.getVirtualHost() == null ? null : pl.getVirtualHost().getHostString();
-        CachedPlayer cached = plugin.core().playerHandler().getCachedPlayer(pl.getUniqueId());
+        CachedPlayer cached = plugin.core().playerHandler().player(pl.getUniqueId());
         
         int protocol = resolveProtocol(pl);
         int online = Bukkit.getOnlinePlayers().size();
         int max = Bukkit.getMaxPlayers();
         
-        BukkitServer server = new PaperServerImpl(plugin.worldCache().worlds(), online, max, host);
-        BukkitPlayer player = new PaperPlayerImpl(pl, cached, protocol);
+        PaperServer server = new PaperServerImpl(plugin.worldCache().worlds(), online, max, host);
+        PaperPlayer player = new PaperPlayerImpl(pl, cached, protocol);
         
         ServerListProfile profile = ProfileManager.resolveProfile(plugin.core(), player, server);
         if(profile == null)
@@ -113,7 +113,7 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
             max = online + (extraPlayers == null ? 0 : extraPlayers);
         }
         
-        BukkitServer finalServer = new PaperServerImpl(plugin.worldCache().worlds(), online, max, host);
+        PaperServer finalServer = new PaperServerImpl(plugin.worldCache().worlds(), online, max, host);
         return switch(identifier.toLowerCase(Locale.ROOT)){
             case "favicon" -> getOption(entry.favicon(), pl, player, finalServer);
             case "motd" -> getOption(entry.motd(), pl, player, finalServer, true);
@@ -138,14 +138,14 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
         return Bukkit.getUnsafe().getProtocolVersion();
     }
     
-    private String getOption(String str, Player pl, BukkitPlayer player, BukkitServer server){
+    private String getOption(String str, Player pl, PaperPlayer player, PaperServer server){
         if(str == null)
             return "";
         
         return getOption(Collections.singletonList(str), pl, player, server, false);
     }
     
-    private String getOption(List<String> list, Player pl, BukkitPlayer player, BukkitServer server, boolean isMotd){
+    private String getOption(List<String> list, Player pl, PaperPlayer player, PaperServer server, boolean isMotd){
         if(list.isEmpty())
             return "";
         
@@ -164,7 +164,7 @@ public class PAPIPlaceholders extends PlaceholderExpansion{
             .collect(Collectors.joining("\n"));
     }
     
-    private Integer parseNumberOption(String option, Player pl, BukkitPlayer player, BukkitServer server){
+    private Integer parseNumberOption(String option, Player pl, PaperPlayer player, PaperServer server){
         String parsed = ComponentParser.text(option)
             .modifyText(text -> StringReplacer.replace(text, player, server))
             .modifyText(text -> PlaceholderAPI.setPlaceholders(pl, text))

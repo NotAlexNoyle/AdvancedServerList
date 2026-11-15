@@ -26,13 +26,15 @@
 package ch.andre601.advancedserverlist.core.profiles.profile;
 
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 
+@NullMarked
 public class ProfileSerializer implements TypeSerializer<ProfileEntry>{
     public static final ProfileSerializer INSTANCE = new ProfileSerializer();
     
@@ -49,16 +51,18 @@ public class ProfileSerializer implements TypeSerializer<ProfileEntry>{
         }
         
         node.node("motd").set(profile.motd());
-        node.node("playerCount", "hover").set(profile.players());
-        node.node("playerCount", "text").set(profile.playerCountText());
         node.node("favicon").set(profile.favicon());
-        node.node("playerCount", "hidePlayers").set(profile.hidePlayersEnabled().getOrDefault(false));
-        node.node("playerCount", "hidePlayersHover").set(profile.hidePlayersHoverEnabled().getOrDefault(false));
-        node.node("playerCount", "extraPlayers", "enabled").set(profile.extraPlayersEnabled().getOrDefault(false));
-        node.node("playerCount", "extraPlayers", "amount").set((profile.extraPlayersCount() == null) ? "0" : profile.extraPlayersCount());
-        node.node("playerCount", "maxPlayers", "enabled").set(profile.maxPlayersEnabled().getOrDefault(false));
-        node.node("playerCount", "maxPlayers", "amount").set((profile.maxPlayersCount() == null) ? "0" : profile.maxPlayersCount());
-        node.node("playerCount", "onlinePlayers", "enabled").set(profile.onlinePlayersEnabled().getOrDefault(false));
-        node.node("playerCount", "onlinePlayers", "amount").set(profile.onlinePlayersCount() == null ? "0" : profile.onlinePlayersCount());
+        ConfigurationNode playerCount = node.node("playerCount");
+        
+        playerCount.node("hover").set(profile.players());
+        playerCount.node("text").set(profile.playerCountText());
+        playerCount.node("hidePlayers").set(profile.hidePlayersEnabled().getOrDefault(false));
+        playerCount.node("hidePlayersHover").set(profile.hidePlayersHoverEnabled().getOrDefault(false));
+        playerCount.node("extraPlayers", "enabled").set(profile.extraPlayersEnabled().getOrDefault(false));
+        playerCount.node("extraPlayers", "amount").set((profile.extraPlayersCount() == null) ? "0" : profile.extraPlayersCount());
+        playerCount.node("maxPlayers", "enabled").set(profile.maxPlayersEnabled().getOrDefault(false));
+        playerCount.node("maxPlayers", "amount").set((profile.maxPlayersCount() == null) ? "0" : profile.maxPlayersCount());
+        playerCount.node("onlinePlayers", "enabled").set(profile.onlinePlayersEnabled().getOrDefault(false));
+        playerCount.node("onlinePlayers", "amount").set(profile.onlinePlayersCount() == null ? "0" : profile.onlinePlayersCount());
     }
 }
