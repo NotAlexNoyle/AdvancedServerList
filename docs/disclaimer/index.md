@@ -41,6 +41,11 @@ A server owner may decide to disable the caching mechanic, by enabling `disableC
 Doing so will disable any attempts of storing the previously mentioned data.  
 However, already stored data prior to disabling the caching will not be deleted and is the responsibility of the server owner.
 
+## Limitations/Issues
+
+Due to the plugin using the IP to identify a player, can it happen that players sharing the same IP - i.e. as part of a Carrier-grade NAT (CGNAT) - may see name and UUID of another player who joined previously.  
+This is an unfortunate side-effect that cannot be avoided, due to the lack of alternative ways to identify a player.
+
 ## Important Notice
 
 By using this plugin, Server owners are responsible for storing the data, if enabled, in a proper way that follows applicable privacy laws and regulations.  

@@ -245,4 +245,5 @@ nav:
       - LuckPerms: addons/first-party/luckperms.md
     - Third-party:
       - SayanVanish: addons/third-party/sayanvanish.md
-  - disclaimer.md
+  - Disclaimer:
+    - disclaimer/index.md
