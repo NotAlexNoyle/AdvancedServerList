@@ -31,6 +31,7 @@ import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
+import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import ch.andre601.advancedserverlist.paper.commands.PaperCommandManagerInterface;
@@ -57,6 +58,8 @@ import org.bukkit.util.CachedServerIcon;
 import org.incendo.cloud.CommandManager;
 
 import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +92,17 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
         
         if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
             papiPlaceholders = new PAPIPlaceholders(this);
+        
+        try{
+            // Check for ServerLinks to add button
+            Class.forName("org.bukkit.ServerLinks");
+            Bukkit.getServerLinks().addLink(
+                ComponentParser.text("<aqua>AdvancedServerList</aqua> Disclaimer").toComponent(),
+                new URI("https://asl.andre601.ch/disclaimer")
+            );
+        }catch(ClassNotFoundException | URISyntaxException ignored){
+            // Do nothing.
+        }
     }
     
     @Override
@@ -186,13 +200,17 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
     
     @Override
     public String platformInfo(){
-        try{
-            Class.forName("io.papermc.paper.ServerBuildInfo");
-            return buildInfo();
-        }catch(ClassNotFoundException ignored){
-            // Old Paper versions (Before 16th of May 2024)
-            return version();
-        }
+        ServerBuildInfo info = ServerBuildInfo.buildInfo();
+        
+        String name = info.brandName();
+        String id = info.brandId().asString();
+        String version = info.minecraftVersionName();
+        
+        OptionalInt build = info.buildNumber();
+        if(build.isEmpty())
+            return String.format("%s (ID: %s, Version: %s)", name, id, version);
+        
+        return String.format("%s (ID: %s, Version: %s, Build: %d)", name, id, version, build.getAsInt());
     }
     
     @Override
@@ -250,24 +268,6 @@ public class PaperCore extends JavaPlugin implements PluginCore<CachedServerIcon
         });
         
         return players.size();
-    }
-    
-    private String buildInfo(){
-        ServerBuildInfo info = ServerBuildInfo.buildInfo();
-        
-        String name = info.brandName();
-        String id = info.brandId().asString();
-        String version = info.minecraftVersionName();
-        
-        OptionalInt build = info.buildNumber();
-        if(build.isEmpty())
-            return String.format("%s (ID: %s, Version: %s)", name, id, version);
-        
-        return String.format("%s (ID: %s, Version: %s, Build: %d)", name, id, version, build.getAsInt());
-    }
-    
-    private String version(){
-        return getServer().getName() + " " + getServer().getVersion();
     }
     
     private void printOutdatedPaper(){

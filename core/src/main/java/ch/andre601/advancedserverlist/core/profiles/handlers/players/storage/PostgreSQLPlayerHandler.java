@@ -5,6 +5,7 @@ import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.DatabasePlayerHandler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.Queries;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -29,7 +30,8 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
         
         super.add(player);
         
-        try(PreparedStatement statement = Queries.INSERT_PLAYER_POSTGRES.statement(connection())){
+        try(Connection connection = connection();
+            PreparedStatement statement = Queries.INSERT_PLAYER_POSTGRES.statement(connection)){
             statement.setString(1, player.ip());
             statement.setString(2, player.uuid().toString());
             statement.setString(3, player.name());

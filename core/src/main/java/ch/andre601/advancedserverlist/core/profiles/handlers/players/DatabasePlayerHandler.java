@@ -44,7 +44,8 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     
     @Override
     public void load(){
-        try(PreparedStatement statement = Queries.GET_PLAYERS.statement(connection())){
+        try(Connection connection = connection();
+            PreparedStatement statement = Queries.GET_PLAYERS.statement(connection)){
             try(ResultSet set = statement.executeQuery()){
                 players.clear();
                 while(set.next()){
@@ -73,7 +74,8 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         
         super.add(player);
         
-        try(PreparedStatement statement = Queries.INSERT_PLAYER_MYSQL.statement(connection())){
+        try(Connection connection = connection();
+            PreparedStatement statement = Queries.INSERT_PLAYER_MYSQL.statement(connection)){
             statement.setString(1, player.ip());
             statement.setString(2, player.uuid().toString());
             statement.setString(3, player.name());
@@ -90,7 +92,8 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     public boolean remove(CachedPlayer player){
         super.remove(player);
         
-        try(PreparedStatement statement = Queries.REMOVE_PLAYER.statement(connection())){
+        try(Connection connection = connection();
+            PreparedStatement statement = Queries.REMOVE_PLAYER.statement(connection)){
             statement.setString(1, player.uuid().toString());
             
             return statement.executeUpdate() != 0;

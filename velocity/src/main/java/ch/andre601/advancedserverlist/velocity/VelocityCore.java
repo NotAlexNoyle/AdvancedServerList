@@ -31,6 +31,7 @@ import ch.andre601.advancedserverlist.core.interfaces.dialogs.IDialogList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.interfaces.commands.CmdSender;
 import ch.andre601.advancedserverlist.core.interfaces.core.PluginCore;
+import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.handlers.FaviconHandler;
 import ch.andre601.advancedserverlist.velocity.commands.VelocityCommandManagerInterface;
@@ -105,6 +106,16 @@ public class VelocityCore implements PluginCore<Favicon>{
     public void onProxyInitialize(ProxyInitializeEvent event){
         this.core = AdvancedServerList.init(this,
             VelocityPlayerPlaceholders.init(), VelocityServerPlaceholders.init(this), VelocityProxyPlaceholders.init(this));
+        
+        try{
+            Class.forName("com.velocitypowered.api.util.ServerLink");
+            com.velocitypowered.api.util.ServerLink.serverLink(
+                ComponentParser.text("<aqua>AdvancedServerList</aqua> Disclaimer").toComponent(),
+                "https://asl.andre601.ch/disclaimer"
+            );
+        }catch(ClassNotFoundException ignored){
+            // Do nothing.
+        }
     }
     
     @Subscribe
