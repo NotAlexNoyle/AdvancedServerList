@@ -257,7 +257,7 @@ public class AdvancedServerList<F>{
             (annotation, builder) -> builder.meta(CommandHandler.COMMAND_TYPE, annotation.value())
         );
         annotationParser.parse(
-            CmdClearCache.create(this),
+            CmdCache.create(this),
             CmdHelp.create(commandManager),
             CmdMigrate.create(this),
             CmdProfiles.create(this),

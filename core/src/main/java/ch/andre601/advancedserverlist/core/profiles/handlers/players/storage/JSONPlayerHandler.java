@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class JSONPlayerHandler extends PlayerHandler{
     private final Type listType = new TypeToken<ArrayList<CachedPlayer>>(){}.getType();
@@ -27,16 +26,6 @@ public class JSONPlayerHandler extends PlayerHandler{
     public JSONPlayerHandler(AdvancedServerList<?> core){
         super(core);
         this.cacheFile = core.plugin().folderPath().resolve("playercache.json");
-    }
-    
-    @Override
-    public CachedPlayer player(String ip){
-        return null;
-    }
-    
-    @Override
-    public CachedPlayer player(UUID uuid){
-        return null;
     }
     
     @Override
@@ -75,10 +64,6 @@ public class JSONPlayerHandler extends PlayerHandler{
     @Override
     public void save(){
         logger().info("[-] Saving <white>playercache.json</white> file...");
-        if(players.isEmpty()){
-            logger().debug(JSONPlayerHandler.class, "[-] No players to save. Skipping...");
-            return;
-        }
         
         if(core().fileHandler().getBoolean("disableCache")){
             logger().debug(JSONPlayerHandler.class, "[-] Caching is disabled. Skipping player saving...");

@@ -73,7 +73,7 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         
         super.add(player);
         
-        try(PreparedStatement statement = Queries.INSERT_PLAYER.statement(connection())){
+        try(PreparedStatement statement = Queries.INSERT_PLAYER_MYSQL.statement(connection())){
             statement.setString(1, player.ip());
             statement.setString(2, player.uuid().toString());
             statement.setString(3, player.name());
@@ -87,15 +87,19 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     }
     
     @Override
-    public void remove(CachedPlayer player){
+    public boolean remove(CachedPlayer player){
         super.remove(player);
         
         try(PreparedStatement statement = Queries.REMOVE_PLAYER.statement(connection())){
-            statement.setString(1, player.ip());
+            statement.setString(1, player.uuid().toString());
+            
+            return statement.executeUpdate() != 0;
         }catch(SQLException ex){
             logger().warn("Encountered SQLException while removing Player %s (%s) from database.", player.name(), player.uuid());
             if(core().fileHandler().getBoolean("debug"))
                 logger().warn("Exception:", ex);
+            
+            return false;
         }
     }
     
@@ -104,7 +108,7 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         core().plugin().downloadLibrary("org.flywaydb", "flyway-core", core().versions().get("flyway"));
     }
     
-    private Connection connection() throws SQLException{
+    public Connection connection() throws SQLException{
         return dataSource.getConnection();
     }
 }

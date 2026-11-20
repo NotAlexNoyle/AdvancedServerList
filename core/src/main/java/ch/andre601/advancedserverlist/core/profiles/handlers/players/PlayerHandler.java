@@ -48,6 +48,10 @@ public abstract class PlayerHandler{
         return defaultPlayer();
     }
     
+    public List<CachedPlayer> players(){
+        return players;
+    }
+    
     public void add(CachedPlayer player){
         if(core().fileHandler().getBoolean("disableCache"))
             return;
@@ -55,8 +59,8 @@ public abstract class PlayerHandler{
         this.players.add(player);
     }
     
-    public void remove(CachedPlayer player){
-        this.players.remove(player);
+    public boolean remove(CachedPlayer player){
+        return this.players.remove(player);
     }
     
     public void clear(){
