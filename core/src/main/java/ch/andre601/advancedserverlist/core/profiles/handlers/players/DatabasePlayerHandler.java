@@ -5,7 +5,7 @@ import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class DatabasePlayerHandler extends PlayerHandler{
     
-    protected final HikariDataSource dataSource;
-    protected final HikariConfig config = new HikariConfig();
+    private final HikariDataSource dataSource;
     
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new PlayerCacheThreadFactory());
     
@@ -29,12 +28,14 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         
         loadDependencies();
         
-        this.config.setDataSourceClassName(dataSourceClass);
-        this.config.setUsername(core.fileHandler().getString("root", "storage", "username"));
-        this.config.setPassword(core.fileHandler().getString("", "storage", "password"));
-        this.config.addDataSourceProperty("serverName", core().fileHandler().getString("localhost", "storage", "url"));
-        this.config.addDataSourceProperty("portNumber", core().fileHandler().getLong(3306, 1, "storage", "port"));
-        this.config.addDataSourceProperty("databaseName", core().fileHandler().getString("playercache", "storage", "name"));
+        HikariConfig config = new HikariConfig();
+        
+        config.setDataSourceClassName(dataSourceClass);
+        config.setUsername(core.fileHandler().getString("root", "storage", "username"));
+        config.setPassword(core.fileHandler().getString("", "storage", "password"));
+        config.addDataSourceProperty("serverName", core().fileHandler().getString("localhost", "storage", "url"));
+        config.addDataSourceProperty("portNumber", core().fileHandler().getLong(3306, 1, "storage", "port"));
+        config.addDataSourceProperty("databaseName", core().fileHandler().getString("playercache", "storage", "name"));
         
         this.dataSource = new HikariDataSource(config);
         
@@ -144,7 +145,7 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     
     private static class PlayerCacheThreadFactory implements ThreadFactory{
         @Override
-        public Thread newThread(@NotNull Runnable r){
+        public Thread newThread(@NonNull Runnable r){
             Thread t = new Thread(r, "AdvancedServerList-PlayerCacheThread");
             t.setDaemon(true);
             return t;
