@@ -141,7 +141,10 @@ nav:
     - Tutorials: getting-started/tutorials.md
   - Commands:
     - commands/index.md
-    - commands/clearcache.md
+    - /asl cache:
+      - commands/cache/index.md
+      - commands/cache/clear.md
+      - commands/cache/remove.md
     - commands/help.md
     - commands/migrate.md
     - /asl profiles:
