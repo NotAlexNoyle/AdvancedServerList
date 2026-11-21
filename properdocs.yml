@@ -86,6 +86,9 @@ plugins:
         #
         # Addons page
         'addons/banplugins.md': 'addons/first-party/banplugins.md'
+        #
+        # Commands page
+        'commands/clearcache.md': 'commands/cache/clear.md'
   - pagenav-generator
   - macros:
       include_dir: docs/.overrides

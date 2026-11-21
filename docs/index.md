@@ -66,7 +66,7 @@ AdvancedServerList supports the following platforms:
     
     **Other Pages:**
     
-    - [/asl clearcache](commands/clearcache.md)
+    - [/asl cache](commands/cache/index.md)
     - [/asl help](commands/help.md)
     - [/asl migrate](commands/migrate.md)
     - [/asl profiles](commands/profiles/index.md)

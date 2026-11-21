@@ -45,7 +45,7 @@ Please note that the actual favicon displayed will always be 64x64 pixels, even 
 ## Updating local Images
 
 Local favicons (images in the `favicons` folder) are only loaded during the plugin's startup.  
-If you would like to add new images to be used, you have to execute [`/asl cache clear favicon`](../../commands/cacge/clear.md) to add them.
+If you would like to add new images to be used, you have to execute [`/asl cache clear favicon`](../../commands/cache/clear.md) to add them.
 
 Note that this will also clear any dynamically created Favicons, requiring them to be created again.
 
