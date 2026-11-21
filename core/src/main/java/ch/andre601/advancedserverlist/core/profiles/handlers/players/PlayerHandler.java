@@ -4,9 +4,9 @@ import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class PlayerHandler{
     
@@ -14,7 +14,7 @@ public abstract class PlayerHandler{
     private final PluginLogger logger;
     
     protected final UUID defaultUUID = UUID.fromString("606e2ff0-ed77-4842-9d6c-e1d3321c7838");
-    protected List<CachedPlayer> players = new ArrayList<>();
+    protected List<CachedPlayer> players = new CopyOnWriteArrayList<>();
     
     private CachedPlayer defaultPlayer = null;
     

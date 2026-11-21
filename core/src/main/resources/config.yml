@@ -192,6 +192,13 @@ storage:
   # Default: ''
   #
   password: ''
+  #
+  # Time in minutes that the cached players should be refreshed from the database.
+  # Cannot be less than 1.
+  #
+  # Default: 5
+  #
+  refreshRate: 5
 
 #
 # DO NOT EDIT!
