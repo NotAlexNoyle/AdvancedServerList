@@ -6,14 +6,14 @@ Example: `background.png;${player uuid};foreground.png`
 ///
 
 The `favicon` option is a String that sets the image that should be displayed in the server list.  
-The final image itself is 64x64 pixels and any images used with a differing size will be automatically resized to fit.
+The final image itself is 64x64 pixels and any images used with a different size will have [favicon resizing](#favicon-resizing) applied.
 
 The option supports specific values:
 
 - A URL with `https://` at the start that points to an image.
 - A filename with `.png` extension that matches an existing file in the `favicons` folder of the plugin.
     - You can use `random` to have the plugin randomly select an image from the folder.
-- A player name or UUID that will be resolved into a Player head image using https://mc-heads.net{ target="_blank" rel="nofollow" }.
+- A player name or UUID that will be resolved into a Player head image using https://mc-heads.net.
     - Placeholders that get resolved into a player name or UUID (i.e. `${player name}` or `${player uuid}`) can be used.
 
 /// details | Why is the favicon from URL/Player name/Player UUID/Placeholder not loading?
@@ -45,7 +45,7 @@ Please note that the actual favicon displayed will always be 64x64 pixels, even 
 ## Updating local Images
 
 Local favicons (images in the `favicons` folder) are only loaded during the plugin's startup.  
-If you would like to add new images to be used, you have to execute [`/asl clearcache`](../../commands/clearcache.md) to add them.
+If you would like to add new images to be used, you have to execute [`/asl cache clear favicon`](../../commands/cacge/clear.md) to add them.
 
 Note that this will also clear any dynamically created Favicons, requiring them to be created again.
 
