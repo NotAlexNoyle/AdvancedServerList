@@ -16,19 +16,17 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
     }
     
     @Override
-    public void loadDependencies(){
-        core().plugin().downloadLibrary("org.postgresql", "postgresql", core().versions().get("postgres"));
-        core().plugin().downloadLibrary("org.flywaydb", "flyway-database-postgresql", core().versions().get("flyway"));
+    public void dependencies(){
+        super.dependencies();
         
-        super.loadDependencies();
+        dependencies.add(new Dependency("org.postgresql", "postgresql", core().versions().get("postgres")));
+        dependencies.add(new Dependency("org.flywaydb", "flyway-database-postgresql", core().versions().get("flyway")));
     }
     
     @Override
     public void add(CachedPlayer player){
         if(core().fileHandler().getBoolean("disableCache"))
             return;
-        
-        super.add(player);
         
         try(Connection connection = connection();
             PreparedStatement statement = Queries.INSERT_PLAYER_POSTGRES.statement(connection)){
@@ -37,6 +35,8 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
             statement.setString(3, player.name());
             
             statement.executeUpdate();
+            
+            super.add(player);
         }catch(SQLException ex){
             logger().warn("Encountered SQLException while saving Player %s (%s) to database.", player.name(), player.uuid());
             if(core().fileHandler().getBoolean("debug"))

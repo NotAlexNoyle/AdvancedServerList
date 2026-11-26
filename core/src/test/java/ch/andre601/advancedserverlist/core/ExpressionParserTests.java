@@ -33,6 +33,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,38 +42,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExpressionParserTests{
     
     private final DefaultExpressionParserEngine parser = DefaultExpressionParserEngine.createDefault();
-    private final DummyPluginLogger logger = new DummyPluginLogger();
-    private final Map<String, Boolean> testValuesMap = getTestMap();
+    private final Map<String, Boolean> testValuesMap = new HashMap<>(){{
+        put("20 > 10", true);
+        put("10 > 20", false);
+        put("10 = 10", true);
+        put("10 = 20", false);
+        put("(10 - 5) > (1 + 1)", true);
+        put("(10 - 10) > (1 + 1)", false);
+        put("100 > 50 and 50 < 100", true);
+        put("100 < 50 and 50 > 100", false);
+        put("true or 100 > 10", true);
+        put("false or 100 < 10", false);
+    }};
     
     private final TestPlayer player = new TestPlayer();
     private final TestServer server = new TestServer();
     
     @Test
     public void testBasicExpressionResults(){
+        System.out.println("====[ DefaultExpressionParser Tests ]====");
         for(Map.Entry<String, Boolean> values : testValuesMap.entrySet()){
-            logger.info("TEST[expression=\"%s\", expected=%b]", values.getKey(), values.getValue());
+            System.out.printf("| Test:     '%s'%n", values.getKey());
+            System.out.printf("| Expected: %b%n", values.getValue());
             
             ParseWarnCollector collector = new ParseWarnCollector(values.getKey());
             boolean result = parser.compileToBoolean(values.getKey(), collector, player, server);
             
-            logger.info("Result (Output, Expected?): %b, %b", result, (result == values.getValue()));
+            System.out.printf("| Result:   %b%n", result);
+            System.out.println("-----------------------------------------");
+            
             assertEquals(result, values.getValue());
         }
-    }
-    
-    private Map<String, Boolean> getTestMap(){
-        return Map.of(
-            "20 > 10", true,
-            "10 > 20", false,
-            "10 = 10", true,
-            "10 = 20", false,
-            "(10 - 5) > (1 + 1)", true,
-            "(10 - 10) > (1 + 1)", false,
-            "100 > 50 and 50 < 100", true,
-            "100 < 50 and 50 > 100", false,
-            "true or 100 > 10", true,
-            "false or 100 < 10", false
-        );
     }
     
     private static class TestPlayer implements GenericPlayer{

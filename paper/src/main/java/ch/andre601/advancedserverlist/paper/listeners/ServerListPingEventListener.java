@@ -25,7 +25,7 @@
 
 package ch.andre601.advancedserverlist.paper.listeners;
 
-import ch.andre601.advancedserverlist.api.bukkit.events.PostServerListSetEvent;
+import ch.andre601.advancedserverlist.api.paper.events.PostServerListSetEvent;
 import ch.andre601.advancedserverlist.api.profiles.ProfileEntry;
 import ch.andre601.advancedserverlist.core.events.PingEventHandler;
 import ch.andre601.advancedserverlist.paper.PaperCore;

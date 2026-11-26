@@ -6,13 +6,13 @@ import java.sql.SQLException;
 
 public enum Queries{
     INSERT_PLAYER_MYSQL(
-        "INSERT INTO player_cache ('ip', 'uuid', 'name')" +
-        "VALUES(?, ?, ?) AS new_values" +
-        "ON DUPLICATE KEY UPDATE ip = new_values.ip, name = new_values.name;"
+        "INSERT INTO player_cache ('ip', 'uuid', 'name') " +
+        "VALUES(?, ?, ?) " +
+        "ON DUPLICATE KEY UPDATE uuid = new_values.uuid, name = new_values.name;"
     ),
     INSERT_PLAYER_POSTGRES(
-        "INSERT INTO player_cache ('ip', 'uuid', 'name')" +
-        "VALUES(?, ?, ?)" +
+        "INSERT INTO player_cache ('ip', 'uuid', 'name') " +
+        "VALUES(?, ?, ?) " +
         "ON CONFLICT (ip) DO UPDATE SET uuid = EXCLUDED.uuid, name = EXCLUDED.name;"
     ),
     REMOVE_PLAYER(

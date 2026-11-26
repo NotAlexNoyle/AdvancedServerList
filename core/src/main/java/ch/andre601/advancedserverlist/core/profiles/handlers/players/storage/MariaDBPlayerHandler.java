@@ -9,12 +9,11 @@ public class MariaDBPlayerHandler extends DatabasePlayerHandler{
         super(core, "org.mariadb.jdbc.MariaDbDataSource");
     }
     
-    
     @Override
-    public void loadDependencies(){
-        core().plugin().downloadLibrary("org.mariadb.jdbc", "mariadb-java-client", core().versions().get("mariadb"));
-        core().plugin().downloadLibrary("org.flywaydb", "flyway-mysql", core().versions().get("flyway"));
+    public void dependencies(){
+        super.dependencies();
         
-        super.loadDependencies();
+        dependencies.add(new Dependency("org.mariadb.jdbc", "mariadb-java-client", core().versions().get("mariadb")));
+        dependencies.add(new Dependency("org.flywaydb", "flyway-mysql", core().versions().get("flyway")));
     }
 }

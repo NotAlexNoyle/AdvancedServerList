@@ -15,10 +15,10 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JSONPlayerHandler extends PlayerHandler{
-    private final Type listType = new TypeToken<ArrayList<CachedPlayer>>(){}.getType();
+    private final Type listType = new TypeToken<CopyOnWriteArrayList<CachedPlayer>>(){}.getType();
     private final Gson gson = new Gson();
     
     private final Path cacheFile;
@@ -54,7 +54,7 @@ public class JSONPlayerHandler extends PlayerHandler{
         
         if(players == null){
             logger().warn("Unable to load playercache.json! Retrieved list was null.");
-            players = new ArrayList<>();
+            players = new CopyOnWriteArrayList<>();
             return;
         }
         
@@ -71,7 +71,7 @@ public class JSONPlayerHandler extends PlayerHandler{
         }
         
         try(BufferedWriter writer = Files.newBufferedWriter(cacheFile, StandardCharsets.UTF_8)){
-            gson.toJson(cacheFile, listType, writer);
+            gson.toJson(players, listType, writer);
             logger().success("Successfully saved <white>playercache.json</white> file!");
         }catch(IOException | JsonIOException ex){
             logger().failure("Encountered an IOException while saving playercache.json file!", ex);

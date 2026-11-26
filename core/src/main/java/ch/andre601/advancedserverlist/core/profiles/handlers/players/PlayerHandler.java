@@ -53,7 +53,7 @@ public abstract class PlayerHandler{
     }
     
     public void add(CachedPlayer player){
-        if(core().fileHandler().getBoolean("disableCache"))
+        if(contains(player.ip()) || core().fileHandler().getBoolean("disableCache"))
             return;
         
         this.players.add(player);
@@ -93,5 +93,14 @@ public abstract class PlayerHandler{
         }catch(IllegalArgumentException ex){
             return defaultUUID;
         }
+    }
+    
+    private boolean contains(String ip){
+        for(CachedPlayer player : players){
+            if(player.ip().equalsIgnoreCase(ip))
+                return true;
+        }
+        
+        return false;
     }
 }

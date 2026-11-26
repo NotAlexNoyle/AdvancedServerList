@@ -17,6 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -41,7 +42,7 @@ public class FaviconHandler<F>{
         this.logger = core.plugin().pluginLogger();
         this.faviconThreadPool = createThreadPool();
         this.faviconCache = CacheBuilder.newBuilder()
-                .expireAfterWrite(core.fileHandler().getLong(1, 1, "faviconCacheTime"), TimeUnit.MINUTES)
+                .expireAfterWrite(Duration.ofMinutes(core.fileHandler().getLong(1, 1, "faviconCacheTime")))
                 .build();
         
         loadLocalFavicons();
@@ -259,7 +260,7 @@ public class FaviconHandler<F>{
             logger.debug(FaviconHandler.class, "Creating request for URL '%s'...", url);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
-                    .header("User-Agent", "AdvancedServerList-" + core.plugin().loader() + "/" + core.version())
+                    .header("User-Agent", "AdvancedServerList-" + core.plugin().loader() + "/" + core.versions().getOrDefault("plugin", "UNKNOWN"))
                     .build();
             
             try(InputStream stream = client.send(request, HttpResponse.BodyHandlers.ofInputStream()).body()){

@@ -8,17 +8,17 @@ public enum Handlers{
     MARIADB,
     POSTGRESQL,
     
-    UNKNOW;
+    UNKNOWN;
     
     public static Handlers fromString(String key){
         if(key == null || key.isEmpty())
-            return UNKNOW;
+            return UNKNOWN;
         
         for(Handlers value : values()){
             if(value.name().equalsIgnoreCase(key))
                 return value;
         }
         
-        return UNKNOW;
+        return UNKNOWN;
     }
 }

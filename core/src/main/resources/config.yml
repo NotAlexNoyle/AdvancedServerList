@@ -151,10 +151,12 @@ storage:
   # The Type of Storage used.  
   # Available options:
   #
-  # - json:     Default. Stores data to a playercache.json file.
-  # - mysql:    Stores data in a MySQL Database.
-  # - mariadb:  Stores data in a MariaDB Database. Recommended over MySQL.
-  # - postgres: Stores data in a PostgreSQL Database.
+  # - json:       Default. Stores data to a playercache.json file.
+  # - mysql:      Stores data in a MySQL Database.
+  # - mariadb:    Stores data in a MariaDB Database. Recommended over MySQL.
+  # - postgresql: Stores data in a PostgreSQL Database.
+  #
+  # Uses JSON if an invalid option has been selected, or the database handler couldn't be setup.
   #
   type: 'json'
   #

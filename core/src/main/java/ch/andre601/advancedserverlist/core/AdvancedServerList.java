@@ -39,6 +39,7 @@ import ch.andre601.advancedserverlist.core.placeholders.DatePlaceholder;
 import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderTokenReader;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderValueReader;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.DatabasePlayerHandler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.Handlers;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.PlayerHandler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.JSONPlayerHandler;
@@ -183,6 +184,17 @@ public class AdvancedServerList<F>{
         plugin().pluginLogger().info("Loading PlayerCache Handler...");
         this.playerHandler = resolveHandler(fileHandler().getString("unknown", "storage", "type"));
         
+        if(this.playerHandler instanceof DatabasePlayerHandler databasePlayerHandler){
+            if(databasePlayerHandler.setup()){
+                databasePlayerHandler.loadScheduler();
+            }else{
+                plugin().pluginLogger().warn("Couldn't load Database Handler. Please check logs for errors.");
+                plugin().pluginLogger().warn("Defaulting to JSON Storage as backup...");
+                
+                this.playerHandler = new JSONPlayerHandler(this);
+            }
+        }
+        
         if(fileHandler().loadProfiles()){
             plugin().pluginLogger().success("Successfully loaded <white>%d</white> profile(s)!", fileHandler().profiles().size());
         }else{
@@ -233,7 +245,7 @@ public class AdvancedServerList<F>{
             case JSON -> new JSONPlayerHandler(this);
             case MYSQL, MARIADB -> new MariaDBPlayerHandler(this);
             case POSTGRESQL -> new PostgreSQLPlayerHandler(this);
-            case UNKNOW -> {
+            case UNKNOWN -> {
                 plugin().pluginLogger().warn("Received unknown Storage type <white>%s</white>. Defaulting to JSON.", key);
                 yield new JSONPlayerHandler(this);
             }
