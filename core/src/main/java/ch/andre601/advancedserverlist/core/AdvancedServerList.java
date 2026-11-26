@@ -185,7 +185,8 @@ public class AdvancedServerList<F>{
         this.playerHandler = resolveHandler(fileHandler().getString("unknown", "storage", "type"));
         
         if(this.playerHandler instanceof DatabasePlayerHandler databasePlayerHandler){
-            if(databasePlayerHandler.setup()){
+            databasePlayerHandler.downloadDependencies();
+            if(databasePlayerHandler.setupHikari() && databasePlayerHandler.setupFlyway()){
                 databasePlayerHandler.loadScheduler();
             }else{
                 plugin().pluginLogger().warn("Couldn't load Database Handler. Please check logs for errors.");

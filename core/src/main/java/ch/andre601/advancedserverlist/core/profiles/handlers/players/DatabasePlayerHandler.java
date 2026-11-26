@@ -4,7 +4,9 @@ import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.FlywayException;
 import org.jspecify.annotations.NonNull;
 
 import java.sql.Connection;
@@ -14,10 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public abstract class DatabasePlayerHandler extends PlayerHandler{
     
@@ -37,15 +36,22 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         if(core().fileHandler().getBoolean("disableCache") || dataSource == null)
             return;
         
+        List<CachedPlayer> refreshed = new CopyOnWriteArrayList<>();
         try(Connection connection = connection();
             PreparedStatement statement = Queries.GET_PLAYERS.statement(connection)){
             try(ResultSet set = statement.executeQuery()){
-                players.clear();
                 while(set.next()){
-                    players.add(new CachedPlayer(
+                    UUID uuid;
+                    try{
+                        uuid = UUID.fromString(set.getString("uuid"));
+                    }catch(IllegalArgumentException ignored){
+                        continue;
+                    }
+                    
+                    refreshed.add(new CachedPlayer(
                         set.getString("ip"),
                         set.getString("name"),
-                        UUID.fromString(set.getString("uuid"))
+                        uuid
                     ));
                 }
             }
@@ -53,7 +59,11 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
             logger().warn("Encountered SQLException while loading players from Database.");
             if(core().fileHandler().getBoolean("debug"))
                 logger().warn("Exception:", ex);
+            
+            return;
         }
+        
+        players = refreshed;
     }
     
     @Override
@@ -77,7 +87,7 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
     }
     
     @Override
-    public void add(CachedPlayer player){
+    public synchronized void add(CachedPlayer player){
         if(core().fileHandler().getBoolean("disableCache") || dataSource == null)
             return;
         
@@ -121,10 +131,14 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         dependencies.add(new Dependency("org.flywaydb", "flyway-core", core().versions().get("flyway")));
     }
     
-    public boolean setup(){
+    public void downloadDependencies(){
+        for(Dependency dependency : dependencies){
+            core().plugin().downloadLibrary(dependency.groupId(), dependency.artifactId(), dependency.version());
+        }
+    }
+    
+    public boolean setupHikari(){
         try{
-            downloadDependencies();
-            
             HikariConfig config = new HikariConfig();
             
             config.setDataSourceClassName(dataSourceClass);
@@ -136,6 +150,18 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
             
             this.dataSource = new HikariDataSource(config);
             
+            return true;
+        }catch(HikariPool.PoolInitializationException ex){
+            logger().warn("Encountered a PoolInitializationException while setting up Database connection.");
+            if(core().fileHandler().getBoolean("debug"))
+                logger().warn("Exception:", ex);
+            
+            return false;
+        }
+    }
+    
+    public boolean setupFlyway(){
+        try{
             Flyway.configure()
                 .dataSource(dataSource)
                 .locations("db_migrations")
@@ -146,8 +172,8 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
                 .migrate();
             
             return true;
-        }catch(Exception ex){
-            logger().warn("Encountered an Exception while setting up Database connection.");
+        }catch(FlywayException ex){
+            logger().warn("Encountered a FlywayException while setting up Database connection.");
             if(core().fileHandler().getBoolean("debug"))
                 logger().warn("Exception:", ex);
             
@@ -159,19 +185,13 @@ public abstract class DatabasePlayerHandler extends PlayerHandler{
         this.scheduler.scheduleAtFixedRate(
             this::load,
             1L,
-            core().fileHandler().getLong(5, 1, "database", "refreshRate"),
+            core().fileHandler().getLong(5, 1, "storage", "refreshRate"),
             TimeUnit.MINUTES
         );
     }
     
     public Connection connection() throws SQLException{
         return dataSource.getConnection();
-    }
-    
-    private void downloadDependencies(){
-        for(Dependency dependency : dependencies){
-            core().plugin().downloadLibrary(dependency.groupId(), dependency.artifactId(), dependency.version());
-        }
     }
     
     private static class PlayerCacheThreadFactory implements ThreadFactory{

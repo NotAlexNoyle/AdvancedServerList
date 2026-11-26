@@ -4,6 +4,7 @@ import ch.andre601.advancedserverlist.core.AdvancedServerList;
 import ch.andre601.advancedserverlist.core.interfaces.PluginLogger;
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -49,12 +50,19 @@ public abstract class PlayerHandler{
     }
     
     public List<CachedPlayer> players(){
-        return players;
+        return Collections.unmodifiableList(players);
     }
     
     public void add(CachedPlayer player){
-        if(contains(player.ip()) || core().fileHandler().getBoolean("disableCache"))
+        if(core().fileHandler().getBoolean("disableCache"))
             return;
+        
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).ip().equalsIgnoreCase(player.ip())){
+                players.set(i, player);
+                return;
+            }
+        }
         
         this.players.add(player);
     }
@@ -93,14 +101,5 @@ public abstract class PlayerHandler{
         }catch(IllegalArgumentException ex){
             return defaultUUID;
         }
-    }
-    
-    private boolean contains(String ip){
-        for(CachedPlayer player : players){
-            if(player.ip().equalsIgnoreCase(ip))
-                return true;
-        }
-        
-        return false;
     }
 }

@@ -24,7 +24,7 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
     }
     
     @Override
-    public void add(CachedPlayer player){
+    public synchronized void add(CachedPlayer player){
         if(core().fileHandler().getBoolean("disableCache"))
             return;
         
