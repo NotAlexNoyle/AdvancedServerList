@@ -8,12 +8,12 @@ public enum Queries{
     INSERT_PLAYER_MYSQL(
         "INSERT INTO player_cache ('ip', 'uuid', 'name') " +
         "VALUES(?, ?, ?) " +
-        "ON DUPLICATE KEY UPDATE uuid = new_values.uuid, name = new_values.name;"
+        "ON DUPLICATE KEY UPDATE 'uuid' = VALUE(ip), 'name' = VALUE(name);"
     ),
     INSERT_PLAYER_POSTGRES(
-        "INSERT INTO player_cache ('ip', 'uuid', 'name') " +
+        "INSERT INTO player_cache (`ip`, `uuid`, `name`) " +
         "VALUES(?, ?, ?) " +
-        "ON CONFLICT (ip) DO UPDATE SET uuid = EXCLUDED.uuid, name = EXCLUDED.name;"
+        "ON CONFLICT (ip) DO UPDATE SET `uuid` = EXCLUDED.uuid, `name` = EXCLUDED.name;"
     ),
     REMOVE_PLAYER(
         "DELETE FROM player_cache WHERE uuid = ?;"
