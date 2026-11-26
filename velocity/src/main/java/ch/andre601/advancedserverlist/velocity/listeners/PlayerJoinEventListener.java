@@ -26,6 +26,7 @@
 package ch.andre601.advancedserverlist.velocity.listeners;
 
 import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
+import ch.andre601.advancedserverlist.core.parsing.ComponentParser;
 import ch.andre601.advancedserverlist.velocity.VelocityCore;
 import ch.andre601.advancedserverlist.velocity.commands.VelocityCmdSender;
 import com.velocitypowered.api.event.Subscribe;
@@ -33,6 +34,7 @@ import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.proxy.Player;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 
 public class PlayerJoinEventListener{
     
@@ -57,6 +59,16 @@ public class PlayerJoinEventListener{
             VelocityCmdSender sender = new VelocityCmdSender(player);
             
             plugin.core().updateChecker().performCachedUpdateCheck(sender);
+        }
+        
+        try{
+            Class.forName("com.velocitypowered.api.util.ServerLink");
+            player.setServerLinks(List.of(com.velocitypowered.api.util.ServerLink.serverLink(
+                ComponentParser.text("<aqua>AdvancedServerList</aqua> Disclaimer").toComponent(),
+                "https://asl.andre601.ch/disclaimer"
+            )));
+        }catch(ClassNotFoundException ignored){
+            // Do nothing.
         }
     }
 }
