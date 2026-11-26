@@ -13,6 +13,7 @@ public class PostgreSQLPlayerHandler extends DatabasePlayerHandler{
     
     public PostgreSQLPlayerHandler(AdvancedServerList<?> core){
         super(core, "org.postgresql.ds.PGSimpleDataSource");
+        dependencies();
     }
     
     @Override

@@ -7,6 +7,7 @@ public class MariaDBPlayerHandler extends DatabasePlayerHandler{
     
     public MariaDBPlayerHandler(AdvancedServerList<?> core){
         super(core, "org.mariadb.jdbc.MariaDbDataSource");
+        dependencies();
     }
     
     @Override

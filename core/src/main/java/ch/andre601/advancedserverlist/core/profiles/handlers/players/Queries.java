@@ -8,7 +8,7 @@ public enum Queries{
     INSERT_PLAYER_MYSQL(
         "INSERT INTO player_cache (ip, uuid, name) " +
         "VALUES(?, ?, ?) " +
-        "ON DUPLICATE KEY UPDATE uuid = VALUE(ip), name = VALUE(name);"
+        "ON DUPLICATE KEY UPDATE uuid = VALUES(uuid), name = VALUES(name);"
     ),
     INSERT_PLAYER_POSTGRES(
         "INSERT INTO player_cache (ip, uuid, name) " +

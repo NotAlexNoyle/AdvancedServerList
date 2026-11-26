@@ -1,6 +1,6 @@
 package ch.andre601.advancedserverlist.core.profiles.handlers.players;
 
-public enum Handlers{
+public enum Handler{
     
     JSON,
     
@@ -10,11 +10,11 @@ public enum Handlers{
     
     UNKNOWN;
     
-    public static Handlers fromString(String key){
+    public static Handler fromString(String key){
         if(key == null || key.isEmpty())
             return UNKNOWN;
         
-        for(Handlers value : values()){
+        for(Handler value : values()){
             if(value.name().equalsIgnoreCase(key))
                 return value;
         }

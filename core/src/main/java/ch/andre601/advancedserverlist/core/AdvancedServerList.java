@@ -40,7 +40,7 @@ import ch.andre601.advancedserverlist.core.profiles.ServerListProfile;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderTokenReader;
 import ch.andre601.advancedserverlist.core.profiles.conditions.reader.PlaceholderValueReader;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.DatabasePlayerHandler;
-import ch.andre601.advancedserverlist.core.profiles.handlers.players.Handlers;
+import ch.andre601.advancedserverlist.core.profiles.handlers.players.Handler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.PlayerHandler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.JSONPlayerHandler;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.storage.MariaDBPlayerHandler;
@@ -242,7 +242,7 @@ public class AdvancedServerList<F>{
     }
     
     private PlayerHandler resolveHandler(String key){
-        return switch(Handlers.fromString(key)){
+        return switch(Handler.fromString(key)){
             case JSON -> new JSONPlayerHandler(this);
             case MYSQL, MARIADB -> new MariaDBPlayerHandler(this);
             case POSTGRESQL -> new PostgreSQLPlayerHandler(this);
