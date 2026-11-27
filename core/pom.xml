@@ -273,6 +273,18 @@
             <version>${dependency.flyway}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>${dependency.mariadb}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${dependency.postgres}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

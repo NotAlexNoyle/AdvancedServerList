@@ -20,7 +20,8 @@ unknownPlayer:
 # Should the Caching of players be disabled?
 #
 # When set to true will no player joining the server be cached and saved.
-# This will also cause placeholders using a cached player such as ${player name} to no longer work.
+# This will also cause placeholders using a cached player such as ${player name} to ony return the
+# default player
 #
 # Default: false
 #
@@ -58,26 +59,28 @@ debug: false
 printBanner: true
 
 #
-# Sets how long Favicons should be cached. Value is in minutes with the lowest possible value being 1.
+# Sets time in minutes for how long dynamically generated Favicons should be cached.
+# Lowest possible value is 1.
 #
-# This option only affects dynamic favicons created from a placeholder or URL. Local favicons will
-# not be affected.
+# Local favicons (Those loaded from PNG files in the favicons folder) are unaffected by this.
 #
 # Default: 1
 #
 faviconCacheTime: 1
 
 #
-# Sets how AdvancedServerList should handle the size and positioning of images for favicons.  
-# This only affects images whos size is less or more than 64x64 pixels.
+# Sets how AdvancedServerList should handle the size and positioning of images for favicons.
+# This only affects images with sizes less or more than 64x64 pixels.
 #
 # Available options:
 #
-#   - resize: Resizes the image to 64x64 pixels if it isn't these dimensions already.
-#   - center: Doesn't resize the image, but instead tries to center it as good as possible in a 64x64 area.
-#   - none:   Doesn't resize the image and leaves it positioned at x 0 and y 0 (top-left) of the 64x64 area.
+#   - resize: Resizes the image to 64x64 pixels.
+#   - center: Doesn't resize the image, but instead tries to center it as good as possible in a
+#             64x64 area.
+#   - none:   Doesn't resize the image and leaves it positioned at x 0 and y 0 (top-left) of the
+#             64x64 area.
 #
-# Uses the default (resize) when any unknown/invalid option is set, or the option is omitted.
+# Uses resize when any unknown/invalid option is set, or the option is omitted.
 #
 faviconResizeStrategy: 'resize'
 
@@ -89,62 +92,62 @@ faviconResizeStrategy: 'resize'
 #
 disableDuringMaintenance:
   #
-  # Whether MOTD changing should be disabled while Maintenance mode is active.
+  # Disable MOTD modification during Maintenance?
   #
   # Default: true
   #
   motd: true
   #
-  # Whether favicon changing should be disabled while Maintenance mode is active.
+  # Disable Favicon modification during Maintenance?
   #
   # Default: true
   #
   favicon: true
   #
-  # Whether player hiding should be disabled while Maintenance mode is active.
+  # Disable hiding Player Count during Maintenance?
   #
   # Default: true
   #
   hidePlayers: true
   #
-  # Whether hiding player list on hover should be disabled while Maintenance mode is active.
+  # Disable hiding Player Count Hover during Maintenance?
   #
   # Default: true
   #
   hidePlayersHover: true
   #
-  # Whether player count text changing should be disabled while Maintenance mode is active.
+  # Disable Player Count Text modification during Maintenance?
   #
   # Default: true
   #
   playerCountText: true
   #
-  # Whether player count hover changing should be disabled while Maintenance mode is active.
+  # Disable Player Count Hover modification during Maintenance?
   #
   # Default: true
   #
   playerCountHover: true
   #
-  # Whether the extra players feature should be disabled while Maintenance mode is active.
+  # Disable Extra Players Feature during Maintenance?
   #
   # Default: true
   #
   extraPlayers: true
   #
-  # Whether the max players feature should be disabled while Maintenance mode is active.
+  # Disable Max Players Feature during Maintenance?
   #
   # Default: true
   #
   maxPlayers: true
   #
-  # Whether the online players feature should be disabled while Maintenance mode is active.
+  # Disable Online Players Feature during Maintenance?
   #
   # Default: true
   #
   onlinePlayers: true
 
 #
-# Contains settings for setting how Cached Players should be stored.
+# Contains settings for how Cached Players should be stored.
 #
 storage:
   #
@@ -160,13 +163,15 @@ storage:
   #
   type: 'json'
   #
-  # The URL/IP to connect to for the database. Only used if the type is set to anything but json.
+  # The URL/IP to connect to for the database.
+  # Only used if the storage type is set to anything but json.
   #
   # Default: localhost
   #
   url: 'localhost'
   #
-  # The port to use when connecting to the Database. Only used if the type is set to anything but json.
+  # The port to use when connecting to the Database.
+  # Only used if the storage type is set to anything but json.
   #
   # Common default ports:
   #
@@ -177,25 +182,30 @@ storage:
   #
   port: 3306
   #
-  # The name of the Database to connect to. Only used if the type is set to anything but json.
+  # The name of the Database to connect to.
+  # Only used if the storage type is set to anything but json.
   #
   # Default: playercache
   #
   name: 'playercache'
   #
-  # The username to use for the database. Only used if the type is set to anything but json.
+  # The username to use for the database.
+  # Only used if the storage type is set to anything but json.
   #
   # Default: root
   #
   username: 'root'
   #
-  # The password to use for the database. Only used if the type is set to anything but json.
+  # The password to use for the database.
+  # Only used if the storage type is set to anything but json.
   #
   # Default: ''
   #
   password: ''
   #
-  # Time in minutes that the cached players should be refreshed from the database.
+  # Time interval in minutes at which the player cache should be refreshed from the Database.
+  # Only used if the storage type is set to anything but json.
+  #
   # Cannot be less than 1.
   #
   # Default: 5
@@ -205,7 +215,8 @@ storage:
 #
 # DO NOT EDIT!
 #
-# This is used internally to determine if the config needs to be migrated.
-# Changing or even removing this option could result in your config being broken.
+# The value of this option is used to determine, whether this config requires a migration to be
+# performed or not.
+# Changing or removing it could result in the config losing previously set values.
 #
 configVersion: ${plugin.config.version}

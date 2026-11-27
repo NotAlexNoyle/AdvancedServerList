@@ -62,12 +62,14 @@ public class ConfigMigrator{
     public static ConfigurationTransformation tenToEleven(){
         return ConfigurationTransformation.builder()
             .addAction(NodePath.path(), (path, value) -> {
-                value.node("storage", "type").set("json");
-                value.node("storage", "url").set("localhost");
-                value.node("storage", "port").set(3306);
-                value.node("storage", "name").set("playercache");
-                value.node("storage", "username").set("root");
-                value.node("storage", "password").set("");
+                ConfigurationNode storage = value.node("storage");
+                storage.node("type").set("json");
+                storage.node("url").set("localhost");
+                storage.node("port").set(3306);
+                storage.node("name").set("playercache");
+                storage.node("username").set("root");
+                storage.node("password").set("");
+                storage.node("refreshRate").set(5);
                 
                 return null;
             })
