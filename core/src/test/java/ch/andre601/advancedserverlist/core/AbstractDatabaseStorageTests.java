@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,11 @@ public abstract class AbstractDatabaseStorageTests{
     protected HikariDataSource dataSource;
     
     protected abstract void setupDatabase() throws SQLException;
+    
+    @BeforeEach
+    void prepare() throws SQLException{
+        setupDatabase();
+    }
     
     protected boolean setupFlyway(){
         try{

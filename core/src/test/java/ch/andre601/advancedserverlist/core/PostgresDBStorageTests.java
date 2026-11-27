@@ -4,7 +4,6 @@ import ch.andre601.advancedserverlist.core.objects.CachedPlayer;
 import ch.andre601.advancedserverlist.core.profiles.handlers.players.Queries;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.testcontainers.junit.jupiter.Container;
@@ -22,7 +21,6 @@ public class PostgresDBStorageTests extends AbstractDatabaseStorageTests{
         .withUsername("test")
         .withPassword("test");
     
-    @BeforeEach
     @Override
     protected void setupDatabase(){
         PGSimpleDataSource source = new PGSimpleDataSource();
