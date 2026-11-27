@@ -66,73 +66,140 @@
 /* Animations */
 @keyframes balloon {
     0% {
-        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+        transform:
+          translate(0rem, 0rem)
+          rotate(0deg)
+          scale(2);
     }
     10% {
-        transform: translate(0.05rem, -0.08rem) rotate(2deg) scale(1.95);
+        transform:
+          translate(random(--balloon-pos-1 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-1-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-1 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-1 element-scoped, 1.9, 2.1));
     }
     20% {
-        transform: translate(-0.07rem, 0.06rem) rotate(-3deg) scale(2);
+        transform:
+          translate(random(--balloon-pos-2 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-2-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-2 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-2 element-scoped, 1.9, 2.1));
     }
     30% {
-        transform: translate(0.1rem, -0.02rem) rotate(1.5deg) scale(2.05);
+        transform:
+          translate(random(--balloon-pos-3 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-3-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-3 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-3 element-scoped, 1.9, 2.1));
     }
     40% {
-        transform: translate(-0.06rem, -0.1rem) rotate(-2deg) scale(1.95);
+        transform:
+          translate(random(--balloon-pos-4 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-4-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-4 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-4 element-scoped, 1.9, 2.1));
     }
     50% {
-        transform: translate(0.02rem, 0.08rem) rotate(3deg) scale(2);
+        transform:
+          translate(random(--balloon-pos-5 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-5-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-5 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-5 element-scoped, 1.9, 2.1));
     }
     60% {
-        transform: translate(-0.1rem, -0.01rem) rotate(-1deg) scale(2.05);
+        transform:
+          translate(random(--balloon-pos-6 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-6-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-6 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-6 element-scoped, 1.9, 2.1));
     }
     70% {
-        transform: translate(0.08rem, 0.04rem) rotate(2.5deg) scale(1.95);
+        transform:
+          translate(random(--balloon-pos-7 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-7-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-7 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-7 element-scoped, 1.9, 2.1));
     }
     80% {
-        transform: translate(-0.03rem, -0.07rem) rotate(-2.5deg) scale(2);
+        transform:
+          translate(random(--balloon-pos-8 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-8-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-8 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-8 element-scoped, 1.9, 2.1));
     }
     90% {
-        transform: translate(0.06rem, 0.03rem) rotate(1deg) scale(2.05);
+        transform:
+          translate(random(--balloon-pos-9 element-scoped, -0.1rem, 0.1rem), random(--balloon-pos-9-1 element-scoped, -0.1rem, 0.1rem))
+          rotate(random(--balloon-rot-9 element-scoped, -3deg, 3deg))
+          scale(random(--balloon-scale-9 element-scoped, 1.9, 2.1))
+            
     }
     100% {
-        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+        transform:
+          translate(0rem, 0rem)
+          rotate(0deg)
+          scale(2);
     }
 }
 
-@keyframes balloon2 {
+@keyframes balloon-old {
     0% {
-        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+        transform:
+          translate(0rem, 0rem)
+          rotate(0deg)
+          scale(2);
     }
     10% {
-        transform: translate(0.02rem, -0.04rem) rotate(5deg) scale(1.75);
+        transform:
+          translate(0.02rem, -0.04rem)
+          rotate(5deg)
+          scale(1.75);
     }
     20% {
-        transform: translate(-0.09rem, 0.08rem) rotate(-1deg) scale(2);
+        transform:
+          translate(-0.09rem, 0.08rem)
+          rotate(-1deg)
+          scale(2);
     }
     30% {
-        transform: translate(0.05rem, -0.06rem) rotate(3deg) scale(2.2);
+        transform:
+          translate(0.05rem, -0.06rem)
+          rotate(3deg)
+          scale(2.2);
     }
     40% {
-        transform: translate(-0.03rem, -0.09rem) rotate(-1.5deg) scale(1.85);
+        transform:
+          translate(-0.03rem, -0.09rem)
+          rotate(-1.5deg)
+          scale(1.85);
     }
     50% {
-        transform: translate(0.04rem, 0.1rem) rotate(1deg) scale(2);
+        transform:
+          translate(0.04rem, 0.1rem)
+          rotate(1deg)
+          scale(2);
     }
     60% {
-        transform: translate(-0.5rem, -0.04rem) rotate(-2deg) scale(1.95);
+        transform:
+          translate(-0.5rem, -0.04rem)
+          rotate(-2deg)
+          scale(1.95);
     }
     70% {
-        transform: translate(0.06rem, 0.02rem) rotate(1.25deg) scale(2.05);
+        transform:
+          translate(0.06rem, 0.02rem)
+          rotate(1.25deg)
+          scale(2.05);
     }
     80% {
-        transform: translate(-0.01rem, -0.03rem) rotate(-3deg) scale(2);
+        transform:
+          translate(-0.01rem, -0.03rem)
+          rotate(-3deg)
+          scale(2);
     }
     90% {
-        transform: translate(0.02rem, 0.07rem) rotate(0.5deg) scale(2.15);
+        transform:
+          translate(0.02rem, 0.07rem)
+          rotate(0.5deg)
+          scale(2.15);
     }
     100% {
-        transform: translate(0rem, 0rem) rotate(0deg) scale(2);
+        transform:
+          translate(0rem, 0rem)
+          rotate(0deg)
+          scale(2);
     }
 }
 
@@ -174,11 +241,13 @@
 
 
 .balloon {
-    animation: 20s ease-in-out infinite balloon;
+    animation: 20s ease-in-out infinite balloon-old;
 }
 
-.balloon2 {
-    animation: 19s ease-in-out infinite balloon2;
+@supports (order: random(1, 2)) {
+    .balloon {
+        animation-name: balloon;
+    }
 }
 
 .rainbow {
